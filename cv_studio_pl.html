@@ -1,0 +1,1877 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<!-- CV.Studio UI Language: pl (Polski) -->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CV.Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
+<style>
+:root{
+  --accent:#1a3c6e;--accent2:#c8a96e;--light:#eef2f8;
+  --bg:#f0ede8;--panel:#fff;--border:#e0dbd3;
+  --text:#1c1b18;--muted:#7a7568;
+  --sw:300px;--pw:340px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);font-size:15px;}
+
+/* APP GRID */
+.app{display:grid;grid-template-columns:var(--sw) 1fr var(--pw);grid-template-rows:62px 1fr;height:100vh;}
+
+/* TOPBAR */
+.topbar{grid-column:1/-1;background:var(--accent);display:flex;align-items:center;padding:0 20px;gap:10px;border-bottom:1px solid rgba(255,255,255,0.08);}
+.logo{font-family:'Playfair Display',serif;font-size:22px;color:#fff;font-weight:600;padding-right:20px;border-right:1px solid rgba(255,255,255,0.2);margin-right:12px;flex-shrink:0;}
+.logo span{color:var(--accent2);}
+.tbar-label{font-size:12px;color:rgba(255,255,255,0.5);letter-spacing:0.06em;text-transform:uppercase;margin-left:4px;}
+.swatch{width:24px;height:24px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:border-color .15s;flex-shrink:0;}
+.swatch.on,.swatch:hover{border-color:#fff;}
+.tgap{flex:1;}
+.tbtn{padding:8px 16px;font-size:13px;border-radius:7px;cursor:pointer;font-family:'DM Sans',sans-serif;border:1px solid rgba(255,255,255,0.22);background:transparent;color:rgba(255,255,255,0.82);transition:background .15s;}
+.tbtn:hover{background:rgba(255,255,255,0.14);}
+.tbtn.primary{background:var(--accent2);color:#1a3c6e;border-color:var(--accent2);font-weight:500;}
+.tbtn.primary:hover{background:#d4b87a;}
+
+/* SIDEBAR */
+.sidebar{background:var(--panel);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;}
+.sb-head{padding:14px 16px 10px;font-size:12px;font-weight:500;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;border-bottom:1px solid var(--border);}
+.sb-scroll{overflow-y:auto;flex:1;padding:10px;}
+.sb-cat{font-size:12px;color:var(--muted);font-weight:500;padding:10px 6px 6px;letter-spacing:0.06em;text-transform:uppercase;}
+.bitem{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;cursor:grab;font-size:14px;color:var(--text);border:1px solid transparent;transition:background .12s,border-color .12s;margin-bottom:4px;user-select:none;}
+.bitem:hover{background:var(--bg);border-color:var(--border);}
+.bitem:active{cursor:grabbing;opacity:0.7;}
+.bico{width:32px;height:32px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+/* CANVAS */
+.canvas-wrap{background:#ccc9c3;display:flex;flex-direction:column;overflow:hidden;}
+.ctoolbar{display:flex;align-items:center;gap:7px;padding:9px 16px;background:var(--panel);border-bottom:1px solid var(--border);flex-shrink:0;}
+.ctbtn{padding:6px 14px;font-size:13px;border-radius:6px;cursor:pointer;border:1px solid var(--border);background:var(--panel);color:var(--text);transition:background .12s;font-family:'DM Sans',sans-serif;}
+.ctbtn:hover{background:var(--bg);}
+.ctbtn.on{background:var(--accent);color:#fff;border-color:var(--accent);}
+.ctsep{width:1px;height:18px;background:var(--border);margin:0 4px;}
+.cscroll{flex:1;overflow:auto;display:flex;justify-content:center;align-items:flex-start;padding:28px;}
+
+/* CV PAPER */
+.cv-paper{width:794px;min-height:1123px;background:white;box-shadow:0 4px 36px rgba(0,0,0,0.2);position:relative;flex-shrink:0;transform-origin:top center;}
+
+/* CV LAYOUTS */
+.layout-classic .cv-header{background:var(--ca,#1a3c6e);color:#fff;padding:36px 44px 28px;}
+.layout-classic .cv-body{display:grid;grid-template-columns:210px 1fr;min-height:900px;}
+.layout-classic .cv-left{background:var(--cl,#eef2f8);padding:24px 18px;}
+.layout-classic .cv-right{padding:24px 30px;}
+
+.layout-minimal .cv-header{padding:36px 44px 20px;border-bottom:2px solid var(--ca,#1a3c6e);}
+.layout-minimal .cv-body{display:grid;grid-template-columns:190px 1fr;min-height:900px;}
+.layout-minimal .cv-left{padding:24px 18px;border-right:1px solid #eee;}
+.layout-minimal .cv-right{padding:24px 30px;}
+
+.layout-bold .cv-header{background:var(--ca,#1a3c6e);color:#fff;padding:0;display:flex;}
+.layout-bold .cv-hl{padding:32px 32px 28px;flex:1;}
+.layout-bold .cv-hr{width:200px;background:rgba(0,0,0,0.18);padding:32px 16px 28px;display:flex;flex-direction:column;gap:4px;font-size:11px;}
+.layout-bold .cv-body{display:grid;grid-template-columns:1fr;}
+.layout-bold .cv-left{display:none;}
+.layout-bold .cv-right{padding:24px 44px;}
+
+.layout-right .cv-header{background:var(--ca,#1a3c6e);color:#fff;padding:36px 44px 28px;}
+.layout-right .cv-body{display:grid;grid-template-columns:1fr 200px;min-height:900px;}
+.layout-right .cv-right{padding:24px 30px;}
+.layout-right .cv-left{background:var(--cl,#eef2f8);padding:24px 16px;border-left:none;}
+
+/* CV TYPOGRAPHY */
+.cv-name{font-family:var(--cf,'Playfair Display',serif);font-size:30px;font-weight:600;line-height:1.1;margin-bottom:5px;}
+.cv-jobtitle{font-size:13px;opacity:0.8;margin-bottom:12px;letter-spacing:0.03em;}
+.cv-contacts{display:flex;flex-wrap:wrap;gap:5px 14px;font-size:11px;opacity:0.85;}
+.cv-ci{display:flex;align-items:center;gap:4px;}
+.cv-ci a{color:inherit;text-decoration:none;}
+.cv-ci a:hover{text-decoration:underline;}
+.cv-photo{width:72px;height:72px;border-radius:50%;object-fit:cover;border:3px solid rgba(255,255,255,0.4);flex-shrink:0;}
+.cv-photo-rect{width:80px;height:80px;border-radius:6px;object-fit:cover;border:3px solid rgba(255,255,255,0.3);flex-shrink:0;}
+
+.cv-sec-title{font-size:8.5px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--ca,#1a3c6e);margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid var(--ca,#1a3c6e);}
+.cv-sec-title.muted{border-color:rgba(26,60,110,0.2);}
+
+.cv-section{margin-bottom:18px;}
+
+/* experience */
+.cv-exp{margin-bottom:12px;}
+.cv-exp-hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:1px;}
+.cv-exp-role{font-size:12.5px;font-weight:500;}
+.cv-exp-date{font-size:10px;color:#888;white-space:nowrap;margin-left:6px;}
+.cv-exp-co{font-size:11px;color:var(--ca,#1a3c6e);font-style:italic;margin-bottom:3px;}
+.cv-exp-desc{font-size:10.5px;color:#555;line-height:1.6;}
+.cv-tags{display:flex;flex-wrap:wrap;gap:2px;margin-top:4px;}
+.cv-tag{font-size:8.5px;padding:1px 6px;border-radius:9px;background:var(--cl,#eef2f8);color:var(--ca,#1a3c6e);border:1px solid rgba(26,60,110,0.12);}
+
+/* skills */
+.cv-skill{margin-bottom:6px;}
+.cv-skill-row{display:flex;justify-content:space-between;margin-bottom:2px;font-size:11px;}
+.cv-bar{height:3px;background:#e0e0e0;border-radius:2px;}
+.cv-bar-fill{height:3px;border-radius:2px;background:var(--ca,#1a3c6e);}
+
+/* languages */
+.cv-lang-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;font-size:11px;}
+
+/* education */
+.cv-edu{margin-bottom:9px;}
+.cv-edu-degree{font-size:12px;font-weight:500;}
+.cv-edu-school{font-size:10.5px;color:var(--ca,#1a3c6e);font-style:italic;}
+.cv-edu-year{font-size:10px;color:#888;}
+
+/* certs */
+.cv-cert{display:flex;align-items:flex-start;gap:7px;margin-bottom:8px;font-size:11px;}
+.cv-cert-badge{width:20px;height:20px;border-radius:4px;background:var(--ca,#1a3c6e);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+
+/* achievements */
+.cv-ach{display:flex;gap:7px;margin-bottom:6px;align-items:flex-start;font-size:10.5px;line-height:1.55;}
+.cv-ach-bullet{color:var(--ca,#1a3c6e);flex-shrink:0;margin-top:1px;font-size:12px;}
+
+/* about */
+.cv-about{font-size:11px;line-height:1.7;color:#444;}
+
+/* text block */
+.cv-textblock{font-size:10.5px;line-height:1.7;color:#333;white-space:pre-wrap;word-break:break-word;}
+
+/* signature */
+.cv-signature{height:60px;border-top:1px solid #ddd;margin-top:12px;padding-top:8px;}
+.cv-sig-img{max-height:50px;max-width:200px;image-rendering:auto;}
+
+/* signature canvas modal */
+.sig-canvas-wrap{border:1px solid var(--border);border-radius:8px;background:#fafafa;padding:8px;margin:8px 0;}
+.sig-canvas{display:block;border:1px solid #ddd;border-radius:6px;background:white;cursor:crosshair;}
+.sig-btns{display:flex;gap:6px;margin-top:6px;}
+.sig-btn{flex:1;padding:7px;border-radius:6px;border:1px solid var(--border);background:var(--bg);cursor:pointer;font-size:12px;color:var(--text);}
+.sig-btn:hover{border-color:var(--accent);color:var(--accent);}
+.sig-btn.primary{background:var(--accent);color:white;border-color:var(--accent);}
+
+/* social links in header */
+.cv-social{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:8px;font-size:10.5px;opacity:0.8;}
+.cv-social a{color:inherit;text-decoration:none;display:flex;align-items:center;gap:4px;}
+.cv-social a:hover{opacity:0.7;}
+
+/* BLOCK DRAG PLACEHOLDER */
+.drop-zone{border:2px dashed var(--ca,#1a3c6e);border-radius:4px;height:36px;margin:4px 0;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--ca,#1a3c6e);opacity:0;transition:opacity .2s;background:rgba(26,60,110,0.03);}
+.drop-zone.visible{opacity:1;}
+.cv-section-wrapper{position:relative;}
+.cv-section-wrapper:hover .sec-handle{opacity:1;}
+.sec-handle{position:absolute;left:-20px;top:4px;opacity:0;transition:opacity .2s;cursor:grab;color:var(--muted);font-size:12px;padding:2px 4px;}
+
+/* PROPS PANEL */
+.props{background:var(--panel);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;}
+.ptabs{display:flex;border-bottom:1px solid var(--border);}
+.ptab{flex:1;padding:14px 4px;font-size:13px;text-align:center;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;transition:color .15s;}
+.ptab.on{color:var(--accent);border-bottom-color:var(--accent);}
+.pbody{padding:16px;flex:1;overflow-y:auto;}
+
+/* form elements */
+.plabel{font-size:12px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px;display:block;}
+.pgroup{margin-bottom:20px;}
+.pinput{width:100%;padding:9px 12px;border-radius:7px;border:1px solid var(--border);font-size:14px;font-family:'DM Sans',sans-serif;color:var(--text);background:var(--bg);outline:none;transition:border-color .15s;}
+.pinput:focus{border-color:var(--accent);}
+.ptextarea{width:100%;padding:9px 12px;border-radius:7px;border:1px solid var(--border);font-size:13px;font-family:'DM Sans',sans-serif;color:var(--text);background:var(--bg);outline:none;resize:vertical;min-height:72px;transition:border-color .15s;}
+.ptextarea:focus{border-color:var(--accent);}
+
+/* cards in props */
+.pcard{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 13px;margin-bottom:8px;position:relative;}
+.pcard-title{font-size:14px;font-weight:500;margin-bottom:3px; max-width: 220px;}
+.pcard-sub{font-size:12px;color:var(--muted);}
+.pcard-actions{position:absolute;top:10px;right:10px;display:flex;gap:5px;}
+.pca-btn{font-size:15px;cursor:pointer;color:var(--muted);border:none;background:none;padding:3px 6px;border-radius:4px;transition:color .15s;}
+.pca-btn:hover{color:var(--accent);}
+.pca-btn.del:hover{color:#c0392b;}
+.add-btn{width:100%;padding:10px;border-radius:7px;border:1px dashed var(--border);background:transparent;cursor:pointer;font-size:13px;color:var(--muted);transition:all .15s;font-family:'DM Sans',sans-serif;margin-top:4px;}
+.add-btn:hover{border-color:var(--accent);color:var(--accent);background:#eef2f8;}
+
+/* color grid */
+.cgrid{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;margin-bottom:7px;}
+.csw{width:100%;aspect-ratio:1;border-radius:5px;cursor:pointer;border:2px solid transparent;transition:border-color .15s;}
+.csw.on,.csw:hover{border-color:var(--text);}
+
+/* font opts */
+.fopt{padding:8px 10px;border-radius:6px;border:1px solid var(--border);cursor:pointer;font-size:13px;background:var(--bg);color:var(--text);margin-bottom:5px;transition:border-color .15s;}
+.fopt:hover,.fopt.on{border-color:var(--accent);color:var(--accent);}
+
+/* layout thumbs */
+.lgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:7px;}
+.lthumb{border-radius:6px;border:1.5px solid var(--border);cursor:pointer;overflow:hidden;aspect-ratio:3/4;display:flex;flex-direction:column;transition:border-color .15s;}
+.lthumb.on,.lthumb:hover{border-color:var(--accent);}
+
+/* toggle */
+.tog-row{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border-radius:6px;border:1px solid var(--border);background:var(--bg);font-size:13px;margin-bottom:5px;}
+.toggle{width:30px;height:16px;border-radius:8px;background:#ddd;cursor:pointer;position:relative;transition:background .2s;flex-shrink:0;}
+.toggle.on{background:var(--accent);}
+.toggle::after{content:'';position:absolute;width:12px;height:12px;border-radius:50%;background:white;top:2px;left:2px;transition:left .2s;}
+.toggle.on::after{left:16px;}
+
+/* range */
+.rrow{display:flex;align-items:center;gap:8px;}
+.rrow input{flex:1;}
+.rval{font-size:13px;min-width:40px;text-align:right;color:var(--muted);}
+
+/* export btns */
+.ebtn{display:flex;align-items:center;gap:12px;padding:13px 15px;border-radius:8px;border:1px solid var(--border);background:var(--bg);cursor:pointer;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--text);transition:all .15s;width:100%;margin-bottom:8px;}
+.ebtn:hover{border-color:var(--accent);background:#eef2f8;color:var(--accent);}
+.ebtn-ico{font-size:20px;}
+
+/* photo upload */
+.photo-upload-area{width:100%;border:2px dashed var(--border);border-radius:8px;padding:20px;text-align:center;cursor:pointer;transition:border-color .15s;background:var(--bg);}
+.photo-upload-area:hover{border-color:var(--accent);}
+.photo-preview{width:76px;height:76px;border-radius:50%;object-fit:cover;border:2px solid var(--border);margin:0 auto 10px;display:block;}
+.photo-upload-text{font-size:13px;color:var(--muted);}
+
+/* modal overlay for edit */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:500;display:flex;align-items:center;justify-content:center;}
+.modal{background:var(--panel);border-radius:14px;padding:28px;width:520px;max-height:84vh;overflow-y:auto;box-shadow:0 8px 40px rgba(0,0,0,0.2);}
+.modal-title{font-size:18px;font-weight:500;margin-bottom:20px;font-family:'Playfair Display',serif;}
+.modal-row{margin-bottom:14px;}
+.modal-label{font-size:12px;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px;display:block;}
+.modal-input{width:100%;padding:9px 12px;border-radius:7px;border:1px solid var(--border);font-size:14px;font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);outline:none;}
+.modal-input:focus{border-color:var(--accent);}
+.modal-textarea{width:100%;padding:9px 12px;border-radius:7px;border:1px solid var(--border);font-size:13px;font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);outline:none;resize:vertical;min-height:80px;}
+.modal-textarea:focus{border-color:var(--accent);}
+.modal-grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:20px;}
+.mbtn{padding:10px 20px;border-radius:7px;font-size:14px;cursor:pointer;font-family:'DM Sans',sans-serif;border:1px solid var(--border);background:var(--bg);color:var(--text);}
+.mbtn.primary{background:var(--accent);color:#fff;border-color:var(--accent);}
+.mbtn:hover{opacity:0.85;}
+
+/* skill stars editor */
+.star-row{display:flex;gap:5px;align-items:center;}
+.star{width:22px;height:22px;cursor:pointer;color:#ddd;font-size:20px;transition:color .12s;}
+.star.on{color:var(--accent);}
+
+/* statusbar */
+.statusbar{position:fixed;bottom:0;left:0;right:0;height:26px;background:var(--accent);display:flex;align-items:center;padding:0 16px;gap:20px;z-index:200;}
+.sbi{font-size:12px;color:rgba(255,255,255,0.6);}
+.sbi b{color:rgba(255,255,255,0.9);font-weight:500;}
+
+/* scrollbars */
+::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+
+/* section drag-reorder visual */
+.section-drag-ghost{opacity:0.4;}
+.section-drop-indicator{height:3px;background:var(--accent);border-radius:2px;margin:2px 0;}
+
+.lang-switch{
+  display:flex;
+  gap:6px;
+  margin:0;
+}
+
+.lang-switch button{
+  padding:7px 13px;
+  border:2px solid transparent;
+  border-radius:7px;
+  cursor:pointer;
+  background:rgba(255,255,255,0.15);
+  color:#fff;
+  font-weight:600;
+  font-size:13px;
+}
+
+.lang-switch button:hover{
+  background:rgba(255,255,255,0.25);
+}
+
+.lang-switch button.on{
+  background:rgba(255,255,255,0.30);
+  border-color:rgba(255,255,255,0.7);
+}
+.cv-social a:hover{opacity:0.7;}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="logo">CV<span>..</span>Studio</div>
+  <span class="tbar-label">Język:</span>
+  <div class="lang-switch" id="lang-switch">
+    <button onclick="setLang('de')">DE</button>
+    <button onclick="setLang('en')">EN</button>
+    <button onclick="setLang('es')">ES</button>
+    <button onclick="setLang('pl')">PL</button>
+    <button onclick="setLang('ru')">RU</button>
+    <button onclick="setLang('ua')">UA</button>
+  </div>
+  <span class="tbar-label">Motyw:</span>
+  <div id="swatches" style="display:flex;gap:4px;margin-right:8px;"></div>
+  <div class="tgap"></div>
+  <button class="tbtn" onclick="resetData()" title="Zresetuj wszystkie dane CV" style="border-color:rgba(255,80,80,0.4);color:rgba(255,160,160,0.9);">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px;"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>Resetuj</button>
+  <button class="tbtn" onclick="undo()">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px;"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg>Cofnij</button>
+  <button class="tbtn" onclick="toggleGrid()">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px;"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Siatka</button>
+  <button class="tbtn" onclick="document.getElementById('pdf-imp').click()">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Importuj PDF</button>
+  <button class="tbtn" onclick="exportDOCX()" title="Pobierz dokument Word (.docx)">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>DOCX</button>
+  <button class="tbtn primary" onclick="exportPDF()">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>PDF</button>
+  <input type="file" id="pdf-imp" accept=".pdf" style="display:none;" onchange="importPDF(event)">
+</div>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sb-head">Dodaj blok</div>
+  <div class="sb-scroll">
+    <div class="sb-cat">Główne</div>
+    <div class="bitem" draggable="true" data-block="experience"><div class="bico" style="background:#fef9ec;color:#854f0b;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg></div>Doświadczenie zawodowe</div>
+    <div class="bitem" draggable="true" data-block="education"><div class="bico" style="background:#fdf2f8;color:#831843;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div>Edukacja</div>
+    <div class="bitem" draggable="true" data-block="about"><div class="bico" style="background:#f0fdf4;color:#065f46;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>O mnie</div>
+    <div class="sb-cat">Dodatkowe</div>
+    <div class="bitem" draggable="true" data-block="skills"><div class="bico" style="background:#eef2f8;color:#1a3c6e;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>Umiejętności</div>
+    <div class="bitem" draggable="true" data-block="languages"><div class="bico" style="background:#f0fdf4;color:#065f46;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>Języki</div>
+    <div class="bitem" draggable="true" data-block="certifications"><div class="bico" style="background:#fef9ec;color:#854f0b;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M9 15v7l3-2 3 2v-7"/></svg></div>Certyfikaty</div>
+    <div class="bitem" draggable="true" data-block="achievements"><div class="bico" style="background:#fdf2f8;color:#831843;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>Osiągnięcia</div>
+    <div class="bitem" draggable="true" data-block="projects"><div class="bico" style="background:#eef2f8;color:#4c1d95;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div>Projekty</div>
+    <div class="bitem" draggable="true" data-block="links"><div class="bico" style="background:#f0fdf4;color:#065f46;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div>Media społecznościowe</div>
+    <div class="sb-cat">Elementy</div>
+    <div class="bitem" draggable="true" data-block="textblock"><div class="bico" style="background:#f5f3ef;color:#7a7568;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="17" y1="18" x2="3" y2="18"/></svg></div>Blok tekstowy</div>
+    <div class="bitem" draggable="true" data-block="signature"><div class="bico" style="background:#f5f3ef;color:#7a7568;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17c2-2 4-4 6-3s2 4 4 3 3-5 5-4"/><line x1="3" y1="21" x2="21" y2="21"/></svg></div>Podpis</div>
+    <div class="bitem" draggable="true" data-block="custom"><div class="bico" style="background:#f5f3ef;color:#7a7568;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>Dowolny tekst</div>
+    <div class="bitem" draggable="true" data-block="divider"><div class="bico" style="background:#f5f3ef;color:#7a7568;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/></svg></div>Separator</div>
+    <div id="drag-hint" style="margin-top:16px;padding:8px 6px;font-size:10.5px;color:var(--muted);line-height:1.6;border-top:1px solid var(--border);">
+      Przeciągnij blok na płótno (lewa lub prawa kolumna). Bloki można zmieniać kolejność w panelu edycji.
+    </div>
+  </div>
+</div>
+
+<!-- CANVAS -->
+<div class="canvas-wrap">
+  <div class="ctoolbar">
+    <span style="font-size:10px;color:var(--muted);">Powiększenie:</span>
+    <button class="ctbtn" onclick="setZoom(70)">70%</button>
+    <button class="ctbtn " id="zbtn-85" onclick="setZoom(85)">85%</button>
+    <button class="ctbtn on" onclick="setZoom(100)">100%</button>
+    <button class="ctbtn " onclick="setZoom(125)">125%</button>
+    <button class="ctbtn " onclick="setZoom(150)">150%</button>
+    <div class="ctsep"></div>
+    <span style="font-size:10px;color:var(--muted);">Układ:</span>
+    <button class="ctbtn on" id="lb-classic" onclick="setLayout('classic')">Klasyczny</button>
+    <button class="ctbtn" id="lb-minimal" onclick="setLayout('minimal')">Minimalny</button>
+    <button class="ctbtn" id="lb-bold" onclick="setLayout('bold')">Odważny</button>
+    <button class="ctbtn" id="lb-right" onclick="setLayout('right')">Prawa strona</button>
+  </div>
+  <div class="cscroll">
+    <div class="cv-paper layout-classic" id="cvp" style="--ca:#1a3c6e;--cl:#eef2f8;"></div>
+  </div>
+</div>
+
+<!-- PROPS PANEL -->
+<div class="props">
+  <div class="ptabs">
+    <div class="ptab on" onclick="switchTab('personal')">Osobiste</div>
+    <div class="ptab" onclick="switchTab('sections')">Sekcje</div>
+    <div class="ptab" onclick="switchTab('design')">Wygląd</div>
+    <div class="ptab" onclick="switchTab('export')">Eksport</div>
+  </div>
+  <div class="pbody" id="pbody"></div>
+</div>
+
+</div><!-- /app -->
+
+<div class="statusbar">
+  <div class="sbi">Strona: <b>A4</b></div>
+  <div class="sbi">Powiększenie: <b id="sb-zoom">85%</b></div>
+  <div class="sbi">Sekcji: <b id="sb-secs">0</b></div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" style="display:none;" onclick="closeModal(event)">
+  <div class="modal" id="modal-inner" onclick="event.stopPropagation()"></div>
+</div>
+
+<script>
+// ================================================================
+// TRANSLATIONS - MUST BE FIRST BEFORE EVERYTHING
+// ================================================================
+const LANGS = {
+ru:{
+profile:"Profil",
+expTitle:"Doświadczenie zawodowe",
+eduTitle:"Edukacja",
+skillsTitle:"Umiejętności",
+langTitle:"Języki",
+certsTitle:"Certyfikaty",
+achTitle:"Osiągnięcia",
+projTitle:"Projekty",
+contacts:"Kontakt",
+additional:"Dodatkowe",
+summary:"O mnie",
+dragHint:"Przeciągnij blok na płótno (lewa lub prawa kolumna). Bloki można zmieniać kolejność w panelu edycji.",
+cefr:{1:'A1 — Początkujący',2:'A2 — Podstawowy',3:'B1 — Średniozaawansowany',4:'B2 — Wyższy średniozaawansowany',5:'C1 — Zaawansowany',6:'C2 — Biegły',7:'Język ojczysty'},
+cefrShort:{1:'A1',2:'A2',3:'B1',4:'B2',5:'C1',6:'C2',7:'Ojczysty'},
+cefrDocx:{1:'Podstawowy (A1)',2:'Podstawowy (A2)',3:'Średniozaawansowany (B1)',4:'Wyższy średniozaaw. (B2)',5:'Zaawansowany (C1)',6:'Biegły (C2)',7:'Język ojczysty'}
+},
+
+ua:{
+profile:"Profil",
+expTitle:"Doświadczenie zawodowe",
+eduTitle:"Edukacja",
+skillsTitle:"Umiejętności",
+langTitle:"Języki",
+certsTitle:"Certyfikaty",
+achTitle:"Osiągnięcia",
+projTitle:"Projekty",
+contacts:"Kontakt",
+additional:"Dodatkowe",
+summary:"O mnie",
+dragHint:"Перетягни блок на полотно (ліву або праву колонку). Блоки можна змінювати порядок у панелі редагування.",
+cefr:{1:'A1 — Початковий',2:'A2 — Елементарний',3:'B1 — Середній',4:'B2 — Вище середнього',5:'C1 — Просунутий',6:'C2 — Вільне володіння',7:'Рідна мова'},
+cefrShort:{1:'A1',2:'A2',3:'B1',4:'B2',5:'C1',6:'C2',7:'Рідна'},
+cefrDocx:{1:'Початковий (A1)',2:'Елементарний (A2)',3:'Середній (B1)',4:'Вище середнього (B2)',5:'Просунутий (C1)',6:'Вільне володіння (C2)',7:'Рідна мова'}
+},
+
+pl:{
+profile:"Profil",
+expTitle:"Doświadczenie",
+eduTitle:"Edukacja",
+skillsTitle:"Umiejętności",
+langTitle:"Języki",
+certsTitle:"Certyfikaty",
+achTitle:"Osiągnięcia",
+projTitle:"Projekty",
+contacts:"Kontakt",
+additional:"Dodatkowe",
+summary:"O mnie",
+dragHint:"Przeciągnij blok na płótno (lewa lub prawa kolumna). Bloki można zmieniać kolejność w panelu edycji.",
+cefr:{1:'A1 — Podstawowy',2:'A2 — Elementary',3:'B1 — Średniozaawansowany',4:'B2 — Wyższy średniozaaw.',5:'C1 — Zaawansowany',6:'C2 — Biegły',7:'Język ojczysty'},
+cefrShort:{1:'A1',2:'A2',3:'B1',4:'B2',5:'C1',6:'C2',7:'Ojczysty'},
+cefrDocx:{1:'Podstawowy (A1)',2:'Elementary (A2)',3:'Średniozaawansowany (B1)',4:'Wyższy średniozaaw. (B2)',5:'Zaawansowany (C1)',6:'Biegły (C2)',7:'Język ojczysty'}
+},
+
+en:{
+profile:"Profile",
+expTitle:"Experience",
+eduTitle:"Education",
+skillsTitle:"Skills",
+langTitle:"Languages",
+certsTitle:"Certificates",
+achTitle:"Achievements",
+projTitle:"Projects",
+contacts:"Contacts",
+additional:"Additional",
+summary:"About Me",
+dragHint:"Drag a block onto the canvas (left or right column). Blocks can be reordered within the editing panel.",
+cefr:{1:'A1 — Beginner',2:'A2 — Elementary',3:'B1 — Intermediate',4:'B2 — Upper-Intermediate',5:'C1 — Advanced',6:'C2 — Proficient',7:'Native language'},
+cefrShort:{1:'A1',2:'A2',3:'B1',4:'B2',5:'C1',6:'C2',7:'Native'},
+cefrDocx:{1:'Beginner (A1)',2:'Elementary (A2)',3:'Intermediate (B1)',4:'Upper-Intermediate (B2)',5:'Advanced (C1)',6:'Proficient (C2)',7:'Native language'}
+},
+
+de:{
+profile:"Profil",
+expTitle:"Berufserfahrung",
+eduTitle:"Ausbildung",
+skillsTitle:"Fähigkeiten",
+langTitle:"Sprachen",
+certsTitle:"Zertifikate",
+achTitle:"Errungenschaften",
+projTitle:"Projekte",
+contacts:"Kontakte",
+additional:"Zusätzliches",
+summary:"Über mich",
+dragHint:"Ziehe einen Block auf die Leinwand (linke oder rechte Spalte). Blöcke können im Bearbeitungsbereich neu angeordnet werden.",
+cefr:{1:'A1 — Anfänger',2:'A2 — Grundkenntnisse',3:'B1 — Mittelstufe',4:'B2 — Obere Mittelstufe',5:'C1 — Fortgeschritten',6:'C2 — Kompetent',7:'Muttersprache'},
+cefrShort:{1:'A1',2:'A2',3:'B1',4:'B2',5:'C1',6:'C2',7:'Mutter'},
+cefrDocx:{1:'Anfänger (A1)',2:'Grundkenntnisse (A2)',3:'Mittelstufe (B1)',4:'Obere Mittelstufe (B2)',5:'Fortgeschritten (C1)',6:'Kompetent (C2)',7:'Muttersprache'}
+},
+
+es:{
+profile:"Perfil",
+expTitle:"Experiencia laboral",
+eduTitle:"Educación",
+skillsTitle:"Habilidades",
+langTitle:"Idiomas",
+certsTitle:"Certificados",
+achTitle:"Logros",
+projTitle:"Proyectos",
+contacts:"Contactos",
+additional:"Adicional",
+summary:"Sobre mí",
+dragHint:"Arrastra un bloque al lienzo (columna izquierda o derecha). Los bloques se pueden reordenar dentro del panel de edición.",
+cefr:{1:'A1 — Principiante',2:'A2 — Elemental',3:'B1 — Intermedio',4:'B2 — Intermedio alto',5:'C1 — Avanzado',6:'C2 — Competente',7:'Lengua materna'},
+cefrShort:{1:'A1',2:'A2',3:'B1',4:'B2',5:'C1',6:'C2',7:'Nativo'},
+cefrDocx:{1:'Principiante (A1)',2:'Elemental (A2)',3:'Intermedio (B1)',4:'Intermedio alto (B2)',5:'Avanzado (C1)',6:'Competente (C2)',7:'Lengua materna'}
+}
+};
+
+let currentLang = 'ru';
+
+function setLang(lang){
+  S.lang = lang;
+  localStorage.setItem("cv_lang", lang);
+  const hint = document.getElementById('drag-hint');
+  if (hint) hint.textContent = (LANGS[lang]||LANGS.en).dragHint || hint.textContent;
+  // Highlight active button
+  document.querySelectorAll('#lang-switch button').forEach(b => {
+    b.classList.toggle('on', b.textContent.trim().toLowerCase() === lang.toLowerCase());
+  });
+  renderCV();
+}
+
+function t(key){
+ return LANGS[S.lang]?.[key] || LANGS.en[key] || key;
+}
+
+// ================================================================
+// THEMES
+// ================================================================
+const THEMES = {
+  navy:    {accent:'#1a3c6e', light:'#eef2f8', accent2:'#c8a96e'},
+  slate:   {accent:'#334155', light:'#f1f5f9', accent2:'#94a3b8'},
+  emerald: {accent:'#065f46', light:'#ecfdf5', accent2:'#6ee7b7'},
+  wine:    {accent:'#7f1d1d', light:'#fff1f2', accent2:'#fca5a5'},
+  plum:    {accent:'#4c1d95', light:'#f5f3ff', accent2:'#a78bfa'},
+  teal:    {accent:'#0f4c6e', light:'#e0f2fe', accent2:'#7dd3fc'},
+  rust:    {accent:'#7c2d12', light:'#fff7ed', accent2:'#fb923c'},
+  forest:  {accent:'#14532d', light:'#f0fdf4', accent2:'#86efac'},
+};
+
+// ================================================================
+// STATE
+// ================================================================
+let S = {
+  theme: 'navy',
+  layout: 'classic',
+  zoom: 85,
+  font: 'playfair',
+  activeTab: 'personal',
+  gridOn: false,
+  history: [],
+  data: {
+    name: 'Test User',
+    title: 'Sample Position',
+    email: 'test@example.com',
+    phone: '+00 000 000 000',
+    location: 'Sample City',
+    photo: '',
+    about: 'Krótki testowy opis profilu do demonstracji struktury danych.',
+    
+    rightOrder: ['about','experience','education','achievements','projects','custom','textblock','signature','divider'],
+    leftOrder: ['skills','languages','certifications','links'],
+
+    sections: {
+      about: {enabled:true, col:'right'},
+      experience: {enabled:true, col:'right'},
+      education: {enabled:true, col:'right'},
+      skills: {enabled:true, col:'left'},
+      languages: {enabled:true, col:'left'},
+      certifications: {enabled:true, col:'left'},
+      achievements: {enabled:false, col:'right'},
+      projects: {enabled:false, col:'right'},
+      links: {enabled:false, col:'left'},
+      custom: {enabled:false, col:'right'},
+      textblock: {enabled:false, col:'right'},
+      signature: {enabled:false, col:'right'},
+      divider: {enabled:false, col:'right'},
+    },
+
+    experience: [
+      {id:1, role:'Frontend Developer', company:'SampleCorp', from:'2022', to:'Present', desc:'Testowy opis obowiązków i zadań.', tags:'React, TypeScript'},
+      {id:2, role:'Junior Developer', company:'DemoSoft', from:'2020', to:'2022', desc:'Testowy opis poprzedniego doświadczenia.', tags:'Vue.js, REST'},
+    ],
+
+    education: [
+      {id:1, degree:'Licencjat informatyki', school:'Sample University', year:'2016 – 2020', desc:''},
+      {id:2, degree:'UI/UX Certificate', school:'Online Academy', year:'2021', desc:''},
+    ],
+
+    skills: [
+      {id:1, name:'JavaScript', level:80},
+      {id:2, name:'React', level:75},
+      {id:3, name:'CSS', level:70},
+      {id:4, name:'Node.js', level:60},
+      {id:5, name:'Design Tools', level:65},
+    ],
+
+    languages: [
+      {id:1, lang:'English', level:4},
+      {id:2, lang:'German', level:2},
+      {id:3, lang:'Spanish', level:1},
+    ],
+
+    certifications: [
+      {id:1, name:'Frontend Basics', issuer:'Online Academy', year:'2022', desc:''},
+    ],
+
+    achievements: [
+      {id:1, text:'Testowe osiągnięcie nr 1'},
+      {id:2, text:'Testowe osiągnięcie nr 2'},
+    ],
+
+    projects: [
+      {id:1, name:'DemoProject', desc:'Testowy projekt demonstracyjny.', link:'https://example.com', tags:'React'},
+    ],
+
+    links: [
+      {id:1, icon:'🔗', label:'LinkedIn', url:'https://example.com/linkedin'},
+      {id:2, icon:'⌨', label:'GitHub', url:'https://example.com/github'},
+      {id:3, icon:'🌐', label:'Portfolio', url:'https://example.com'},
+    ],
+
+    custom: {
+      title:'Dodatkowe',
+      text:'Testowy tekst dla bloku niestandardowego.'
+    },
+
+    textblock: {
+      title: 'Zgoda na przetwarzanie danych',
+      content: 'Testowy tekst zgody na przetwarzanie danych.'
+    },
+
+    signature: {
+      title: 'Podpis',
+      image: '',
+    },
+  }
+};
+
+
+S.lang = localStorage.getItem("cv_lang") || "pl";
+
+// ================================================================
+// AUTOSAVE / LOCALSTORAGE
+// ================================================================
+const LS_KEY = 'cvstudio_data_v1';
+
+function saveToCache() {
+  try { localStorage.setItem(LS_KEY, JSON.stringify(S.data)); } catch(e) {}
+}
+
+function loadFromCache() {
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    if (raw) { S.data = Object.assign({}, S.data, JSON.parse(raw)); return true; }
+  } catch(e) {}
+  return false;
+}
+
+function resetData() {
+  if (!confirm('Czy na pewno chcesz zresetować wszystkie dane CV? Tej akcji nie można cofnąć.')) return;
+  localStorage.removeItem(LS_KEY);
+  location.reload();
+}
+
+window.addEventListener('beforeunload', function(e) {
+  e.preventDefault();
+  e.returnValue = 'Czy na pewno? Dane są automatycznie zapisywane w pamięci podręcznej przeglądarki.';
+});
+
+// ================================================================
+// HISTORY
+// ================================================================
+function saveH() { S.history.push(JSON.stringify(S.data)); if(S.history.length>30) S.history.shift(); }
+function undo() { if(!S.history.length) return; S.data = JSON.parse(S.history.pop()); renderCV(); renderProps(); saveToCache(); }
+
+// ================================================================
+// THEME
+// ================================================================
+function buildSwatches() {
+  const c = document.getElementById('swatches');
+  c.innerHTML = Object.entries(THEMES).map(([k,v])=>
+    `<div class="swatch${S.theme===k?' on':''}" data-t="${k}" style="background:${v.accent};" title="${k}"></div>`
+  ).join('');
+  c.querySelectorAll('.swatch').forEach(s=>s.addEventListener('click',()=>{ S.theme=s.dataset.t; applyTheme(); }));
+}
+function applyTheme() {
+  const theme = THEMES[S.theme];
+  const p = document.getElementById('cvp');
+
+  p.style.setProperty('--ca', theme.accent);
+  p.style.setProperty('--cl', theme.light);
+
+  document.querySelectorAll('.swatch').forEach(s=>{
+    s.classList.toggle('on', s.dataset.t === S.theme);
+  });
+
+  renderCV();
+
+  if(S.activeTab === 'design') renderProps();
+}
+
+// ================================================================
+// ZOOM / LAYOUT
+// ================================================================
+function setZoom(z) {
+  S.zoom = z;
+  const p = document.getElementById('cvp');
+  p.style.transform = `scale(${z/100})`;
+  p.style.marginBottom = `${(z/100 - 1) * 1123}px`;
+  document.getElementById('sb-zoom').textContent = z+'%';
+  document.querySelectorAll('.ctbtn').forEach(b=>{
+    if([70,85,100,125,150].includes(+b.textContent.replace('%',''))) b.classList.remove('on');
+  });
+  document.querySelectorAll('.ctbtn').forEach(b=>{ if(b.textContent.trim()===z+'%') b.classList.add('on'); });
+}
+function setLayout(l) {
+  S.layout = l;
+  const p = document.getElementById('cvp');
+  p.className = p.className.replace(/layout-\w+/,'') + ' layout-' + l;
+  ['classic','minimal','bold','right'].forEach(x=>document.getElementById('lb-'+x).classList.toggle('on', x===l));
+  renderCV();
+}
+function toggleGrid() {
+  S.gridOn = !S.gridOn;
+  const p = document.getElementById('cvp');
+  p.style.backgroundImage = S.gridOn
+    ? 'linear-gradient(rgba(26,60,110,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(26,60,110,0.05) 1px,transparent 1px)'
+    : 'none';
+  p.style.backgroundSize = '20px 20px';
+}
+
+// ================================================================
+// RENDER CV
+// ================================================================
+function getFont() {
+  const fs = {playfair:"'Playfair Display',serif", sans:"'DM Sans',sans-serif", raleway:"'Raleway',sans-serif", mono:"'DM Mono',monospace"};
+  return fs[S.font] || fs.playfair;
+}
+
+function renderCV() {
+  const d = S.data;
+  const p = document.getElementById('cvp');
+  const theme = THEMES[S.theme];
+  p.style.setProperty('--ca', theme.accent);
+  p.style.setProperty('--cl', theme.light);
+  p.style.setProperty('--cf', getFont());
+
+  const isBold = S.layout === 'bold';
+  const hasLeft = !isBold;
+
+  // --- HEADER ---
+  let photoHtml = '';
+  if (d.photo) {
+    const cls = isBold ? 'cv-photo-rect' : 'cv-photo';
+    photoHtml = `<img src="${d.photo}" class="${cls}" alt="photo">`;
+  }
+
+  const contactsHtml = `
+    <div class="cv-contacts">
+      ${d.email ? `<div class="cv-ci"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> <a href="mailto:${d.email}">${d.email}</a></div>` : ''}
+      ${d.phone ? `<div class="cv-ci"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.99 12c-.98-2.69-1.5-5.51-1.49-8.36A2 2 0 0 1 5.68 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L9.91 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg> ${d.phone}</div>` : ''}
+      ${d.location ? `<div class="cv-ci"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> ${d.location}</div>` : ''}
+    </div>`;
+
+  let headerHtml = '';
+  if (isBold) {
+    const linksEnabled = d.sections.links && d.sections.links.enabled;
+    headerHtml = `<div class="cv-header">
+      <div class="cv-hl">
+        <div style="display:flex;align-items:flex-start;gap:14px;">
+          ${photoHtml}
+          <div>
+            <div class="cv-name" style="font-family:${getFont()}">${d.name}</div>
+            <div class="cv-jobtitle">${d.title}</div>
+            ${contactsHtml}
+          </div>
+        </div>
+      </div>
+      <div class="cv-hr" style="color:rgba(255,255,255,0.82);">
+        <div style="font-size:9px;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.45);margin-bottom:8px;">Kontakt</div>
+        ${linksEnabled ? d.links.map(l=>`<a href="${l.url}" style="color:rgba(255,255,255,0.82);text-decoration:none;display:flex;align-items:center;gap:5px;margin-bottom:4px;font-size:10.5px;">${l.icon} ${l.label}</a>`).join('') : ''}
+      </div>
+    </div>`;
+  } else {
+    const headerStyle = S.layout === 'minimal' ? `style="color:${theme.accent};"` : '';
+    headerHtml = `<div class="cv-header">
+      <div style="display:flex;align-items:flex-start;gap:14px;justify-content:space-between;">
+        <div>
+          <div class="cv-name" ${headerStyle} style="font-family:${getFont()}">${d.name}</div>
+          <div class="cv-jobtitle">${d.title}</div>
+          ${contactsHtml}
+        </div>
+        ${photoHtml}
+      </div>
+    </div>`;
+  }
+
+  // --- SECTIONS RENDERER ---
+  function secTitle(txt, muted) {
+    return `<div class="cv-sec-title${muted?' muted':''}">${txt}</div>`;
+  }
+
+  function renderSection(key) {
+    const d2 = S.data;
+    if (!d2.sections[key] || !d2.sections[key].enabled) return '';
+    switch(key) {
+      case 'about':
+        return `<div class="cv-section">${secTitle(t('profile'))}
+          <p class="cv-about">${d2.about}</p></div>`;
+      case 'experience':
+        return `<div class="cv-section">${secTitle(t('expTitle'))}
+          ${d2.experience.map(e=>`<div class="cv-exp">
+            <div class="cv-exp-hd"><span class="cv-exp-role">${e.role}</span><span class="cv-exp-date">${e.from} – ${e.to}</span></div>
+            <div class="cv-exp-co">${e.company}</div>
+            <div class="cv-exp-desc">${e.desc}</div>
+            ${e.tags ? `<div class="cv-tags">${e.tags.split(',').map(tag=>`<span class="cv-tag">${tag.trim()}</span>`).join('')}</div>` : ''}
+          </div>`).join('')}</div>`;
+      case 'education':
+        return `<div class="cv-section">${secTitle(t('eduTitle'))}
+          ${d2.education.map(e=>`<div class="cv-edu">
+            <div class="cv-edu-degree">${e.degree}</div>
+            <div class="cv-edu-school">${e.school}</div>
+            <div class="cv-edu-year">${e.year}</div>
+            ${e.desc ? `<div class="cv-about" style="margin-top:2px;">${e.desc}</div>` : ''}
+          </div>`).join('')}</div>`;
+      case 'skills':
+        return `<div class="cv-section">${secTitle(t('skillsTitle'), true)}
+          ${d2.skills.map(s=>`<div class="cv-skill">
+            <div class="cv-skill-row"><span>${s.name}</span><span style="font-size:9px;color:#999">${s.level}%</span></div>
+            <div class="cv-bar"><div class="cv-bar-fill" style="width:${s.level}%"></div></div>
+          </div>`).join('')}</div>`;
+      case 'languages':
+        return `<div class="cv-section">${secTitle(t('langTitle'), true)}
+          ${d2.languages.map(l=>{
+            const cefrMap = (LANGS[S.lang]||LANGS.en).cefr || {1:'A1 — Początkujący',2:'A2 — Podstawowy',3:'B1 — Średniozaawansowany',4:'B2 — Wyższy średniozaawansowany',5:'C1 — Zaawansowany',6:'C2 — Biegły',7:'Język ojczysty'};
+            const lvlLabel = cefrMap[l.level] || 'A1';
+            return `<div class="cv-lang-row">
+              <span>${l.lang}</span>
+              <span style="font-size:9px;font-weight:600;padding:1px 6px;border-radius:4px;background:var(--cl,#eef2f8);color:var(--ca,#1a3c6e);letter-spacing:0.04em;">${lvlLabel}</span>
+            </div>`;
+          }).join('')}</div>`;
+      case 'certifications':
+        return `<div class="cv-section">${secTitle(t('certsTitle'), true)}
+          ${d2.certifications.map(c=>`<div class="cv-cert">
+            <div class="cv-cert-badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M9 15v7l3-2 3 2v-7"/></svg></div>
+            <div><div style="font-size:11px;font-weight:500;">${c.name}</div>
+            <div style="font-size:9.5px;color:#888;">${c.issuer}${c.year?' · '+c.year:''}</div>
+            ${c.desc ? `<div style="font-size:9.5px;color:#666;margin-top:2px;line-height:1.5;">${c.desc}</div>` : ''}</div>
+          </div>`).join('')}</div>`;
+      case 'achievements':
+        return `<div class="cv-section">${secTitle(t('achTitle'))}
+          ${d2.achievements.map(a=>`<div class="cv-ach"><span class="cv-ach-bullet"><svg width="10" height="10" viewBox="0 0 24 24" fill="var(--ca,#1a3c6e)" stroke="none"><polygon points="5,3 19,12 5,21"/></svg></span>${a.text}</div>`).join('')}</div>`;
+      case 'projects':
+        return `<div class="cv-section">${secTitle(t('projTitle'))}
+          ${d2.projects.map(pr=>`<div class="cv-exp">
+            <div class="cv-exp-hd" style="display:flex; flex-direction: column;"><span class="cv-exp-role">${pr.name}</span>${pr.link?`<a href="${pr.link.startsWith('http')?pr.link:'https://'+pr.link}" style="font-size:9.5px;color:var(--ca); max-width: 100%; overflow-wrap: break-word;">${pr.link}</a>`:''}</div>
+            <div class="cv-exp-desc">${pr.desc}</div>
+            ${pr.tags ? `<div class="cv-tags">${pr.tags.split(',').map(tag=>`<span class="cv-tag">${tag.trim()}</span>`).join('')}</div>` : ''}
+          </div>`).join('')}</div>`;
+      case 'links':
+        return `<div class="cv-section">${secTitle('Kontakt / Media społ.', true)}
+          ${d2.links.map(l=>`<div style="display:flex;align-items:center;gap:5px;margin-bottom:5px;font-size:11px;">
+            <span>${l.icon}</span>
+            ${l.url ? `<a href="${l.url.startsWith('http')?l.url:'https://'+l.url}" style="color:var(--ca);text-decoration:none;">${l.label}</a>` : `<span>${l.label}</span>`}
+          </div>`).join('')}</div>`;
+      case 'custom':
+        return `<div class="cv-section">${secTitle(d2.custom.title)}
+          <p class="cv-about">${d2.custom.text}</p></div>`;
+      case 'textblock':
+        return `<div class="cv-section">${secTitle(d2.textblock.title)}
+          <p class="cv-textblock">${d2.textblock.content}</p></div>`;
+      case 'signature':
+        return d2.signature.image
+          ? `<div class="cv-signature"><img src="${d2.signature.image}" class="cv-sig-img" alt="signature"></div>`
+          : `<div class="cv-signature" style="border-top:1px solid #ddd;margin-top:12px;padding-top:8px;color:#bbb;font-size:10px;font-style:italic;"></div>`;
+      case 'divider':
+        return `<div style="border-top:1px solid #eee;margin:8px 0;"></div>`;
+      default: return '';
+    }
+  }
+
+  // build columns
+  const rightSecs = (d.rightOrder || []).map(k => renderSection(k)).join('');
+  const leftSecs = hasLeft ? (d.leftOrder || []).map(k => renderSection(k)).join('') : '';
+
+  const bodyHtml = isBold
+    ? `<div class="cv-body"><div class="cv-right">${rightSecs}</div></div>`
+    : `<div class="cv-body"><div class="cv-left">${leftSecs}</div><div class="cv-right">${rightSecs}</div></div>`;
+
+  p.innerHTML = headerHtml + bodyHtml;
+  document.getElementById('sb-secs').textContent =
+    Object.values(d.sections).filter(s=>s.enabled).length;
+}
+
+// ================================================================
+// PROPS PANEL
+// ================================================================
+function switchTab(t) {
+  S.activeTab = t;
+  ['personal','sections','design','export'].forEach((x,i)=>{
+    document.querySelectorAll('.ptab')[i].classList.toggle('on', x===t);
+  });
+  renderProps();
+}
+
+function renderProps() {
+  const pb = document.getElementById('pbody');
+  const d = S.data;
+
+  if (S.activeTab === 'personal') {
+    pb.innerHTML = `
+    <div class="pgroup">
+      <span class="plabel">Zdjęcie profilowe</span>
+      <div class="photo-upload-area" onclick="document.getElementById('photo-input').click()">
+        ${d.photo ? `<img src="${d.photo}" class="photo-preview">` : '<div style="font-size:28px;margin-bottom:6px;color:var(--muted);"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>'}
+        <div class="photo-upload-text">${d.photo ? 'Kliknij, aby zmienić' : 'Kliknij, aby przesłać zdjęcie'}</div>
+      </div>
+      <input type="file" id="photo-input" accept="image/*" style="display:none;" onchange="uploadPhoto(event)">
+      ${d.photo ? `<button class="add-btn" style="margin-top:5px;" onclick="saveH();S.data.photo='';renderCV();renderProps();">✕ Usuń zdjęcie</button>` : ''}
+    </div>
+    <div class="pgroup">
+      <span class="plabel">Podstawowe dane</span>
+      <input class="pinput" value="${esc(d.name)}" oninput="upd('name',this.value)" placeholder="Imię Nazwisko" style="margin-bottom:5px;">
+      <input class="pinput" value="${esc(d.title)}" oninput="upd('title',this.value)" placeholder="Stanowisko">
+    </div>
+    <div class="pgroup">
+      <span class="plabel">Kontakt</span>
+      <input class="pinput" value="${esc(d.email)}" oninput="upd('email',this.value)" placeholder="Email" style="margin-bottom:5px;">
+      <input class="pinput" value="${esc(d.phone)}" oninput="upd('phone',this.value)" placeholder="Telefon" style="margin-bottom:5px;">
+      <input class="pinput" value="${esc(d.location)}" oninput="upd('location',this.value)" placeholder="Miasto, Kraj">
+    </div>
+    <div class="pgroup">
+      <span class="plabel">O mnie</span>
+      <textarea class="ptextarea" oninput="upd('about',this.value)">${esc(d.about)}</textarea>
+    </div>
+    `;
+  }
+
+  else if (S.activeTab === 'sections') {
+    const secNames = {experience:'Doświadczenie zawodowe',education:'Edukacja',skills:'Umiejętności',languages:'Języki',certifications:'Certyfikaty',achievements:'Osiągnięcia',projects:'Projekty',links:'Media społecznościowe',about:'O mnie',custom:'Dowolny tekst',divider:'Separator', signature:"Podpis",textblock:"Blok tekstowy"};
+
+    // Experience
+    pb.innerHTML = `
+    <div class="pgroup">
+      <span class="plabel">Widoczność sekcji</span>
+      ${Object.entries(d.sections).map(([k,v])=>`
+        <div class="tog-row"><span>${secNames[k]||k}</span>
+          <div class="toggle${v.enabled?' on':''}" onclick="toggleSec('${k}')"></div>
+        </div>`).join('')}
+    </div>
+    <div class="pgroup">
+      <span class="plabel">Doświadczenie zawodowe</span>
+      ${d.experience.map(e=>`
+        <div class="pcard">
+          <div class="pcard-title">${esc(e.role)}</div>
+          <div class="pcard-sub">${esc(e.company)} · ${e.from}–${e.to}</div>
+          <div class="pcard-actions">
+            <button class="pca-btn" onclick="editExp(${e.id})">✏</button>
+            <button class="pca-btn del" onclick="delItem('experience',${e.id})">✕</button>
+          </div>
+        </div>`).join('')}
+      <button class="add-btn" onclick="addExp()">+ Dodaj doświadczenie</button>
+    </div>
+    <div class="pgroup">
+      <span class="plabel">Edukacja</span>
+      ${d.education.map(e=>`
+        <div class="pcard">
+          <div class="pcard-title">${esc(e.degree)}</div>
+          <div class="pcard-sub">${esc(e.school)} · ${e.year}</div>
+          <div class="pcard-actions">
+            <button class="pca-btn" onclick="editEdu(${e.id})">✏</button>
+            <button class="pca-btn del" onclick="delItem('education',${e.id})">✕</button>
+          </div>
+        </div>`).join('')}
+      <button class="add-btn" onclick="addEdu()">+ Dodaj edukację</button>
+    </div>
+    <div class="pgroup">
+      <span class="plabel">Umiejętności</span>
+      ${d.skills.map(s=>`
+        <div class="pcard">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <span style="font-size:12px;font-weight:500;">${esc(s.name)}</span>
+            <div class="pcard-actions" style="position:static;">
+              <button class="pca-btn" onclick="editSkill(${s.id})">✏</button>
+              <button class="pca-btn del" onclick="delItem('skills',${s.id})">✕</button>
+            </div>
+          </div>
+          <div class="cv-bar" style="margin-top:5px;"><div class="cv-bar-fill" style="width:${s.level}%;background:var(--accent);"></div></div>
+        </div>`).join('')}
+      <button class="add-btn" onclick="addSkill()">+ Dodaj umiejętność</button>
+    </div>
+    <div class="pgroup">
+      <span class="plabel">Języki</span>
+      ${d.languages.map(l=>`
+        <div class="pcard">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <span style="font-size:12px;font-weight:500;">${esc(l.lang)}</span>
+            <div class="pcard-actions" style="position:static;">
+              <button class="pca-btn" onclick="editLang(${l.id})">✏</button>
+              <button class="pca-btn del" onclick="delItem('languages',${l.id})">✕</button>
+            </div>
+          </div>
+          <div class="cv-dots" style="margin-top:5px;">${(()=>{const m=(LANGS[S.lang]||LANGS.en).cefrShort||{1:'A1',2:'A2',3:'B1',4:'B2',5:'C1',6:'C2',7:'Ojczysty'};return `<span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;background:var(--accent);color:#fff;">${m[l.level]||'A1'}</span>`;})()}</div>
+        </div>`).join('')}
+      <button class="add-btn" onclick="addLang()">+ Dodaj język</button>
+    </div>
+    <div class="pgroup">
+      <span class="plabel">Certyfikaty</span>
+      ${d.certifications.map(c=>`
+        <div class="pcard">
+          <div class="pcard-title">${esc(c.name)}</div>
+          <div class="pcard-sub">${esc(c.issuer)}${c.year?' · '+c.year:''}</div>
+          <div class="pcard-actions">
+            <button class="pca-btn" onclick="editCert(${c.id})">✏</button>
+            <button class="pca-btn del" onclick="delItem('certifications',${c.id})">✕</button>
+          </div>
+        </div>`).join('')}
+      <button class="add-btn" onclick="addCert()">+ Dodaj certyfikat</button>
+    </div>
+    <div class="pgroup">
+      <span class="plabel">Osiągnięcia</span>
+      ${d.achievements.map(a=>`
+        <div class="pcard">
+          <div class="pcard-title" style="font-size:11px;font-weight:400;line-height:1.5;">${esc(a.text)}</div>
+          <div class="pcard-actions">
+            <button class="pca-btn" onclick="editAch(${a.id})">✏</button>
+            <button class="pca-btn del" onclick="delItem('achievements',${a.id})">✕</button>
+          </div>
+        </div>`).join('')}
+      <button class="add-btn" onclick="addAch()">+ Dodaj osiągnięcie</button>
+    </div>
+    <div class="pgroup">
+      <span class="plabel">Projekty</span>
+      ${d.projects.map(pr=>`
+        <div class="pcard">
+          <div class="pcard-title">${esc(pr.name)}</div>
+          <div class="pcard-sub">${esc(pr.desc)}</div>
+          <div class="pcard-actions">
+            <button class="pca-btn" onclick="editProject(${pr.id})">✏</button>
+            <button class="pca-btn del" onclick="delItem('projects',${pr.id})">✕</button>
+          </div>
+        </div>`).join('')}
+      <button class="add-btn" onclick="addProject()">+ Dodaj projekt</button>
+    </div>
+    <div class="pgroup">
+      <span class="plabel">Media społ. / Linki</span>
+      ${d.links.map(l=>`
+        <div class="pcard">
+          <div class="pcard-title">${l.icon} ${esc(l.label)}</div>
+          <div class="pcard-sub" style="word-break:break-all;">${esc(l.url)}</div>
+          <div class="pcard-actions">
+            <button class="pca-btn" onclick="editLink(${l.id})">✏</button>
+            <button class="pca-btn del" onclick="delItem('links',${l.id})">✕</button>
+          </div>
+        </div>`).join('')}
+      <button class="add-btn" onclick="addLink()">+ Dodaj link</button>
+    </div>
+    <div class="pgroup">
+      <span class="plabel">Dowolny tekst</span>
+      <input class="pinput" value="${esc(d.custom.title)}" oninput="S.data.custom.title=this.value;renderCV();" placeholder="Tytuł" style="margin-bottom:5px;">
+      <textarea class="ptextarea" oninput="S.data.custom.text=this.value;renderCV();">${esc(d.custom.text)}</textarea>
+    </div>
+    <div class="pgroup">
+      <span class="plabel">Blok tekstowy</span>
+      <input class="pinput" value="${esc(d.textblock.title)}" oninput="S.data.textblock.title=this.value;renderCV();" placeholder="Tytuł bloku" style="margin-bottom:5px;">
+      <textarea class="ptextarea" oninput="S.data.textblock.content=this.value;renderCV();" placeholder="Zawartość">${esc(d.textblock.content)}</textarea>
+    </div>
+    <div class="pgroup">
+      <span class="plabel">Podpis odręczny</span>
+      ${d.signature.image ? `
+        <div style="margin-bottom:8px;text-align:center;">
+          <img src="${d.signature.image}" style="max-width:100%;max-height:60px;border:1px solid var(--border);border-radius:6px;">
+        </div>
+      ` : ''}
+      <button class="add-btn" onclick="openSignatureModal()">Narysuj podpis</button>
+      ${d.signature.image ? `<button class="add-btn" style="background:#fee;margin-top:5px;" onclick="saveH();S.data.signature.image='';renderCV();renderProps();">✕ Usuń podpis</button>` : ''}
+    </div>
+    <div class="pgroup">
+      <span class="plabel">Kolejność sekcji (prawa kolumna)</span>
+      <div id="order-right">${renderOrderList('right')}</div>
+      <span class="plabel" style="margin-top:10px;">Lewa kolumna</span>
+      <div id="order-left">${renderOrderList('left')}</div>
+    </div>
+    `;
+    initOrderDrag();
+  }
+
+  else if (S.activeTab === 'design') {
+    const t = THEMES[S.theme];
+    pb.innerHTML = `
+    <div class="pgroup">
+      <span class="plabel">Motyw kolorystyczny</span>
+      <div class="cgrid">
+        ${Object.entries(THEMES).map(([k,v])=>`<div class="csw${S.theme===k?' on':''}" style="background:${v.accent};" onclick="S.theme='${k}';applyTheme();" title="${k}"></div>`).join('')}
+      </div>
+    </div>
+    <div class="pgroup">
+      <span class="plabel">Czcionka nagłówków</span>
+      <div class="fopt${S.font==='playfair'?' on':''}" style="font-family:'Playfair Display',serif;" onclick="setFont('playfair')">Playfair Display — elegancki</div>
+      <div class="fopt${S.font==='raleway'?' on':''}" style="font-family:'Raleway',sans-serif;" onclick="setFont('raleway')">Raleway — nowoczesny</div>
+      <div class="fopt${S.font==='sans'?' on':''}" style="font-family:'DM Sans',sans-serif;" onclick="setFont('sans')">DM Sans — neutralny</div>
+      <div class="fopt${S.font==='mono'?' on':''}" style="font-family:'DM Mono',monospace;" onclick="setFont('mono')">DM Mono — techniczny</div>
+    </div>
+    <div class="pgroup">
+      <span class="plabel">Układ strony</span>
+      <div class="lgrid">
+        ${lthumb('classic','Klasyczny')}
+        ${lthumb('minimal','Minimalny')}
+        ${lthumb('bold','Odważny')}
+        ${lthumb('right','Prawa strona')}
+      </div>
+    </div>
+    <div class="pgroup">
+      <span class="plabel">Powiększenie</span>
+      <div class="rrow">
+        <input type="range" min="60" max="110" step="5" value="${S.zoom}" oninput="setZoom(+this.value)">
+        <span class="rval">${S.zoom}%</span>
+      </div>
+    </div>
+    `;
+  }
+
+  else if (S.activeTab === 'export') {
+    pb.innerHTML = `
+    <div class="pgroup" style="font-size:11px;color:var(--muted);line-height:1.6;background:var(--bg);border-radius:7px;padding:10px;border:1px solid var(--border);">
+      Wszystkie dane są przechowywane wyłącznie w przeglądarce. PDF jest generowany lokalnie — nic nie jest wysyłane na serwer.
+    </div>
+    <div style="margin-top:12px;">
+      <button class="ebtn" onclick="exportPDF()"><span class="ebtn-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span><div><div style="font-size:13px;font-weight:500;">Pobierz PDF</div><div style="font-size:11px;color:var(--muted);">Format A4, wysoka jakość</div></div></button>
+      <button class="ebtn" onclick="exportDOCX()"><span class="ebtn-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg></span><div><div style="font-size:13px;font-weight:500;">Pobierz Word (.docx)</div><div style="font-size:11px;color:var(--muted);">Otwiera się w Word i Google Docs</div></div></button>
+      <button class="ebtn" onclick="window.print()"><span class="ebtn-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></span><div><div style="font-size:13px;font-weight:500;">Drukuj</div><div style="font-size:11px;color:var(--muted);">Lub «Zapisz jako PDF» w oknie dialogowym</div></div></button>
+      <button class="ebtn" onclick="exportJSON()"><span class="ebtn-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span><div><div style="font-size:13px;font-weight:500;">Zapisz dane (JSON)</div><div style="font-size:11px;color:var(--muted);">Kopia zapasowa wszystkich danych</div></div></button>
+      <button class="ebtn" onclick="document.getElementById('imp-file').click()"><span class="ebtn-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></span><div><div style="font-size:13px;font-weight:500;">Importuj JSON</div><div style="font-size:11px;color:var(--muted);">Załaduj zapisane dane</div></div></button>
+      <input type="file" id="imp-file" accept=".json" style="display:none;" onchange="importJSON(event)">
+    </div>
+    `;
+  }
+}
+
+function lthumb(l, label) {
+  const t = THEMES[S.theme];
+  const thumbInner = {
+    classic: `<div style="height:14px;background:${t.accent};"></div><div style="display:flex;flex:1;"><div style="width:36%;background:${t.light};"></div><div style="flex:1;background:white;"></div></div>`,
+    minimal: `<div style="height:12px;border-bottom:2px solid ${t.accent};"></div><div style="display:flex;flex:1;"><div style="width:34%;border-right:1px solid #eee;"></div><div style="flex:1;"></div></div>`,
+    bold: `<div style="height:24px;background:${t.accent};"></div><div style="flex:1;background:white;"></div>`,
+    right: `<div style="height:14px;background:${t.accent};"></div><div style="display:flex;flex:1;"><div style="flex:1;background:white;"></div><div style="width:34%;background:${t.light};"></div></div>`,
+  };
+  return `<div class="lthumb${S.layout===l?' on':''}" onclick="setLayout('${l}')" title="${label}">${thumbInner[l]}</div>`;
+}
+
+// ================================================================
+// ORDER DRAG (section reorder)
+// ================================================================
+function renderOrderList(col) {
+  const order = col === 'right' ? S.data.rightOrder : S.data.leftOrder;
+  const secNames = {experience:'Doświadczenie zawodowe',education:'Edukacja',skills:'Umiejętności',languages:'Języki',certifications:'Certyfikaty',achievements:'Osiągnięcia',projects:'Projekty',links:'Linki',about:'O mnie',custom:'Dowolny tekst',divider:'Separator'};
+  return order.filter(k => S.data.sections[k]).map(k=>`
+    <div class="pcard" draggable="true" data-key="${k}" data-col="${col}" style="cursor:grab;display:flex;align-items:center;gap:6px;padding:6px 9px;margin-bottom:3px;">
+      <span style="color:var(--muted);font-size:12px;">⠿</span>
+      <span style="font-size:11.5px;">${secNames[k]||k}</span>
+    </div>`).join('');
+}
+
+function initOrderDrag() {
+  ['right','left'].forEach(col => {
+    const container = document.getElementById('order-'+col);
+    if (!container) return;
+    let dragKey = null;
+    container.querySelectorAll('[data-key]').forEach(el => {
+      el.addEventListener('dragstart', e => { dragKey = el.dataset.key; el.style.opacity='0.4'; });
+      el.addEventListener('dragend', e => { el.style.opacity='1'; dragKey=null; });
+      el.addEventListener('dragover', e => { e.preventDefault(); });
+      el.addEventListener('drop', e => {
+        e.preventDefault();
+        const targetKey = el.dataset.key;
+        if (!dragKey || dragKey === targetKey) return;
+        const order = col==='right' ? S.data.rightOrder : S.data.leftOrder;
+        const from = order.indexOf(dragKey);
+        const to = order.indexOf(targetKey);
+        if (from > -1 && to > -1) {
+          order.splice(from, 1);
+          order.splice(to, 0, dragKey);
+          renderCV();
+          renderProps();
+        }
+      });
+    });
+  });
+}
+
+// ================================================================
+// HELPERS
+// ================================================================
+function esc(s) { return (s||'').toString().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function uid() { return Date.now() + Math.floor(Math.random()*1000); }
+function upd(key, val) { S.data[key] = val; renderCV(); saveToCache(); }
+function setFont(f) { S.font = f; renderCV(); if(S.activeTab==='design') renderProps(); }
+function toggleSec(k) { saveH(); S.data.sections[k].enabled = !S.data.sections[k].enabled; renderCV(); renderProps(); saveToCache(); }
+function delItem(arr, id) { saveH(); S.data[arr] = S.data[arr].filter(x=>x.id!==id); renderCV(); renderProps(); saveToCache(); }
+
+// ================================================================
+// MODALS
+// ================================================================
+function openModal(html) {
+  document.getElementById('modal-inner').innerHTML = html;
+  document.getElementById('modal').style.display = 'flex';
+}
+function closeModal(e) {
+  if (!e || e.target === document.getElementById('modal')) {
+    document.getElementById('modal').style.display = 'none';
+  }
+}
+function closeModalBtn() { document.getElementById('modal').style.display = 'none'; }
+
+// ================================================================
+// SIGNATURE MODAL
+// ================================================================
+function openSignatureModal() {
+  openModal(`<div class="modal-title">Podpis odręczny</div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:8px;">Narysuj swój podpis myszką (lub palcem na tablecie)</div>
+    <div class="sig-canvas-wrap">
+      <canvas id="sig-canvas" class="sig-canvas" width="380" height="120" style="width:380px;height:120px;"></canvas>
+      <div class="sig-btns">
+        <button class="sig-btn" onclick="clearSignature()">Wyczyść</button>
+        <button class="sig-btn primary" onclick="saveSignature()">Zapisz podpis</button>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:12px;font-size:11px;color:var(--muted);">Lub prześlij gotowy obraz podpisu</div>
+    <input type="file" id="sig-file" accept="image/*" style="display:none;" onchange="uploadSignature(event)">
+    <button class="add-btn" style="margin-top:8px;" onclick="document.getElementById('sig-file').click()">📤 Prześlij obraz</button>
+    <div class="modal-actions" style="margin-top:12px;">
+      <button class="mbtn" onclick="closeModalBtn()">Zamknij</button>
+    </div>`);
+  setTimeout(() => initSignatureCanvas(), 100);
+}
+
+function initSignatureCanvas() {
+  const canvas = document.getElementById('sig-canvas');
+  if (!canvas) return;
+
+  // HiDPI rendering for crisp, smooth lines
+  const dpr = window.devicePixelRatio || 1;
+  const displayW = 380;
+  const displayH = 120;
+  canvas.width = displayW * dpr;
+  canvas.height = displayH * dpr;
+  canvas.style.width = displayW + 'px';
+  canvas.style.height = displayH + 'px';
+
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.lineWidth = 1.8;
+  ctx.strokeStyle = '#1a1a1a';
+
+  let isDrawing = false;
+  let pts = [];
+
+  function getPos(e, rect) { return { x: e.clientX - rect.left, y: e.clientY - rect.top }; }
+  function getTouchPos(e, rect) { return { x: e.touches[0].clientX - rect.left, y: e.touches[0].clientY - rect.top }; }
+
+  function startDraw(pos) {
+    isDrawing = true; pts = [pos];
+    ctx.beginPath(); ctx.moveTo(pos.x, pos.y);
+  }
+  function drawMove(pos) {
+    if (!isDrawing) return;
+    pts.push(pos);
+    if (pts.length < 3) { ctx.lineTo(pos.x, pos.y); ctx.stroke(); return; }
+    const p0 = pts[pts.length - 3], p1 = pts[pts.length - 2], p2 = pts[pts.length - 1];
+    const mid1 = { x: (p0.x + p1.x) / 2, y: (p0.y + p1.y) / 2 };
+    const mid2 = { x: (p1.x + p2.x) / 2, y: (p1.y + p2.y) / 2 };
+    ctx.beginPath(); ctx.moveTo(mid1.x, mid1.y);
+    ctx.quadraticCurveTo(p1.x, p1.y, mid2.x, mid2.y);
+    ctx.stroke();
+  }
+
+  canvas.addEventListener('mousedown', e => startDraw(getPos(e, canvas.getBoundingClientRect())));
+  canvas.addEventListener('mousemove', e => { if (isDrawing) drawMove(getPos(e, canvas.getBoundingClientRect())); });
+  canvas.addEventListener('mouseup', () => { isDrawing = false; pts = []; });
+  canvas.addEventListener('mouseleave', () => { isDrawing = false; pts = []; });
+  canvas.addEventListener('touchstart', e => { e.preventDefault(); startDraw(getTouchPos(e, canvas.getBoundingClientRect())); }, {passive:false});
+  canvas.addEventListener('touchmove', e => { e.preventDefault(); drawMove(getTouchPos(e, canvas.getBoundingClientRect())); }, {passive:false});
+  canvas.addEventListener('touchend', () => { isDrawing = false; pts = []; });
+}
+
+function clearSignature() {
+  const canvas = document.getElementById('sig-canvas');
+  if (canvas) canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+}
+
+function saveSignature() {
+  const canvas = document.getElementById('sig-canvas');
+  saveH();
+  S.data.signature.image = canvas.toDataURL('image/png');
+  closeModalBtn();
+  renderCV();
+  renderProps();
+  toast('Podpis zapisany');
+}
+
+function uploadSignature(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const r = new FileReader();
+  r.onload = ev => {
+    saveH();
+    S.data.signature.image = ev.target.result;
+    closeModalBtn();
+    renderCV();
+    renderProps();
+    toast('Podpis przesłany');
+  };
+  r.readAsDataURL(file);
+}
+
+// EXPERIENCE
+function editExp(id) {
+  const e = S.data.experience.find(x=>x.id===id);
+  openModal(`<div class="modal-title">✏ Doświadczenie zawodowe</div>
+    <div class="modal-row"><label class="modal-label">Stanowisko</label><input class="modal-input" id="m-role" value="${esc(e.role)}"></div>
+    <div class="modal-row"><label class="modal-label">Firma</label><input class="modal-input" id="m-co" value="${esc(e.company)}"></div>
+    <div class="modal-grid2">
+      <div class="modal-row"><label class="modal-label">Początek</label><input class="modal-input" id="m-from" value="${esc(e.from)}" placeholder="2020"></div>
+      <div class="modal-row"><label class="modal-label">Koniec</label><input class="modal-input" id="m-to" value="${esc(e.to)}" placeholder="2023 lub obecnie"></div>
+    </div>
+    <div class="modal-row"><label class="modal-label">Opis</label><textarea class="modal-textarea" id="m-desc">${esc(e.desc)}</textarea></div>
+    <div class="modal-row"><label class="modal-label">Tagi (oddzielone przecinkiem)</label><input class="modal-input" id="m-tags" value="${esc(e.tags)}"></div>
+    <div class="modal-actions">
+      <button class="mbtn" onclick="closeModalBtn()">Anuluj</button>
+      <button class="mbtn primary" onclick="saveExp(${id})">Zapisz</button>
+    </div>`);
+}
+function saveExp(id) {
+  saveH();
+  const e = S.data.experience.find(x=>x.id===id);
+  e.role = document.getElementById('m-role').value;
+  e.company = document.getElementById('m-co').value;
+  e.from = document.getElementById('m-from').value;
+  e.to = document.getElementById('m-to').value;
+  e.desc = document.getElementById('m-desc').value;
+  e.tags = document.getElementById('m-tags').value;
+  closeModalBtn(); renderCV(); renderProps(); saveToCache();
+}
+function addExp() {
+  const id = uid();
+  S.data.experience.push({id, role:'Stanowisko', company:'Firma', from:'2022', to:'obecnie', desc:'Opis obowiązków i osiągnięć', tags:''});
+  S.data.sections.experience.enabled = true;
+  renderCV(); renderProps();
+  editExp(id);
+}
+
+// EDUCATION
+function editEdu(id) {
+  const e = S.data.education.find(x=>x.id===id);
+  openModal(`<div class="modal-title">✦ Edukacja</div>
+    <div class="modal-row"><label class="modal-label">Stopień / specjalność</label><input class="modal-input" id="m-deg" value="${esc(e.degree)}"></div>
+    <div class="modal-row"><label class="modal-label">Uczelnia</label><input class="modal-input" id="m-sch" value="${esc(e.school)}"></div>
+    <div class="modal-row"><label class="modal-label">Okres</label><input class="modal-input" id="m-yr" value="${esc(e.year)}" placeholder="2018 – 2022"></div>
+    <div class="modal-row"><label class="modal-label">Dodatkowe informacje (opcjonalnie)</label><textarea class="modal-textarea" id="m-edesc">${esc(e.desc||'')}</textarea></div>
+    <div class="modal-actions">
+      <button class="mbtn" onclick="closeModalBtn()">Anuluj</button>
+      <button class="mbtn primary" onclick="saveEdu(${id})">Zapisz</button>
+    </div>`);
+}
+function saveEdu(id) {
+  saveH();
+  const e = S.data.education.find(x=>x.id===id);
+  e.degree = document.getElementById('m-deg').value;
+  e.school = document.getElementById('m-sch').value;
+  e.year = document.getElementById('m-yr').value;
+  e.desc = document.getElementById('m-edesc').value;
+  closeModalBtn(); renderCV(); renderProps(); saveToCache();
+}
+function addEdu() {
+  const id = uid();
+  S.data.education.push({id, degree:'Specjalność', school:'Uczelnia', year:'2018 – 2022', desc:''});
+  S.data.sections.education.enabled = true;
+  renderCV(); renderProps();
+  editEdu(id);
+}
+
+// SKILLS
+function editSkill(id) {
+  const s = S.data.skills.find(x=>x.id===id);
+  openModal(`<div class="modal-title">▣ Umiejętność</div>
+    <div class="modal-row"><label class="modal-label">Nazwa</label><input class="modal-input" id="m-sname" value="${esc(s.name)}"></div>
+    <div class="modal-row"><label class="modal-label">Poziom: <span id="m-slvl-val">${s.level}%</span></label>
+      <input type="range" min="10" max="100" value="${s.level}" id="m-slvl" oninput="document.getElementById('m-slvl-val').textContent=this.value+'%'" style="width:100%;margin-top:6px;">
+    </div>
+    <div class="modal-actions">
+      <button class="mbtn" onclick="closeModalBtn()">Anuluj</button>
+      <button class="mbtn primary" onclick="saveSkill(${id})">Zapisz</button>
+    </div>`);
+}
+function saveSkill(id) {
+  saveH();
+  const s = S.data.skills.find(x=>x.id===id);
+  s.name = document.getElementById('m-sname').value;
+  s.level = +document.getElementById('m-slvl').value;
+  closeModalBtn(); renderCV(); renderProps(); saveToCache();
+}
+function addSkill() {
+  const id = uid();
+  S.data.skills.push({id, name:'Nowa umiejętność', level:70});
+  S.data.sections.skills.enabled = true;
+  renderCV(); renderProps();
+  editSkill(id);
+}
+
+// LANGUAGES
+function editLang(id) {
+  const l = S.data.languages.find(x=>x.id===id);
+  const levels = [
+    {val:1, code:'A1', label:'Podstawowy', desc:'Rozumiem podstawowe zwroty, mogę się przedstawić i odpowiadać na proste pytania'},
+    {val:2, code:'A2', label:'Podstawowy (Elementary)', desc:'Czytam i rozumiem proste teksty, podstawowa komunikacja na znane tematy'},
+    {val:3, code:'B1', label:'Konwersacyjny', desc:'Swobodnie komunikuję się w sytuacjach codziennych i zawodowych, rozumiem większość tekstów'},
+    {val:4, code:'B2', label:'Wyższy średniozaawansowany', desc:'Pewnie komunikuję się z native speakerami, prowadzę negocjacje i korespondencję na tematy zawodowe'},
+    {val:5, code:'C1', label:'Zaawansowany', desc:'Swobodnie i sprawnie wyrażam myśli w mowie i piśmie w każdej sytuacji'},
+    {val:6, code:'C2', label:'Biegły', desc:'Pełna znajomość języka na poziomie native speakera, w tym terminologia zawodowa'},
+    {val:7, code:'Ojczysty', label:'Język ojczysty', desc:'Język ojczysty lub drugi język ojczysty'},
+  ];
+  openModal(`<div class="modal-title">Język</div>
+    <div class="modal-row"><label class="modal-label">Język</label><input class="modal-input" id="m-lang" value="${esc(l.lang)}"></div>
+    <div class="modal-row"><label class="modal-label">Poziom zaawansowania</label>
+      <div style="display:flex;flex-direction:column;gap:5px;margin-top:8px;">
+        ${levels.map(lv=>`
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:7px 10px;border-radius:7px;border:1.5px solid ${l.level===lv.val?'var(--accent)':'var(--border)'};background:${l.level===lv.val?'var(--light)':'transparent'};transition:all .12s;" onclick="this.parentNode.querySelectorAll('label').forEach(x=>{x.style.borderColor='var(--border)';x.style.background='transparent'});this.style.borderColor='var(--accent)';this.style.background='var(--light)';">
+            <input type="radio" name="llvl" value="${lv.val}" ${l.level===lv.val?'checked':''} style="display:none;">
+            <div style="min-width:44px;padding:3px 7px;border-radius:5px;background:var(--accent);color:#fff;font-size:10px;font-weight:700;text-align:center;letter-spacing:0.03em;">${lv.code}</div>
+            <div>
+              <div style="font-size:12px;font-weight:500;color:var(--text);">${lv.label}</div>
+              <div style="font-size:10px;color:var(--muted);margin-top:1px;">${lv.desc}</div>
+            </div>
+          </label>`).join('')}
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="mbtn" onclick="closeModalBtn()">Anuluj</button>
+      <button class="mbtn primary" onclick="saveLang(${id})">Zapisz</button>
+    </div>`);
+}
+function saveLang(id) {
+  saveH();
+  const l = S.data.languages.find(x=>x.id===id);
+  l.lang = document.getElementById('m-lang').value;
+  const r = document.querySelector('input[name="llvl"]:checked');
+  if (r) l.level = +r.value;
+  closeModalBtn(); renderCV(); renderProps(); saveToCache();
+}
+function addLang() {
+  const id = uid();
+  S.data.languages.push({id, lang:'Nowy język', level:3});
+  S.data.sections.languages.enabled = true;
+  renderCV(); renderProps();
+  editLang(id);
+}
+
+// CERTIFICATIONS
+function editCert(id) {
+  const c = S.data.certifications.find(x=>x.id===id);
+  openModal(`<div class="modal-title">Certyfikat</div>
+    <div class="modal-row"><label class="modal-label">Nazwa</label><input class="modal-input" id="m-cn" value="${esc(c.name)}"></div>
+    <div class="modal-row"><label class="modal-label">Wydany przez (organizację)</label><input class="modal-input" id="m-ci" value="${esc(c.issuer)}"></div>
+    <div class="modal-row"><label class="modal-label">Rok</label><input class="modal-input" id="m-cy" value="${esc(c.year)}" placeholder="2023"></div>
+    <div class="modal-row"><label class="modal-label">Krótki opis (opcjonalnie)</label><textarea class="modal-textarea" id="m-cdesc" placeholder="Czego uczy, jakie umiejętności potwierdza...">${esc(c.desc||'')}</textarea></div>
+    <div class="modal-actions">
+      <button class="mbtn" onclick="closeModalBtn()">Anuluj</button>
+      <button class="mbtn primary" onclick="saveCert(${id})">Zapisz</button>
+    </div>`);
+}
+function saveCert(id) {
+  saveH();
+  const c = S.data.certifications.find(x=>x.id===id);
+  c.name = document.getElementById('m-cn').value;
+  c.issuer = document.getElementById('m-ci').value;
+  c.year = document.getElementById('m-cy').value;
+  c.desc = document.getElementById('m-cdesc').value;
+  closeModalBtn(); renderCV(); renderProps(); saveToCache();
+}
+function addCert() {
+  const id = uid();
+  S.data.certifications.push({id, name:'Certyfikat', issuer:'Organizacja', year:'2024', desc:''});
+  S.data.sections.certifications.enabled = true;
+  renderCV(); renderProps();
+  editCert(id);
+}
+
+// ACHIEVEMENTS
+function editAch(id) {
+  const a = S.data.achievements.find(x=>x.id===id);
+  openModal(`<div class="modal-title">▸ Osiągnięcie</div>
+    <div class="modal-row"><label class="modal-label">Opis</label><textarea class="modal-textarea" id="m-at" style="min-height:80px;">${esc(a.text)}</textarea></div>
+    <div class="modal-actions">
+      <button class="mbtn" onclick="closeModalBtn()">Anuluj</button>
+      <button class="mbtn primary" onclick="saveAch(${id})">Zapisz</button>
+    </div>`);
+}
+function saveAch(id) {
+  saveH();
+  S.data.achievements.find(x=>x.id===id).text = document.getElementById('m-at').value;
+  closeModalBtn(); renderCV(); renderProps(); saveToCache();
+}
+function addAch() {
+  const id = uid();
+  S.data.achievements.push({id, text:'Opisz swoje osiągnięcie z konkretnym wynikiem'});
+  S.data.sections.achievements.enabled = true;
+  renderCV(); renderProps();
+  editAch(id);
+}
+
+// PROJECTS
+function editProject(id) {
+  const pr = S.data.projects.find(x=>x.id===id);
+  openModal(`<div class="modal-title">⬡ Projekt</div>
+    <div class="modal-row"><label class="modal-label">Nazwa</label><input class="modal-input" id="m-pn" value="${esc(pr.name)}"></div>
+    <div class="modal-row"><label class="modal-label">Opis</label><textarea class="modal-textarea" id="m-pd">${esc(pr.desc)}</textarea></div>
+    <div class="modal-row"><label class="modal-label">Link (URL)</label><input class="modal-input" id="m-pl" value="${esc(pr.link)}" placeholder="https://github.com/..."></div>
+    <div class="modal-row"><label class="modal-label">Tagi (oddzielone przecinkiem)</label><input class="modal-input" id="m-pt" value="${esc(pr.tags)}"></div>
+    <div class="modal-actions">
+      <button class="mbtn" onclick="closeModalBtn()">Anuluj</button>
+      <button class="mbtn primary" onclick="saveProject(${id})">Zapisz</button>
+    </div>`);
+}
+function saveProject(id) {
+  saveH();
+  const pr = S.data.projects.find(x=>x.id===id);
+  pr.name = document.getElementById('m-pn').value;
+  pr.desc = document.getElementById('m-pd').value;
+  pr.link = document.getElementById('m-pl').value;
+  pr.tags = document.getElementById('m-pt').value;
+  closeModalBtn(); renderCV(); renderProps(); saveToCache();
+}
+function addProject() {
+  const id = uid();
+  S.data.projects.push({id, name:'Mój projekt', desc:'Krótki opis projektu', link:'', tags:''});
+  S.data.sections.projects.enabled = true;
+  renderCV(); renderProps();
+  editProject(id);
+}
+
+// LINKS
+function editLink(id) {
+  const l = S.data.links.find(x=>x.id===id);
+  const iconOpts = ['🔗','⌨','💼','📸','✉','🌐','📱','💬','🎨','📊'];
+  openModal(`<div class="modal-title">🔗 Link / Sieć społ.</div>
+    <div class="modal-row"><label class="modal-label">Ikona</label>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;">
+        ${iconOpts.map(ic=>`<div onclick="this.parentNode.querySelectorAll('div').forEach(x=>x.style.background='');this.style.background='var(--light)';document.getElementById('m-lic').value='${ic}';" style="width:32px;height:32px;border-radius:6px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;background:${l.icon===ic?'var(--light)':''};">${ic}</div>`).join('')}
+      </div>
+      <input type="hidden" id="m-lic" value="${l.icon}">
+    </div>
+    <div class="modal-row"><label class="modal-label">Nazwa</label><input class="modal-input" id="m-ll" value="${esc(l.label)}"></div>
+    <div class="modal-row"><label class="modal-label">URL</label><input class="modal-input" id="m-lu" value="${esc(l.url)}" placeholder="https://..."></div>
+    <div class="modal-actions">
+      <button class="mbtn" onclick="closeModalBtn()">Anuluj</button>
+      <button class="mbtn primary" onclick="saveLink(${id})">Zapisz</button>
+    </div>`);
+}
+function saveLink(id) {
+  saveH();
+  const l = S.data.links.find(x=>x.id===id);
+  l.icon = document.getElementById('m-lic').value;
+  l.label = document.getElementById('m-ll').value;
+  l.url = document.getElementById('m-lu').value;
+  closeModalBtn(); renderCV(); renderProps(); saveToCache();
+}
+function addLink() {
+  const id = uid();
+  S.data.links.push({id, icon:'🔗', label:'Новая ссылка', url:'https://'});
+  S.data.sections.links.enabled = true;
+  renderCV(); renderProps();
+  editLink(id);
+}
+
+// ================================================================
+// DRAG FROM SIDEBAR TO CANVAS
+// ================================================================
+document.querySelectorAll('.bitem').forEach(item => {
+  item.addEventListener('dragstart', e => e.dataTransfer.setData('block', item.dataset.block));
+});
+const cvp = document.getElementById('cvp');
+cvp.addEventListener('dragover', e => e.preventDefault());
+cvp.addEventListener('drop', e => {
+  e.preventDefault();
+  const block = e.dataTransfer.getData('block');
+  if (!block || !S.data.sections[block]) return;
+  saveH();
+  S.data.sections[block].enabled = true;
+  renderCV(); renderProps();
+  saveToCache();
+  if (block === 'signature') {
+    switchTab('sections');
+    setTimeout(() => openSignatureModal(), 150);
+  } else {
+    toast('Blok dodany — przejdź do «Sekcje», aby edytować');
+  }
+});
+
+// ================================================================
+// PHOTO UPLOAD
+// ================================================================
+function uploadPhoto(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const r = new FileReader();
+  r.onload = ev => { saveH(); S.data.photo = ev.target.result; renderCV(); renderProps(); saveToCache(); };
+  r.readAsDataURL(file);
+}
+
+// ================================================================
+// EXPORT
+// ================================================================
+function exportPDF() {
+  const p = document.getElementById('cvp');
+  const origTransform = p.style.transform;
+  p.style.transform = 'scale(1)';
+  p.style.marginBottom = '0';
+  html2pdf().set({
+    margin:0, filename:(S.data.name||'cv').replace(/\s/g,'_')+'_CV.pdf',
+    image:{type:'jpeg',quality:0.98},
+    html2canvas:{scale:2,useCORS:true,letterRendering:true},
+    jsPDF:{unit:'mm',format:'a4',orientation:'portrait'}
+  }).from(p).save().then(()=>{
+    setZoom(S.zoom);
+  });
+}
+function exportJSON() {
+  const b = new Blob([JSON.stringify(S.data,null,2)],{type:'application/json'});
+  const a = document.createElement('a'); a.href=URL.createObjectURL(b); a.download='cv-data.json'; a.click();
+}
+function importJSON(e) {
+  const file = e.target.files[0]; if(!file) return;
+  const r = new FileReader();
+  r.onload = ev => { try { S.data=JSON.parse(ev.target.result); renderCV(); renderProps(); saveToCache(); toast('Dane zaimportowane'); } catch { toast('Nieprawidłowy format JSON'); } };
+  r.readAsText(file);
+}
+
+// ================================================================
+// EXPORT DOCX (Word / Google Docs compatible)
+// ================================================================
+async function exportDOCX() {
+  toast('Generowanie DOCX...');
+  try {
+    const { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell,
+            AlignmentType, BorderStyle, WidthType, ShadingType, VerticalAlign,
+            HeadingLevel } = docx;
+
+    const d = S.data;
+    const theme = THEMES[S.theme];
+    const accentHex = theme.accent.replace('#','');
+    const lightHex  = theme.light.replace('#','');
+
+    const noBorder = { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' };
+    const noBorders = { top: noBorder, bottom: noBorder, left: noBorder, right: noBorder };
+
+    function accentRun(text, opts={}) {
+      return new TextRun({ text, color: accentHex, bold: true, size: opts.size||20, font: 'Arial' });
+    }
+    function normalRun(text, opts={}) {
+      return new TextRun({ text, size: opts.size||20, font: 'Arial', bold: opts.bold||false, italics: opts.italics||false, color: opts.color||'333333' });
+    }
+    function para(children, opts={}) {
+      return new Paragraph({
+        children: Array.isArray(children) ? children : [children],
+        spacing: { before: opts.before||0, after: opts.after||60 },
+        alignment: opts.align || AlignmentType.LEFT,
+      });
+    }
+    function sectionHeader(title) {
+      return new Paragraph({
+        children: [new TextRun({ text: title.toUpperCase(), bold: true, size: 18, color: accentHex, font: 'Arial', allCaps: true })],
+        spacing: { before: 180, after: 60 },
+        border: { bottom: { style: BorderStyle.SINGLE, size: 4, color: accentHex, space: 2 } },
+      });
+    }
+
+    const children = [];
+
+    // ---- HEADER ----
+    children.push(new Paragraph({
+      children: [new TextRun({ text: d.name || '', bold: true, size: 52, font: 'Arial', color: accentHex })],
+      spacing: { after: 60 },
+    }));
+    if (d.title) {
+      children.push(para([normalRun(d.title, { size: 24, color: '555555' })], { after: 80 }));
+    }
+
+    const contacts = [d.email, d.phone, d.location].filter(Boolean).join('   |   ');
+    if (contacts) {
+      children.push(para([normalRun(contacts, { size: 18, color: '777777' })], { after: 160 }));
+    }
+
+    // ---- ABOUT ----
+    if (d.sections.about && d.sections.about.enabled && d.about) {
+      children.push(sectionHeader('O mnie'));
+      children.push(para([normalRun(d.about, { size: 20, color: '444444' })], { after: 160 }));
+    }
+
+    // ---- EXPERIENCE ----
+    if (d.sections.experience && d.sections.experience.enabled && d.experience.length) {
+      children.push(sectionHeader('Doświadczenie zawodowe'));
+      for (const e of d.experience) {
+        children.push(new Paragraph({
+          children: [
+            new TextRun({ text: e.role, bold: true, size: 22, font: 'Arial', color: '111111' }),
+            new TextRun({ text: `   ${e.from} – ${e.to}`, size: 18, color: '888888', font: 'Arial' }),
+          ],
+          spacing: { before: 80, after: 30 },
+        }));
+        if (e.company) {
+          children.push(para([new TextRun({ text: e.company, size: 19, italics: true, color: accentHex, font: 'Arial' })], { after: 40 }));
+        }
+        if (e.desc) {
+          children.push(para([normalRun(e.desc, { size: 19, color: '444444' })], { after: 80 }));
+        }
+      }
+    }
+
+    // ---- EDUCATION ----
+    if (d.sections.education && d.sections.education.enabled && d.education.length) {
+      children.push(sectionHeader('Edukacja'));
+      for (const e of d.education) {
+        children.push(new Paragraph({
+          children: [new TextRun({ text: e.degree, bold: true, size: 21, font: 'Arial' })],
+          spacing: { before: 80, after: 30 },
+        }));
+        children.push(para([
+          new TextRun({ text: e.school, italics: true, size: 19, color: accentHex, font: 'Arial' }),
+          e.year ? new TextRun({ text: `   ${e.year}`, size: 18, color: '888888', font: 'Arial' }) : new TextRun(''),
+        ], { after: 80 }));
+      }
+    }
+
+    // ---- SKILLS ----
+    if (d.sections.skills && d.sections.skills.enabled && d.skills.length) {
+      children.push(sectionHeader('Umiejętności'));
+      const skillText = d.skills.map(s => `${s.name} (${s.level}%)`).join('   ·   ');
+      children.push(para([normalRun(skillText, { size: 19, color: '333333' })], { after: 140 }));
+    }
+
+    // ---- LANGUAGES ----
+    if (d.sections.languages && d.sections.languages.enabled && d.languages.length) {
+      children.push(sectionHeader(t('langTitle')));
+      const levelMap = (LANGS[S.lang]||LANGS.en).cefrDocx || {
+        1: 'Podstawowy (A1)',
+        2: 'Podstawowy (A2)',
+        3: 'Średniozaawansowany (B1)',
+        4: 'Wyższy średniozaaw. (B2)',
+        5: 'Zaawansowany (C1)',
+        6: 'Biegły (C2)',
+        7: 'Język ojczysty',
+      };
+      for (const l of d.languages) {
+        children.push(new Paragraph({
+          children: [
+            new TextRun({ text: l.lang, bold: true, size: 20, font: 'Arial', color: '111111' }),
+            new TextRun({ text: `  —  ${levelMap[l.level] || 'A1'}`, size: 20, font: 'Arial', color: '555555' }),
+          ],
+          spacing: { before: 40, after: 50 },
+        }));
+      }
+      children.push(para([new TextRun('')], { after: 100 }));
+    }
+
+    // ---- CERTIFICATIONS ----
+    if (d.sections.certifications && d.sections.certifications.enabled && d.certifications.length) {
+      children.push(sectionHeader('Certyfikaty'));
+      for (const c of d.certifications) {
+        children.push(new Paragraph({
+          children: [
+            new TextRun({ text: c.name, bold: true, size: 20, font: 'Arial' }),
+            c.issuer ? new TextRun({ text: `  ·  ${c.issuer}`, size: 19, italics: true, color: '666666', font: 'Arial' }) : new TextRun(''),
+            c.year ? new TextRun({ text: `  ·  ${c.year}`, size: 18, color: '888888', font: 'Arial' }) : new TextRun(''),
+          ],
+          spacing: { before: 60, after: 60 },
+        }));
+      }
+    }
+
+    // ---- ACHIEVEMENTS ----
+    if (d.sections.achievements && d.sections.achievements.enabled && d.achievements.length) {
+      children.push(sectionHeader('Osiągnięcia'));
+      for (const a of d.achievements) {
+        children.push(new Paragraph({
+          children: [
+            new TextRun({ text: '▸  ', color: accentHex, font: 'Arial', size: 20 }),
+            normalRun(a.text, { size: 19 }),
+          ],
+          spacing: { before: 40, after: 40 },
+        }));
+      }
+    }
+
+    // ---- PROJECTS ----
+    if (d.sections.projects && d.sections.projects.enabled && d.projects.length) {
+      children.push(sectionHeader('Projekty'));
+      for (const pr of d.projects) {
+        children.push(new Paragraph({
+          children: [new TextRun({ text: pr.name, bold: true, size: 21, font: 'Arial' })],
+          spacing: { before: 80, after: 30 },
+        }));
+        if (pr.desc) children.push(para([normalRun(pr.desc, { size: 19, color: '444444' })], { after: 40 }));
+        if (pr.link) children.push(para([new TextRun({ text: pr.link, size: 18, color: '0563C1', font: 'Arial' })], { after: 80 }));
+      }
+    }
+
+    // ---- CUSTOM / TEXTBLOCK ----
+    if (d.sections.custom && d.sections.custom.enabled && d.custom.text) {
+      children.push(sectionHeader(d.custom.title || 'Dodatkowe'));
+      children.push(para([normalRun(d.custom.text, { size: 19, color: '444444' })], { after: 100 }));
+    }
+    if (d.sections.textblock && d.sections.textblock.enabled && d.textblock.content) {
+      children.push(sectionHeader(d.textblock.title || 'Blok tekstowy'));
+      children.push(para([normalRun(d.textblock.content, { size: 19, color: '444444' })], { after: 100 }));
+    }
+
+    const doc = new Document({
+      creator: 'CV Studio',
+      description: 'CV',
+      sections: [{
+        properties: {
+          page: {
+            size: { width: 11906, height: 16838 }, // A4
+            margin: { top: 1134, right: 1134, bottom: 1134, left: 1134 }, // ~2cm
+          }
+        },
+        children,
+      }],
+    });
+
+    const buffer = await Packer.toBlob(doc);
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(buffer);
+    a.download = (d.name || 'cv').replace(/\s/g,'_') + '_CV.docx';
+    a.click();
+    toast('DOCX pobrany!');
+  } catch(err) {
+    console.error(err);
+    toast('Błąd generowania DOCX: ' + err.message);
+  }
+}
+
+// ================================================================
+// TOAST
+// ================================================================
+function toast(msg) {
+  let t = document.getElementById('__toast');
+  if (!t) { t=document.createElement('div'); t.id='__toast'; t.style.cssText='position:fixed;bottom:34px;left:50%;transform:translateX(-50%);background:#1a3c6e;color:white;padding:8px 18px;border-radius:8px;font-size:12px;z-index:999;pointer-events:none;opacity:0;transition:opacity .3s;white-space:nowrap;'; document.body.appendChild(t); }
+  t.textContent = msg; t.style.opacity='1';
+  clearTimeout(t._t); t._t = setTimeout(()=>t.style.opacity='0', 2500);
+}
+
+// ================================================================
+// INIT
+// ================================================================
+const cacheRestored = loadFromCache();
+// Update drag hint to match current CV language
+(function(){ const hint = document.getElementById('drag-hint'); if(hint){ const L = LANGS[S.lang]||LANGS.en; if(L.dragHint) hint.textContent = L.dragHint; } })();
+// Highlight active language button
+(function(){ document.querySelectorAll('#lang-switch button').forEach(b => { b.classList.toggle('on', b.textContent.trim().toLowerCase() === S.lang.toLowerCase()); }); })();
+buildSwatches();
+try{
+  applyTheme();
+}catch(err){
+  console.error(err);
+}
+try {
+  renderCV();
+} catch(err){
+  console.error(err);
+}
+renderProps();
+setZoom(100);
+if (cacheRestored) {
+  setTimeout(() => toast('✓ Dane przywrócone z pamięci podręcznej przeglądarki'), 500);
+}
+</script>
+</body>
+</html>
