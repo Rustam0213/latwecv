@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEO nagłówek</title>
+<meta name="description" content="LatweCV to darmowy generator CV w przeglądarce — bez rejestracji, bez konta. 13 typów bloków, 8 motywów kolorystycznych, 4 układy, eksport do PDF i Word, podpis własnoręczny i interfejs w 6 językach.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://latwecv.pl">
+<meta property="og:type" content="website">
+<meta property="og:title" content="LatweCV — Darmowy generator CV online">
+<meta property="og:description" content="Twórz profesjonalne CV w przeglądarce: bloki przeciągnij-i-upuść, 8 motywów, eksport do PDF/Word, interfejs w 6 językach. Bez konta, bez limitów.">
+<meta property="og:locale" content="pl_PL">
+
+
+<script type="application/ld+json">
+{
+    
+}
+</script>
+<!-- site schema.org -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/blog_styles.css">
+
+</head>
+<body>
+
+<!-- ================= COOKIE BANNER ================= -->
+<div class="cookie-banner" id="cookieBanner" role="dialog" aria-label="Informacja o plikach cookie" aria-live="polite">
+  <div class="cookie-text">
+    <strong>Kilka słów o ciasteczkach.</strong> Używamy tylko tych niezbędnych — do zapamiętania Twoich ustawień i sesji. Zero śledzenia, zero reklam. Twoje dane i tak zostają wyłącznie na Twoim urządzeniu.
+  </div>
+  <div class="cookie-actions">
+    <button class="cookie-btn reject" id="cookieReject">Tylko niezbędne</button>
+    <button class="cookie-btn accept" id="cookieAccept">Rozumiem, OK</button>
+  </div>
+</div>
+
+<!-- ================= HEADER ================= -->
+<!-- <div class="nav-backdrop" id="navBackdrop"></div> -->
+<header class="site">
+  <nav class="nav">
+    <a href="#top" class="nav-logo">Latwe<span class="dot">CV</span></a>
+    <button class="nav-toggle" aria-label="Otwórz menu" aria-expanded="false" id="navToggle">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+    <div class="nav-links" id="navLinks">
+      <button class="nav-close" id="navClose" aria-label="Zamknij menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+      <a href="#faq" onclick="closeNav()">FAQ</a>
+      <a href="https://latwecv.eu/cv_pl" class="nav-cta">Otwórz generator</a>
+    </div>
+  </nav>
+</header>
+
+<!-- Main content -->
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="wrap">
+    <div>© 2026 LatweCV — generator CV w przeglądarce.</div>
+      <a href="https://latwecv.eu/faq">FAQ</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ===== Mobile nav toggle ===== */
+const navToggle  = document.getElementById('navToggle');
+const navLinks   = document.getElementById('navLinks');
+const navClose   = document.getElementById('navClose');
+
+function openNav(){
+  navLinks.classList.add('open');
+  if (navBackdrop) navBackdrop.classList.add('visible');
+  navToggle.setAttribute('aria-expanded','true');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeNav(){
+  navLinks.classList.remove('open');
+  if (navBackdrop) navBackdrop.classList.remove('visible');
+  navToggle.setAttribute('aria-expanded','false');
+  document.body.style.overflow = '';
+}
+
+navToggle.addEventListener('click', openNav);
+navClose.addEventListener('click', closeNav);
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeNav(); });
+
+/* ===== FAQ accordion ===== */
+document.querySelectorAll('.faq-item').forEach(item => {
+  item.querySelector('.faq-q').addEventListener('click', () => {
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+    if(!wasOpen) item.classList.add('open');
+  });
+});
+
+/* ===== Scroll reveal ===== */
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.08 });
+revealEls.forEach(el => io.observe(el));
+
+
+function setMockLang(lang) {
+  const t = MOCK_TEXT[lang];
+  const fields = Object.values(mockEls);
+  fields.forEach(f => f.style.opacity = 0);
+  setTimeout(() => {
+    mockEls.name.textContent  = t.name;
+    mockEls.title.textContent = t.title;
+    mockEls.sec1.textContent  = t.sec1;
+    mockEls.sec2.textContent  = t.sec2;
+    mockEls.role.textContent  = t.role;
+    mockEls.co.textContent    = t.co;
+    mockEls.tag1.textContent  = t.tags[0];
+    mockEls.tag2.textContent  = t.tags[1];
+    mockEls.tag3.textContent  = t.tags[2];
+    fields.forEach(f => f.style.opacity = 1);
+  }, 180);
+}
+
+document.querySelectorAll('.lang-pill').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.lang-pill').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    setMockLang(btn.dataset.lang);
+  });
+});
+
+
+/* ===== Cookie banner ===== */
+const cookieBanner = document.getElementById('cookieBanner');
+const cookieKey = 'latwecv_cookie_consent';
+
+function hideCookie(){
+  cookieBanner.classList.remove('visible');
+  setTimeout(() => cookieBanner.style.display='none', 400);
+}
+
+if(!localStorage.getItem(cookieKey)){
+  setTimeout(() => cookieBanner.classList.add('visible'), 1200);
+}
+
+document.getElementById('cookieAccept').addEventListener('click', () => {
+  localStorage.setItem(cookieKey, 'accepted');
+  hideCookie();
+});
+document.getElementById('cookieReject').addEventListener('click', () => {
+  localStorage.setItem(cookieKey, 'rejected');
+  hideCookie();
+});
+</script>
+
+</body>
+</html>
