@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
-  <!-- Strona główna PL -->
+  <!-- ============== STRONA GŁÓWNA ============== -->
   <url>
     <loc>https://latwecv.eu/pl</loc>
     <lastmod>2026-06-18</lastmod>
@@ -9,7 +9,7 @@
     <priority>1.0</priority>
   </url>
 
-  <!-- Kreatory CV -->
+  <!-- ============== KREATORY CV (cv_studio_*.html) ============== -->
   <url>
     <loc>https://latwecv.eu/pl/creator</loc>
     <lastmod>2026-06-18</lastmod>
@@ -52,15 +52,7 @@
     <priority>0.9</priority>
   </url>
 
-  <!-- Strona prezentacyjna PL -->
-  <url>
-    <loc>https://latwecv.eu/pl/cv</loc>
-    <lastmod>2026-06-18</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <!-- Artykuły -->
+  <!-- ============== STRONY LANDINGOWE / ARTYKUŁY SAMODZIELNE ============== -->
   <url>
     <loc>https://latwecv.eu/pl/darmowy-kreator-cv-online</loc>
     <lastmod>2026-06-18</lastmod>
@@ -68,12 +60,48 @@
     <priority>0.8</priority>
   </url>
 
-  <!-- FAQ -->
+  <!-- ============== FAQ ============== -->
   <url>
     <loc>https://latwecv.eu/pl/faq</loc>
     <lastmod>2026-06-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+  </url>
+
+  <!-- ============== ARTYKUŁY BLOGOWE ============== -->
+  <url>
+    <loc>https://latwecv.eu/pl/blog/jak-poprawnie-zrobic-cv</loc>
+    <lastmod>2026-06-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://latwecv.eu/pl/blog/cv-generator-za-darmo</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://latwecv.eu/pl/blog/cv-programisty-wzor</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://latwecv.eu/pl/blog/cv-marketing</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://latwecv.eu/pl/blog/cv-dla-nauczyciela</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
 
 </urlset>
