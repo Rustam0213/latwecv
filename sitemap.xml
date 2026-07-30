@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- ============== STRONA GŁÓWNA ============== -->
+  <url>
+    <loc>https://latwecv.eu/pl</loc>
+    <lastmod>2026-06-18</lastmod>
+  </url>
+
+  <!-- ============== KREATORY CV (cv_studio_*.html) ============== -->
+  <url>
+    <loc>https://latwecv.eu/pl/creator</loc>
+    <lastmod>2026-06-18</lastmod>
+  </url>
+
+  <url>
+    <loc>https://latwecv.eu/en/creator</loc>
+    <lastmod>2026-06-18</lastmod>
+  </url>
+
+  <url>
+    <loc>https://latwecv.eu/de/creator</loc>
+    <lastmod>2026-06-18</lastmod>
+  </url>
+
+  <url>
+    <loc>https://latwecv.eu/es/creator</loc>
+    <lastmod>2026-06-18</lastmod>
+  </url>
+
+  <url>
+    <loc>https://latwecv.eu/uk/creator</loc>
+    <lastmod>2026-06-18</lastmod>
+  </url>
+
+  <url>
+    <loc>https://latwecv.eu/ru/creator</loc>
+    <lastmod>2026-06-18</lastmod>
+  </url>
+
+  <!-- ============== STRONY LANDINGOWE / ARTYKUŁY SAMODZIELNE ============== -->
+  <url>
+    <loc>https://latwecv.eu/pl/darmowy-kreator-cv-online</loc>
+    <lastmod>2026-06-18</lastmod>
+  </url>
+
+  <!-- ============== FAQ ============== -->
+  <url>
+    <loc>https://latwecv.eu/pl/faq</loc>
+    <lastmod>2026-06-18</lastmod>
+  </url>
+
+  <!-- ============== ARTYKUŁY BLOGOWE ============== -->
+  <url>
+    <loc>https://latwecv.eu/pl/blog/jak-poprawnie-zrobic-cv</loc>
+    <lastmod>2026-06-18</lastmod>
+  </url>
+
+  <url>
+    <loc>https://latwecv.eu/pl/blog/cv-generator-za-darmo</loc>
+    <lastmod>2026-06-20</lastmod>
+  </url>
+
+  <url>
+    <loc>https://latwecv.eu/pl/blog/cv-programisty-wzor</loc>
+    <lastmod>2026-06-20</lastmod>
+  </url>
+
+  <url>
+    <loc>https://latwecv.eu/pl/blog/cv-marketing</loc>
+    <lastmod>2026-06-20</lastmod>
+  </url>
+
+  <url>
+    <loc>https://latwecv.eu/pl/blog/cv-dla-nauczyciela</loc>
+    <lastmod>2026-06-20</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://latwecv.eu/pl/cv-pracownika-produkcji</loc>
+    <lastmod>2026-06-24</lastmod>
+  </url>
+ 
+  <url>
+    <loc>https://latwecv.eu/pl/cv-opiekun-medyczny</loc>
+    <lastmod>2026-06-24</lastmod>
+  </url>
+ 
+  <url>
+    <loc>https://latwecv.eu/pl/cv-kierownik-sklepu</loc>
+    <lastmod>2026-06-24</lastmod>
+  </url>
+  <url>
+    <loc>https://latwecv.eu/pl/cv-architekt</loc>
+    <lastmod>2026-06-25</lastmod>
+  </url>
+  <url>
+    <loc>https://latwecv.eu/pl/cv-front-end-developer</loc>
+    <lastmod>2026-06-25</lastmod>
+  </url>
+  <url>
+    <loc>https://latwecv.eu/pl/cv-manager-restauracji</loc>
+    <lastmod>2026-06-25</lastmod>
+  </url>
+  <url>
+    <loc>https://latwecv.eu/pl/cv-hydraulik</loc>
+    <lastmod>2026-06-25</lastmod>
+  </url>
+  <url>
+    <loc>https://latwecv.eu/pl/cv-kasjerka</loc>
+    <lastmod>2026-06-25</lastmod>
+  </url>
+  <url>
+    <loc>https://latwecv.eu/pl/cv-copywriter</loc>
+    <lastmod>2026-07-01</lastmod>
+  </url>
+  <url>
+    <loc>https://latwecv.eu/pl/cv-social-media-manager</loc>
+    <lastmod>2026-07-01</lastmod>
+  </url>
+  <url>
+    <loc>https://latwecv.eu/pl/cv-specjalista-seo</loc>
+    <lastmod>2026-07-01</lastmod>
+  </url>
+  <url>
+    <loc>https://latwecv.eu/pl/cv-lekarza</loc>
+    <lastmod>2026-07-05</lastmod>
+  </url>
+  <url>
+    <loc>https://latwecv.eu/pl/cv-ksiegowej</loc>
+    <lastmod>2026-07-05</lastmod>
+  </url>
+  <url>
+    <loc>https://latwecv.eu/pl/cv-w-gastronomii</loc>
+    <lastmod>2026-07-05</lastmod>
+  </url>
+  <url>
+    <loc>https://latwecv.eu/pl/cv-mlodego-programisty</loc>
+    <lastmod>2026-07-05</lastmod>
+  </url>
+  <url>
+    <loc>https://latwecv.eu/pl/cv-data-scientist</loc>
+    <lastmod>2026-07-05</lastmod>
+  </url>
+  <url>
+    <loc>https://latwecv.eu/pl/cv-ux-designera</loc>
+    <lastmod>2026-07-06</lastmod>
+  </url>
+  <url>
+    <loc>https://latwecv.eu/pl/cv-analityka-biznesowego</loc>
+    <lastmod>2026-07-06</lastmod>
+  </url>
+  <url>
+    <loc>https://latwecv.eu/pl/cv-testera-oprogramowania</loc>
+    <lastmod>2026-07-06</lastmod>
+  </url>
+</urlset>

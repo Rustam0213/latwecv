@@ -1,0 +1,1832 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LatweCV</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
+<link rel="stylesheet" href="/css/constructor_styles.css">
+<link rel="shortcut icon" href="/media/icon.png" type="image/x-icon">
+</head>
+<body>
+<div class="app">
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="logo">LatweCV</div>
+  <span class="tbar-label">Idioma:</span>
+  <div class="lang-switch" id="lang-switch">
+    <button onclick="setLang('de')">DE</button>
+    <button onclick="setLang('en')">EN</button>
+    <button onclick="setLang('es')">ES</button>
+    <button onclick="setLang('pl')">PL</button>
+    <button onclick="setLang('ru')">RU</button>
+    <button onclick="setLang('ua')">UA</button>
+  </div>
+  <span class="tbar-label">Tema:</span>
+  <div id="swatches" style="display:flex;gap:4px;margin-right:8px;"></div>
+  <div class="tgap"></div>
+  <button class="tbtn" onclick="resetData()" title="Restablecer todos los datos del CV" style="border-color:rgba(255,80,80,0.4);color:rgba(255,160,160,0.9);">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px;"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>Restablecer</button>
+  <button class="tbtn" onclick="undo()">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px;"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg>Deshacer</button>
+  <button class="tbtn" onclick="toggleGrid()">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px;"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Cuadrícula</button>
+  <button class="tbtn" onclick="document.getElementById('pdf-imp').click()">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Importar PDF</button>
+  <button class="tbtn" onclick="exportDOCX()" title="Descargar documento Word (.docx)">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>DOCX</button>
+  <button class="tbtn primary" onclick="exportPDF()">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>PDF</button>
+  <input type="file" id="pdf-imp" accept=".pdf" style="display:none;" onchange="importPDF(event)">
+</div>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sb-head">Añadir bloque</div>
+  <div class="sb-scroll">
+    <div class="sb-cat">Principal</div>
+    <div class="bitem" draggable="true" data-block="experience"><div class="bico" style="background:#fef9ec;color:#854f0b;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg></div>Experiencia laboral</div>
+    <div class="bitem" draggable="true" data-block="education"><div class="bico" style="background:#fdf2f8;color:#831843;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div>Educación</div>
+    <div class="bitem" draggable="true" data-block="about"><div class="bico" style="background:#f0fdf4;color:#065f46;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>Sobre mí</div>
+    <div class="sb-cat">Adicional</div>
+    <div class="bitem" draggable="true" data-block="skills"><div class="bico" style="background:#eef2f8;color:#1a3c6e;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>Habilidades</div>
+    <div class="bitem" draggable="true" data-block="languages"><div class="bico" style="background:#f0fdf4;color:#065f46;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>Idiomas</div>
+    <div class="bitem" draggable="true" data-block="certifications"><div class="bico" style="background:#fef9ec;color:#854f0b;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M9 15v7l3-2 3 2v-7"/></svg></div>Certificados</div>
+    <div class="bitem" draggable="true" data-block="achievements"><div class="bico" style="background:#fdf2f8;color:#831843;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>Logros</div>
+    <div class="bitem" draggable="true" data-block="projects"><div class="bico" style="background:#eef2f8;color:#4c1d95;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div>Proyectos</div>
+    <div class="bitem" draggable="true" data-block="links"><div class="bico" style="background:#f0fdf4;color:#065f46;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div>Redes sociales</div>
+    <div class="sb-cat">Elementos</div>
+    <div class="bitem" draggable="true" data-block="textblock"><div class="bico" style="background:#f5f3ef;color:#7a7568;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="17" y1="18" x2="3" y2="18"/></svg></div>Bloque de texto</div>
+    <div class="bitem" draggable="true" data-block="signature"><div class="bico" style="background:#f5f3ef;color:#7a7568;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17c2-2 4-4 6-3s2 4 4 3 3-5 5-4"/><line x1="3" y1="21" x2="21" y2="21"/></svg></div>Firma</div>
+    <div class="bitem" draggable="true" data-block="custom"><div class="bico" style="background:#f5f3ef;color:#7a7568;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>Texto libre</div>
+    <div class="bitem" draggable="true" data-block="divider"><div class="bico" style="background:#f5f3ef;color:#7a7568;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/></svg></div>Divisor</div>
+    <div id="drag-hint" style="margin-top:16px;padding:8px 6px;font-size:10.5px;color:var(--muted);line-height:1.6;border-top:1px solid var(--border);">
+      Arrastra un bloque al lienzo (columna izquierda o derecha). Los bloques se pueden reordenar dentro del panel de edición.
+    </div>
+  </div>
+</div>
+
+<!-- CANVAS -->
+<div class="canvas-wrap">
+  <div class="ctoolbar">
+    <span style="font-size:10px;color:var(--muted);">Zoom:</span>
+    <button class="ctbtn" onclick="setZoom(70)">70%</button>
+    <button class="ctbtn " id="zbtn-85" onclick="setZoom(85)">85%</button>
+    <button class="ctbtn on" onclick="setZoom(100)">100%</button>
+    <button class="ctbtn " onclick="setZoom(125)">125%</button>
+    <button class="ctbtn " onclick="setZoom(150)">150%</button>
+    <div class="ctsep"></div>
+    <span style="font-size:10px;color:var(--muted);">Diseño:</span>
+    <button class="ctbtn on" id="lb-classic" onclick="setLayout('classic')">Clásico</button>
+    <button class="ctbtn" id="lb-minimal" onclick="setLayout('minimal')">Mínimo</button>
+    <button class="ctbtn" id="lb-bold" onclick="setLayout('bold')">Atrevido</button>
+    <button class="ctbtn" id="lb-right" onclick="setLayout('right')">Lado derecho</button>
+  </div>
+  <div class="cscroll">
+    <div class="cv-paper layout-classic" id="cvp" style="--ca:#1a3c6e;--cl:#eef2f8;"></div>
+  </div>
+</div>
+
+<!-- PROPS PANEL -->
+<div class="props">
+  <div class="ptabs">
+    <div class="ptab on" onclick="switchTab('personal')">Personal</div>
+    <div class="ptab" onclick="switchTab('sections')">Secciones</div>
+    <div class="ptab" onclick="switchTab('design')">Diseño</div>
+    <div class="ptab" onclick="switchTab('export')">Exportar</div>
+  </div>
+  <div class="pbody" id="pbody"></div>
+</div>
+
+</div><!-- /app -->
+
+<div class="statusbar">
+  <div class="sbi">Página: <b>A4</b></div>
+  <div class="sbi">Zoom: <b id="sb-zoom">85%</b></div>
+  <div class="sbi">Secciones: <b id="sb-secs">0</b></div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" style="display:none;" onclick="closeModal(event)">
+  <div class="modal" id="modal-inner" onclick="event.stopPropagation()"></div>
+</div>
+
+<!-- MOBILE OVERLAY -->
+<div class="mob-overlay" id="mob-overlay" onclick="mobCloseAll()"></div>
+
+<!-- MOBILE: BLOCKS DRAWER -->
+<div class="mob-drawer mob-blocks-drawer" id="mob-drawer-blocks">
+  <div class="mob-drawer-handle"></div>
+<div class="mob-drawer-title">Añadir bloque</div>
+  <div class="mob-drawer-body" id="mob-blocks-body"></div>
+</div>
+
+<!-- MOBILE: PROPS DRAWER -->
+<div class="mob-drawer mob-props-drawer" id="mob-drawer-props">
+  <div class="mob-drawer-handle"></div>
+  <div class="ptabs" id="mob-ptabs" style="flex-shrink:0;border-bottom:1px solid var(--border);">
+    <div class="ptab on">Personal</div>
+    <div class="ptab">Secciones</div>
+    <div class="ptab">Apariencia</div>
+    <div class="ptab">Exportar</div>
+  </div>
+  <div class="pbody mob-drawer-body" id="mob-pbody" style="padding:14px 16px;"></div>
+</div>
+
+<!-- MOBILE: MORE DRAWER (undo, reset, grid, import DOCX) -->
+<div class="mob-drawer" id="mob-drawer-more">
+  <div class="mob-drawer-handle"></div>
+  <div class="mob-drawer-title">Інструменти</div>
+  <div class="mob-drawer-body" style="display:flex;flex-direction:column;gap:8px;">
+    <button class="ebtn" onclick="undo();mobCloseAll()">
+      <span class="ebtn-ico">↩</span><span>Deshacer último cambio</span>
+    </button>
+    <button class="ebtn" onclick="toggleGrid();mobCloseAll()">
+      <span class="ebtn-ico">⊞</span><span>Activar / desactivar cuadrícula</span>
+    </button>
+    <button class="ebtn" onclick="document.getElementById('pdf-imp').click();mobCloseAll()">
+      <span class="ebtn-ico"></span><span>Importar PDF</span>
+    </button>
+    <button class="ebtn" onclick="exportDOCX();mobCloseAll()">
+      <span class="ebtn-ico"></span><span>Descargar DOCX</span>
+    </button>
+    <button class="ebtn" style="border-color:rgba(255,80,80,0.35);color:rgba(200,40,40,0.9);" onclick="if(confirm('¿Restablecer todos los datos?')){resetData();mobCloseAll();}">
+      <span class="ebtn-ico"></span><span>Restablecer datos del CV</span>
+    </button>
+  </div>
+</div>
+
+<!-- MOBILE BOTTOM NAV -->
+<div class="mob-nav">
+  <button class="mob-nav-btn" id="mobnav-blocks" onclick="mobToggleDrawer('blocks')">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+    Bloques
+  </button>
+  <button class="mob-nav-btn" id="mobnav-edit" onclick="mobToggleDrawer('props')">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+    Editar
+  </button>
+  <button class="mob-nav-btn" onclick="exportPDF()">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    PDF
+  </button>
+  <button class="mob-nav-btn" id="mobnav-more" onclick="mobToggleDrawer('more')">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+    Más
+  </button>
+</div>
+
+<script>
+// ================================================================
+// TRANSLATIONS - MUST BE FIRST BEFORE EVERYTHING
+// ================================================================
+const LANGS = {
+ru:{
+profile:"Профиль",
+expTitle:"Опыт работы",
+eduTitle:"Образование",
+skillsTitle:"Навыки",
+langTitle:"Языки",
+certsTitle:"Сертификаты",
+achTitle:"Достижения",
+projTitle:"Проекты",
+contacts:"Контакты",
+additional:"Дополнительно",
+summary:"О себе",
+dragHint:"Перетащите блок на холст (левую или правую колонку). Порядок блоков можно изменять в панели редактирования.",
+cefr:{1:'A1 — Начальный',2:'A2 — Элементарный',3:'B1 — Средний',4:'B2 — Выше среднего',5:'C1 — Продвинутый',6:'C2 — В совершенстве',7:'Родной язык'},
+cefrShort:{1:'A1',2:'A2',3:'B1',4:'B2',5:'C1',6:'C2',7:'Родной'},
+cefrDocx:{1:'Начальный (A1)',2:'Элементарный (A2)',3:'Средний (B1)',4:'Выше среднего (B2)',5:'Продвинутый (C1)',6:'В совершенстве (C2)',7:'Родной язык'}
+},
+
+ua:{
+profile:"Профіль",
+expTitle:"Досвід роботи",
+eduTitle:"Освіта",
+skillsTitle:"Навички",
+langTitle:"Мови",
+certsTitle:"Сертифікати",
+achTitle:"Досягнення",
+projTitle:"Проєкти",
+contacts:"Контакти",
+additional:"Додатково",
+summary:"Про себе",
+dragHint:"Перетягніть блок на полотно (ліву або праву колонку). Порядок блоків можна змінювати в панелі редагування.",
+cefr:{1:'A1 — Початковий',2:'A2 — Елементарний',3:'B1 — Середній',4:'B2 — Вище середнього',5:'C1 — Просунутий',6:'C2 — Вільне володіння',7:'Рідна мова'},
+cefrShort:{1:'A1',2:'A2',3:'B1',4:'B2',5:'C1',6:'C2',7:'Рідна'},
+cefrDocx:{1:'Початковий (A1)',2:'Елементарний (A2)',3:'Середній (B1)',4:'Вище середнього (B2)',5:'Просунутий (C1)',6:'Вільне володіння (C2)',7:'Рідна мова'}
+},
+
+
+pl:{
+profile:"Profil",
+expTitle:"Doświadczenie",
+eduTitle:"Edukacja",
+skillsTitle:"Umiejętności",
+langTitle:"Języki",
+certsTitle:"Certyfikaty",
+achTitle:"Osiągnięcia",
+projTitle:"Projekty",
+contacts:"Kontakt",
+additional:"Dodatkowe",
+summary:"O mnie",
+dragHint:"Przeciągnij blok na płótno (lewa lub prawa kolumna). Bloki można zmieniać kolejność w panelu edycji.",
+cefr:{1:'A1 — Podstawowy',2:'A2 — Elementary',3:'B1 — Średniozaawansowany',4:'B2 — Wyższy średniozaaw.',5:'C1 — Zaawansowany',6:'C2 — Biegły',7:'Język ojczysty'},
+cefrShort:{1:'A1',2:'A2',3:'B1',4:'B2',5:'C1',6:'C2',7:'Ojczysty'},
+cefrDocx:{1:'Podstawowy (A1)',2:'Elementary (A2)',3:'Średniozaawansowany (B1)',4:'Wyższy średniozaaw. (B2)',5:'Zaawansowany (C1)',6:'Biegły (C2)',7:'Język ojczysty'}
+},
+
+en:{
+profile:"Profile",
+expTitle:"Experience",
+eduTitle:"Education",
+skillsTitle:"Skills",
+langTitle:"Languages",
+certsTitle:"Certificates",
+achTitle:"Achievements",
+projTitle:"Projects",
+contacts:"Contacts",
+additional:"Additional",
+summary:"About Me",
+dragHint:"Drag a block onto the canvas (left or right column). Blocks can be reordered within the editing panel.",
+cefr:{1:'A1 — Beginner',2:'A2 — Elementary',3:'B1 — Intermediate',4:'B2 — Upper-Intermediate',5:'C1 — Advanced',6:'C2 — Proficient',7:'Native language'},
+cefrShort:{1:'A1',2:'A2',3:'B1',4:'B2',5:'C1',6:'C2',7:'Native'},
+cefrDocx:{1:'Beginner (A1)',2:'Elementary (A2)',3:'Intermediate (B1)',4:'Upper-Intermediate (B2)',5:'Advanced (C1)',6:'Proficient (C2)',7:'Native language'}
+},
+
+de:{
+profile:"Profil",
+expTitle:"Berufserfahrung",
+eduTitle:"Ausbildung",
+skillsTitle:"Fähigkeiten",
+langTitle:"Sprachen",
+certsTitle:"Zertifikate",
+achTitle:"Errungenschaften",
+projTitle:"Projekte",
+contacts:"Kontakte",
+additional:"Zusätzliches",
+summary:"Über mich",
+dragHint:"Ziehe einen Block auf die Leinwand (linke oder rechte Spalte). Blöcke können im Bearbeitungsbereich neu angeordnet werden.",
+cefr:{1:'A1 — Anfänger',2:'A2 — Grundkenntnisse',3:'B1 — Mittelstufe',4:'B2 — Obere Mittelstufe',5:'C1 — Fortgeschritten',6:'C2 — Kompetent',7:'Muttersprache'},
+cefrShort:{1:'A1',2:'A2',3:'B1',4:'B2',5:'C1',6:'C2',7:'Mutter'},
+cefrDocx:{1:'Anfänger (A1)',2:'Grundkenntnisse (A2)',3:'Mittelstufe (B1)',4:'Obere Mittelstufe (B2)',5:'Fortgeschritten (C1)',6:'Kompetent (C2)',7:'Muttersprache'}
+},
+
+es:{
+profile:"Perfil",
+expTitle:"Experiencia laboral",
+eduTitle:"Educación",
+skillsTitle:"Habilidades",
+langTitle:"Idiomas",
+certsTitle:"Certificados",
+achTitle:"Logros",
+projTitle:"Proyectos",
+contacts:"Contactos",
+additional:"Adicional",
+summary:"Sobre mí",
+dragHint:"Arrastra un bloque al lienzo (columna izquierda o derecha). Los bloques se pueden reordenar dentro del panel de edición.",
+cefr:{1:'A1 — Principiante',2:'A2 — Elemental',3:'B1 — Intermedio',4:'B2 — Intermedio alto',5:'C1 — Avanzado',6:'C2 — Competente',7:'Lengua materna'},
+cefrShort:{1:'A1',2:'A2',3:'B1',4:'B2',5:'C1',6:'C2',7:'Nativo'},
+cefrDocx:{1:'Principiante (A1)',2:'Elemental (A2)',3:'Intermedio (B1)',4:'Intermedio alto (B2)',5:'Avanzado (C1)',6:'Competente (C2)',7:'Lengua materna'}
+}
+};
+
+let currentLang = 'ru';
+
+function setLang(lang){
+  S.lang = lang;
+  localStorage.setItem("cv_lang", lang);
+  const hint = document.getElementById('drag-hint');
+  if (hint) hint.textContent = (LANGS[lang]||LANGS.en).dragHint || hint.textContent;
+  // Highlight active button
+  document.querySelectorAll('#lang-switch button').forEach(b => {
+    b.classList.toggle('on', b.textContent.trim().toLowerCase() === lang.toLowerCase());
+  });
+  renderCV();
+}
+
+function t(key){
+ return LANGS[S.lang]?.[key] || LANGS.en[key] || key;
+}
+
+// ================================================================
+// THEMES
+// ================================================================
+const THEMES = {
+  navy:    {accent:'#1a3c6e', light:'#eef2f8', accent2:'#c8a96e'},
+  slate:   {accent:'#334155', light:'#f1f5f9', accent2:'#94a3b8'},
+  emerald: {accent:'#065f46', light:'#ecfdf5', accent2:'#6ee7b7'},
+  wine:    {accent:'#7f1d1d', light:'#fff1f2', accent2:'#fca5a5'},
+  plum:    {accent:'#4c1d95', light:'#f5f3ff', accent2:'#a78bfa'},
+  teal:    {accent:'#0f4c6e', light:'#e0f2fe', accent2:'#7dd3fc'},
+  rust:    {accent:'#7c2d12', light:'#fff7ed', accent2:'#fb923c'},
+  forest:  {accent:'#14532d', light:'#f0fdf4', accent2:'#86efac'},
+};
+
+// ================================================================
+// STATE
+// ================================================================
+let S = {
+  theme: 'navy',
+  layout: 'classic',
+  zoom: 85,
+  font: 'playfair',
+  activeTab: 'personal',
+  gridOn: false,
+  history: [],
+  data: {
+    name: 'Adam',
+    title: 'Position',
+    email: 'test@example.com',
+    phone: '+00 000 000 000',
+    location: 'City',
+    photo: '',
+    about: 'Breve descripción de perfil de prueba para demostrar la estructura de datos.',
+    
+    rightOrder: ['about','experience','education','achievements','projects','custom','textblock','signature','divider'],
+    leftOrder: ['skills','languages','certifications','links'],
+
+    sections: {
+      about: {enabled:true, col:'right'},
+      experience: {enabled:true, col:'right'},
+      education: {enabled:true, col:'right'},
+      skills: {enabled:true, col:'left'},
+      languages: {enabled:true, col:'left'},
+      certifications: {enabled:true, col:'left'},
+      achievements: {enabled:false, col:'right'},
+      projects: {enabled:false, col:'right'},
+      links: {enabled:false, col:'left'},
+      custom: {enabled:false, col:'right'},
+      textblock: {enabled:false, col:'right'},
+      signature: {enabled:false, col:'right'},
+      divider: {enabled:false, col:'right'},
+    },
+
+    experience: [
+      {id:1, role:'Frontend Developer', company:'SampleCorp', from:'2022', to:'Present', desc:'Descripción de prueba de responsabilidades y tareas.', tags:'React, TypeScript'},
+      {id:2, role:'Junior Developer', company:'DemoSoft', from:'2020', to:'2022', desc:'Descripción de prueba de experiencia previa.', tags:'Vue.js, REST'},
+    ],
+
+    education: [
+      {id:1, degree:'Licenciatura en Informática', school:'Sample University', year:'2016 – 2020', desc:''},
+      {id:2, degree:'UI/UX Certificate', school:'Online Academy', year:'2021', desc:''},
+    ],
+
+    skills: [
+      {id:1, name:'JavaScript', level:80},
+      {id:2, name:'React', level:75},
+      {id:3, name:'CSS', level:70},
+      {id:4, name:'Node.js', level:60},
+      {id:5, name:'Design Tools', level:65},
+    ],
+
+    languages: [
+      {id:1, lang:'English', level:4},
+      {id:2, lang:'German', level:2},
+      {id:3, lang:'Spanish', level:1},
+    ],
+
+    certifications: [
+      {id:1, name:'Frontend Basics', issuer:'Online Academy', year:'2022', desc:''},
+    ],
+
+    achievements: [
+      {id:1, text:'Logro de prueba n.º 1'},
+      {id:2, text:'Logro de prueba n.º 2'},
+    ],
+
+    projects: [
+      {id:1, name:'DemoProject', desc:'Proyecto de prueba para demostración.', link:'https://example.com', tags:'React'},
+    ],
+
+    links: [
+      {id:1, icon:'🔗', label:'LinkedIn', url:'https://example.com/linkedin'},
+      {id:2, icon:'⌨', label:'GitHub', url:'https://example.com/github'},
+      {id:3, icon:'🌐', label:'Portfolio', url:'https://example.com'},
+    ],
+
+    custom: {
+      title:'Adicional',
+      text:'Texto de prueba para el bloque personalizado.'
+    },
+
+    textblock: {
+      title: 'Consentimiento para el tratamiento de datos',
+      content: 'Texto de prueba de consentimiento para el tratamiento de datos.'
+    },
+
+    signature: {
+      title: 'Firma',
+      image: '',
+    },
+  }
+};
+
+
+S.lang = localStorage.getItem("cv_lang") || "es";
+
+// ================================================================
+// AUTOSAVE / LOCALSTORAGE
+// ================================================================
+const LS_KEY = 'cvstudio_data_v1';
+
+function saveToCache() {
+  try { localStorage.setItem(LS_KEY, JSON.stringify(S.data)); } catch(e) {}
+}
+
+function loadFromCache() {
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    if (raw) { S.data = Object.assign({}, S.data, JSON.parse(raw)); return true; }
+  } catch(e) {}
+  return false;
+}
+
+function resetData() {
+  if (!confirm('¿Está seguro de que desea restablecer todos los datos del CV? Esta acción no se puede deshacer.')) return;
+  localStorage.removeItem(LS_KEY);
+  location.reload();
+}
+
+window.addEventListener('beforeunload', function(e) {
+  e.preventDefault();
+  e.returnValue = '¿Está seguro? Los datos se guardan automáticamente en la caché del navegador.';
+});
+
+// ================================================================
+// HISTORY
+// ================================================================
+function saveH() { S.history.push(JSON.stringify(S.data)); if(S.history.length>30) S.history.shift(); }
+function undo() { if(!S.history.length) return; S.data = JSON.parse(S.history.pop()); renderCV(); renderProps(); saveToCache(); }
+
+// ================================================================
+// THEME
+// ================================================================
+function buildSwatches() {
+  const c = document.getElementById('swatches');
+  c.innerHTML = Object.entries(THEMES).map(([k,v])=>
+    `<div class="swatch${S.theme===k?' on':''}" data-t="${k}" style="background:${v.accent};" title="${k}"></div>`
+  ).join('');
+  c.querySelectorAll('.swatch').forEach(s=>s.addEventListener('click',()=>{ S.theme=s.dataset.t; applyTheme(); }));
+}
+function applyTheme() {
+  const theme = THEMES[S.theme];
+  const p = document.getElementById('cvp');
+
+  p.style.setProperty('--ca', theme.accent);
+  p.style.setProperty('--cl', theme.light);
+
+  document.querySelectorAll('.swatch').forEach(s=>{
+    s.classList.toggle('on', s.dataset.t === S.theme);
+  });
+
+  renderCV();
+
+  if(S.activeTab === 'design') renderProps();
+}
+
+// ================================================================
+// ZOOM / LAYOUT
+// ================================================================
+function setZoom(z) {
+  S.zoom = z;
+  const p = document.getElementById('cvp');
+  p.style.transform = `scale(${z/100})`;
+  p.style.marginBottom = `${(z/100 - 1) * 1123}px`;
+  document.getElementById('sb-zoom').textContent = z+'%';
+  document.querySelectorAll('.ctbtn').forEach(b=>{
+    if([70,85,100,125,150].includes(+b.textContent.replace('%',''))) b.classList.remove('on');
+  });
+  document.querySelectorAll('.ctbtn').forEach(b=>{ if(b.textContent.trim()===z+'%') b.classList.add('on'); });
+}
+
+function setLayout(l) {
+  S.layout = l;
+  const p = document.getElementById('cvp');
+  p.className = p.className.replace(/layout-\w+/,'') + ' layout-' + l;
+  ['classic','minimal','bold','right'].forEach(x=>document.getElementById('lb-'+x).classList.toggle('on', x===l));
+  renderCV();
+}
+function toggleGrid() {
+  S.gridOn = !S.gridOn;
+  const p = document.getElementById('cvp');
+  p.style.backgroundImage = S.gridOn
+    ? 'linear-gradient(rgba(26,60,110,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(26,60,110,0.05) 1px,transparent 1px)'
+    : 'none';
+  p.style.backgroundSize = '20px 20px';
+}
+
+// ================================================================
+// RENDER CV
+// ================================================================
+function getFont() {
+  const fs = {playfair:"'Playfair Display',serif", sans:"'DM Sans',sans-serif", raleway:"'Raleway',sans-serif", mono:"'DM Mono',monospace"};
+  return fs[S.font] || fs.playfair;
+}
+
+function renderCV() {
+  const d = S.data;
+  const p = document.getElementById('cvp');
+  const theme = THEMES[S.theme];
+  p.style.setProperty('--ca', theme.accent);
+  p.style.setProperty('--cl', theme.light);
+  p.style.setProperty('--cf', getFont());
+
+  const isBold = S.layout === 'bold';
+  const hasLeft = !isBold;
+
+  // --- HEADER ---
+  let photoHtml = '';
+  if (d.photo) {
+    const cls = isBold ? 'cv-photo-rect' : 'cv-photo';
+    photoHtml = `<img src="${d.photo}" class="${cls}" alt="photo">`;
+  }
+
+  const contactsHtml = `
+    <div class="cv-contacts">
+      ${d.email ? `<div class="cv-ci"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> <a href="mailto:${d.email}">${d.email}</a></div>` : ''}
+      ${d.phone ? `<div class="cv-ci"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.99 12c-.98-2.69-1.5-5.51-1.49-8.36A2 2 0 0 1 5.68 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L9.91 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg> ${d.phone}</div>` : ''}
+      ${d.location ? `<div class="cv-ci"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> ${d.location}</div>` : ''}
+    </div>`;
+
+  let headerHtml = '';
+  if (isBold) {
+    const linksEnabled = d.sections.links && d.sections.links.enabled;
+    headerHtml = `<div class="cv-header">
+      <div class="cv-hl">
+        <div style="display:flex;align-items:flex-start;gap:14px;">
+          ${photoHtml}
+          <div>
+            <div class="cv-name" style="font-family:${getFont()}">${d.name}</div>
+            <div class="cv-jobtitle">${d.title}</div>
+            ${contactsHtml}
+          </div>
+        </div>
+      </div>
+      <div class="cv-hr" style="color:rgba(255,255,255,0.82);">
+        <div style="font-size:9px;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.45);margin-bottom:8px;">Contactos</div>
+        ${linksEnabled ? d.links.map(l=>`<a href="${l.url}" style="color:rgba(255,255,255,0.82);text-decoration:none;display:flex;align-items:center;gap:5px;margin-bottom:4px;font-size:10.5px;">${l.icon} ${l.label}</a>`).join('') : ''}
+      </div>
+    </div>`;
+  } else {
+    const headerStyle = S.layout === 'minimal' ? `style="color:${theme.accent};"` : '';
+    headerHtml = `<div class="cv-header">
+      <div style="display:flex;align-items:flex-start;gap:14px;justify-content:space-between;">
+        <div>
+          <div class="cv-name" ${headerStyle} style="font-family:${getFont()}">${d.name}</div>
+          <div class="cv-jobtitle">${d.title}</div>
+          ${contactsHtml}
+        </div>
+        ${photoHtml}
+      </div>
+    </div>`;
+  }
+
+  // --- SECTIONS RENDERER ---
+  function secTitle(txt, muted) {
+    return `<div class="cv-sec-title${muted?' muted':''}">${txt}</div>`;
+  }
+
+  function renderSection(key) {
+    const d2 = S.data;
+    if (!d2.sections[key] || !d2.sections[key].enabled) return '';
+    switch(key) {
+      case 'about':
+        return `<div class="cv-section">${secTitle(t('profile'))}
+          <p class="cv-about">${d2.about}</p></div>`;
+      case 'experience':
+        return `<div class="cv-section">${secTitle(t('expTitle'))}
+          ${d2.experience.map(e=>`<div class="cv-exp">
+            <div class="cv-exp-hd"><span class="cv-exp-role">${e.role}</span><span class="cv-exp-date">${e.from} – ${e.to}</span></div>
+            <div class="cv-exp-co">${e.company}</div>
+            <div class="cv-exp-desc">${e.desc}</div>
+            ${e.tags ? `<div class="cv-tags">${e.tags.split(',').map(tag=>`<span class="cv-tag">${tag.trim()}</span>`).join('')}</div>` : ''}
+          </div>`).join('')}</div>`;
+      case 'education':
+        return `<div class="cv-section">${secTitle(t('eduTitle'))}
+          ${d2.education.map(e=>`<div class="cv-edu">
+            <div class="cv-edu-degree">${e.degree}</div>
+            <div class="cv-edu-school">${e.school}</div>
+            <div class="cv-edu-year">${e.year}</div>
+            ${e.desc ? `<div class="cv-about" style="margin-top:2px;">${e.desc}</div>` : ''}
+          </div>`).join('')}</div>`;
+      case 'skills':
+        return `<div class="cv-section">${secTitle(t('skillsTitle'), true)}
+          ${d2.skills.map(s=>`<div class="cv-skill">
+            <div class="cv-skill-row"><span>${s.name}</span><span style="font-size:9px;color:#999">${s.level}%</span></div>
+            <div class="cv-bar"><div class="cv-bar-fill" style="width:${s.level}%"></div></div>
+          </div>`).join('')}</div>`;
+      case 'languages':
+        return `<div class="cv-section">${secTitle(t('langTitle'), true)}
+          ${d2.languages.map(l=>{
+            const cefrMap = (LANGS[S.lang]||LANGS.en).cefr || {1:'A1 — Principiante',2:'A2 — Elemental',3:'B1 — Intermedio',4:'B2 — Intermedio alto',5:'C1 — Avanzado',6:'C2 — Competente',7:'Lengua materna'};
+            const lvlLabel = cefrMap[l.level] || 'A1';
+            return `<div class="cv-lang-row">
+              <span>${l.lang}</span>
+              <span style="font-size:9px;font-weight:600;padding:1px 6px;border-radius:4px;background:var(--cl,#eef2f8);color:var(--ca,#1a3c6e);letter-spacing:0.04em;">${lvlLabel}</span>
+            </div>`;
+          }).join('')}</div>`;
+      case 'certifications':
+        return `<div class="cv-section">${secTitle(t('certsTitle'), true)}
+          ${d2.certifications.map(c=>`<div class="cv-cert">
+            <div class="cv-cert-badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M9 15v7l3-2 3 2v-7"/></svg></div>
+            <div><div style="font-size:11px;font-weight:500;">${c.name}</div>
+            <div style="font-size:9.5px;color:#888;">${c.issuer}${c.year?' · '+c.year:''}</div>
+            ${c.desc ? `<div style="font-size:9.5px;color:#666;margin-top:2px;line-height:1.5;">${c.desc}</div>` : ''}</div>
+          </div>`).join('')}</div>`;
+      case 'achievements':
+        return `<div class="cv-section">${secTitle(t('achTitle'))}
+          ${d2.achievements.map(a=>`<div class="cv-ach"><span class="cv-ach-bullet"><svg width="10" height="10" viewBox="0 0 24 24" fill="var(--ca,#1a3c6e)" stroke="none"><polygon points="5,3 19,12 5,21"/></svg></span>${a.text}</div>`).join('')}</div>`;
+      case 'projects':
+        return `<div class="cv-section">${secTitle(t('projTitle'))}
+          ${d2.projects.map(pr=>`<div class="cv-exp">
+            <div class="cv-exp-hd" style="display:flex; flex-direction: column;"><span class="cv-exp-role">${pr.name}</span>${pr.link?`<a href="${pr.link.startsWith('http')?pr.link:'https://'+pr.link}" style="font-size:9.5px;color:var(--ca); max-width: 100%; overflow-wrap: break-word;">${pr.link}</a>`:''}</div>
+            <div class="cv-exp-desc">${pr.desc}</div>
+            ${pr.tags ? `<div class="cv-tags">${pr.tags.split(',').map(tag=>`<span class="cv-tag">${tag.trim()}</span>`).join('')}</div>` : ''}
+          </div>`).join('')}</div>`;
+      case 'links':
+        return `<div class="cv-section">${secTitle('Contactos / Redes sociales', true)}
+          ${d2.links.map(l=>`<div style="display:flex;align-items:center;gap:5px;margin-bottom:5px;font-size:11px;">
+            <span>${l.icon}</span>
+            ${l.url ? `<a href="${l.url.startsWith('http')?l.url:'https://'+l.url}" style="color:var(--ca);text-decoration:none;">${l.label}</a>` : `<span>${l.label}</span>`}
+          </div>`).join('')}</div>`;
+      case 'custom':
+        return `<div class="cv-section">${secTitle(d2.custom.title)}
+          <p class="cv-about">${d2.custom.text}</p></div>`;
+      case 'textblock':
+        return `<div class="cv-section">${secTitle(d2.textblock.title)}
+          <p class="cv-textblock">${d2.textblock.content}</p></div>`;
+      case 'signature':
+        return d2.signature.image
+          ? `<div class="cv-signature"><img src="${d2.signature.image}" class="cv-sig-img" alt="signature"></div>`
+          : `<div class="cv-signature" style="border-top:1px solid #ddd;margin-top:12px;padding-top:8px;color:#bbb;font-size:10px;font-style:italic;"></div>`;
+      case 'divider':
+        return `<div style="border-top:1px solid #eee;margin:8px 0;"></div>`;
+      default: return '';
+    }
+  }
+
+  // build columns
+  const rightSecs = (d.rightOrder || []).map(k => renderSection(k)).join('');
+  const leftSecs = hasLeft ? (d.leftOrder || []).map(k => renderSection(k)).join('') : '';
+
+  const bodyHtml = isBold
+    ? `<div class="cv-body"><div class="cv-right">${rightSecs}</div></div>`
+    : `<div class="cv-body"><div class="cv-left">${leftSecs}</div><div class="cv-right">${rightSecs}</div></div>`;
+
+  p.innerHTML = headerHtml + bodyHtml;
+  document.getElementById('sb-secs').textContent =
+    Object.values(d.sections).filter(s=>s.enabled).length;
+}
+
+// ================================================================
+// PROPS PANEL
+// ================================================================
+function switchTab(t) {
+  S.activeTab = t;
+  ['personal','sections','design','export'].forEach((x,i)=>{
+    document.querySelectorAll('.ptab')[i].classList.toggle('on', x===t);
+  });
+  renderProps();
+}
+
+function renderProps() {
+  const pb = document.getElementById('pbody');
+  const d = S.data;
+
+  if (S.activeTab === 'personal') {
+    pb.innerHTML = `
+    <div class="pgroup">
+      <span class="plabel">Foto de perfil</span>
+      <div class="photo-upload-area" onclick="document.getElementById('photo-input').click()">
+        ${d.photo ? `<img src="${d.photo}" class="photo-preview">` : '<div style="font-size:28px;margin-bottom:6px;color:var(--muted);"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>'}
+        <div class="photo-upload-text">${d.photo ? 'Haz clic para cambiar' : 'Haz clic para subir foto'}</div>
+      </div>
+      <input type="file" id="photo-input" accept="image/*" style="display:none;" onchange="uploadPhoto(event)">
+      ${d.photo ? `<button class="add-btn" style="margin-top:5px;" onclick="saveH();S.data.photo='';renderCV();renderProps();">✕ Eliminar foto</button>` : ''}
+    </div>
+    <div class="pgroup">
+      <span class="plabel">Información básica</span>
+      <input class="pinput" value="${esc(d.name)}" oninput="upd('name',this.value)" placeholder="Nombre Apellido" style="margin-bottom:5px;">
+      <input class="pinput" value="${esc(d.title)}" oninput="upd('title',this.value)" placeholder="Cargo">
+    </div>
+    <div class="pgroup">
+      <span class="plabel">Contactos</span>
+      <input class="pinput" value="${esc(d.email)}" oninput="upd('email',this.value)" placeholder="Email" style="margin-bottom:5px;">
+      <input class="pinput" value="${esc(d.phone)}" oninput="upd('phone',this.value)" placeholder="Teléfono" style="margin-bottom:5px;">
+      <input class="pinput" value="${esc(d.location)}" oninput="upd('location',this.value)" placeholder="Ciudad, País">
+    </div>
+    <div class="pgroup">
+      <span class="plabel">Sobre mí</span>
+      <textarea class="ptextarea" oninput="upd('about',this.value)">${esc(d.about)}</textarea>
+    </div>
+    `;
+  }
+
+  else if (S.activeTab === 'sections') {
+    const secNames = {experience:'Experiencia laboral',education:'Educación',skills:'Habilidades',languages:'Idiomas',certifications:'Certificados',achievements:'Logros',projects:'Proyectos',links:'Redes sociales',about:'Sobre mí',custom:'Texto libre',divider:'Divisor', signature:"Firma",textblock:"Bloque de texto"};
+
+    // Experience
+    pb.innerHTML = `
+    <div class="pgroup">
+      <span class="plabel">Visibilidad de secciones</span>
+      ${Object.entries(d.sections).map(([k,v])=>`
+        <div class="tog-row"><span>${secNames[k]||k}</span>
+          <div class="toggle${v.enabled?' on':''}" onclick="toggleSec('${k}')"></div>
+        </div>`).join('')}
+    </div>
+    <div class="pgroup">
+      <span class="plabel">Experiencia laboral</span>
+      ${d.experience.map(e=>`
+        <div class="pcard">
+          <div class="pcard-title">${esc(e.role)}</div>
+          <div class="pcard-sub">${esc(e.company)} · ${e.from}–${e.to}</div>
+          <div class="pcard-actions">
+            <button class="pca-btn" onclick="editExp(${e.id})">✏</button>
+            <button class="pca-btn del" onclick="delItem('experience',${e.id})">✕</button>
+          </div>
+        </div>`).join('')}
+      <button class="add-btn" onclick="addExp()">+ Añadir experiencia</button>
+    </div>
+    <div class="pgroup">
+      <span class="plabel">Educación</span>
+      ${d.education.map(e=>`
+        <div class="pcard">
+          <div class="pcard-title">${esc(e.degree)}</div>
+          <div class="pcard-sub">${esc(e.school)} · ${e.year}</div>
+          <div class="pcard-actions">
+            <button class="pca-btn" onclick="editEdu(${e.id})">✏</button>
+            <button class="pca-btn del" onclick="delItem('education',${e.id})">✕</button>
+          </div>
+        </div>`).join('')}
+      <button class="add-btn" onclick="addEdu()">+ Añadir educación</button>
+    </div>
+    <div class="pgroup">
+      <span class="plabel">Habilidades</span>
+      ${d.skills.map(s=>`
+        <div class="pcard">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <span style="font-size:12px;font-weight:500;">${esc(s.name)}</span>
+            <div class="pcard-actions" style="position:static;">
+              <button class="pca-btn" onclick="editSkill(${s.id})">✏</button>
+              <button class="pca-btn del" onclick="delItem('skills',${s.id})">✕</button>
+            </div>
+          </div>
+          <div class="cv-bar" style="margin-top:5px;"><div class="cv-bar-fill" style="width:${s.level}%;background:var(--accent);"></div></div>
+        </div>`).join('')}
+      <button class="add-btn" onclick="addSkill()">+ Añadir habilidad</button>
+    </div>
+    <div class="pgroup">
+      <span class="plabel">Idiomas</span>
+      ${d.languages.map(l=>`
+        <div class="pcard">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <span style="font-size:12px;font-weight:500;">${esc(l.lang)}</span>
+            <div class="pcard-actions" style="position:static;">
+              <button class="pca-btn" onclick="editLang(${l.id})">✏</button>
+              <button class="pca-btn del" onclick="delItem('languages',${l.id})">✕</button>
+            </div>
+          </div>
+          <div class="cv-dots" style="margin-top:5px;">${(()=>{const m=(LANGS[S.lang]||LANGS.en).cefrShort||{1:'A1',2:'A2',3:'B1',4:'B2',5:'C1',6:'C2',7:'Nativo'};return `<span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;background:var(--accent);color:#fff;">${m[l.level]||'A1'}</span>`;})()}</div>
+        </div>`).join('')}
+      <button class="add-btn" onclick="addLang()">+ Añadir idioma</button>
+    </div>
+    <div class="pgroup">
+      <span class="plabel">Certificados</span>
+      ${d.certifications.map(c=>`
+        <div class="pcard">
+          <div class="pcard-title">${esc(c.name)}</div>
+          <div class="pcard-sub">${esc(c.issuer)}${c.year?' · '+c.year:''}</div>
+          <div class="pcard-actions">
+            <button class="pca-btn" onclick="editCert(${c.id})">✏</button>
+            <button class="pca-btn del" onclick="delItem('certifications',${c.id})">✕</button>
+          </div>
+        </div>`).join('')}
+      <button class="add-btn" onclick="addCert()">+ Añadir certificado</button>
+    </div>
+    <div class="pgroup">
+      <span class="plabel">Logros</span>
+      ${d.achievements.map(a=>`
+        <div class="pcard">
+          <div class="pcard-title" style="font-size:11px;font-weight:400;line-height:1.5;">${esc(a.text)}</div>
+          <div class="pcard-actions">
+            <button class="pca-btn" onclick="editAch(${a.id})">✏</button>
+            <button class="pca-btn del" onclick="delItem('achievements',${a.id})">✕</button>
+          </div>
+        </div>`).join('')}
+      <button class="add-btn" onclick="addAch()">+ Añadir logro</button>
+    </div>
+    <div class="pgroup">
+      <span class="plabel">Proyectos</span>
+      ${d.projects.map(pr=>`
+        <div class="pcard">
+          <div class="pcard-title">${esc(pr.name)}</div>
+          <div class="pcard-sub">${esc(pr.desc)}</div>
+          <div class="pcard-actions">
+            <button class="pca-btn" onclick="editProject(${pr.id})">✏</button>
+            <button class="pca-btn del" onclick="delItem('projects',${pr.id})">✕</button>
+          </div>
+        </div>`).join('')}
+      <button class="add-btn" onclick="addProject()">+ Añadir proyecto</button>
+    </div>
+    <div class="pgroup">
+      <span class="plabel">Redes sociales / Enlac.</span>
+      ${d.links.map(l=>`
+        <div class="pcard">
+          <div class="pcard-title">${l.icon} ${esc(l.label)}</div>
+          <div class="pcard-sub" style="word-break:break-all;">${esc(l.url)}</div>
+          <div class="pcard-actions">
+            <button class="pca-btn" onclick="editLink(${l.id})">✏</button>
+            <button class="pca-btn del" onclick="delItem('links',${l.id})">✕</button>
+          </div>
+        </div>`).join('')}
+      <button class="add-btn" onclick="addLink()">+ Añadir enlace</button>
+    </div>
+    <div class="pgroup">
+      <span class="plabel">Texto libre</span>
+      <input class="pinput" value="${esc(d.custom.title)}" oninput="S.data.custom.title=this.value;renderCV();" placeholder="Título" style="margin-bottom:5px;">
+      <textarea class="ptextarea" oninput="S.data.custom.text=this.value;renderCV();">${esc(d.custom.text)}</textarea>
+    </div>
+    <div class="pgroup">
+      <span class="plabel">Bloque de texto</span>
+      <input class="pinput" value="${esc(d.textblock.title)}" oninput="S.data.textblock.title=this.value;renderCV();" placeholder="Título del bloque" style="margin-bottom:5px;">
+      <textarea class="ptextarea" oninput="S.data.textblock.content=this.value;renderCV();" placeholder="Contenido">${esc(d.textblock.content)}</textarea>
+    </div>
+    <div class="pgroup">
+      <span class="plabel">Firma manuscrita</span>
+      ${d.signature.image ? `
+        <div style="margin-bottom:8px;text-align:center;">
+          <img src="${d.signature.image}" style="max-width:100%;max-height:60px;border:1px solid var(--border);border-radius:6px;">
+        </div>
+      ` : ''}
+      <button class="add-btn" onclick="openSignatureModal()">Dibujar firma</button>
+      ${d.signature.image ? `<button class="add-btn" style="background:#fee;margin-top:5px;" onclick="saveH();S.data.signature.image='';renderCV();renderProps();">✕ Eliminar firma</button>` : ''}
+    </div>
+    <div class="pgroup">
+      <span class="plabel">Orden de secciones (columna derecha)</span>
+      <div id="order-right">${renderOrderList('right')}</div>
+      <span class="plabel" style="margin-top:10px;">Columna izquierda</span>
+      <div id="order-left">${renderOrderList('left')}</div>
+    </div>
+    `;
+    initOrderDrag();
+  }
+
+  else if (S.activeTab === 'design') {
+    const t = THEMES[S.theme];
+    pb.innerHTML = `
+    <div class="pgroup">
+      <span class="plabel">Tema de color</span>
+      <div class="cgrid">
+        ${Object.entries(THEMES).map(([k,v])=>`<div class="csw${S.theme===k?' on':''}" style="background:${v.accent};" onclick="S.theme='${k}';applyTheme();" title="${k}"></div>`).join('')}
+      </div>
+    </div>
+    <div class="pgroup">
+      <span class="plabel">Fuente de encabezados</span>
+      <div class="fopt${S.font==='playfair'?' on':''}" style="font-family:'Playfair Display',serif;" onclick="setFont('playfair')">Playfair Display — elegante</div>
+      <div class="fopt${S.font==='raleway'?' on':''}" style="font-family:'Raleway',sans-serif;" onclick="setFont('raleway')">Raleway — moderno</div>
+      <div class="fopt${S.font==='sans'?' on':''}" style="font-family:'DM Sans',sans-serif;" onclick="setFont('sans')">DM Sans — neutro</div>
+      <div class="fopt${S.font==='mono'?' on':''}" style="font-family:'DM Mono',monospace;" onclick="setFont('mono')">DM Mono — técnico</div>
+    </div>
+    <div class="pgroup">
+      <span class="plabel">Diseño de página</span>
+      <div class="lgrid">
+        ${lthumb('classic','Clásico')}
+        ${lthumb('minimal','Mínimo')}
+        ${lthumb('bold','Atrevido')}
+        ${lthumb('right','Lado derecho')}
+      </div>
+    </div>
+    <div class="pgroup">
+      <span class="plabel">Zoom</span>
+      <div class="rrow">
+        <input type="range" min="60" max="110" step="5" value="${S.zoom}" oninput="setZoom(+this.value)">
+        <span class="rval">${S.zoom}%</span>
+      </div>
+    </div>
+    `;
+  }
+
+  else if (S.activeTab === 'export') {
+    pb.innerHTML = `
+    <div class="pgroup" style="font-size:11px;color:var(--muted);line-height:1.6;background:var(--bg);border-radius:7px;padding:10px;border:1px solid var(--border);">
+      Todos los datos se almacenan solo en el navegador. El PDF se genera localmente: no se envía nada al servidor.
+    </div>
+    <div style="margin-top:12px;">
+      <button class="ebtn" onclick="exportPDF()"><span class="ebtn-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span><div><div style="font-size:13px;font-weight:500;">Descargar PDF</div><div style="font-size:11px;color:var(--muted);">Formato A4, alta calidad</div></div></button>
+      <button class="ebtn" onclick="exportDOCX()"><span class="ebtn-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg></span><div><div style="font-size:13px;font-weight:500;">Descargar Word (.docx)</div><div style="font-size:11px;color:var(--muted);">Se abre en Word y Google Docs</div></div></button>
+      <button class="ebtn" onclick="window.print()"><span class="ebtn-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></span><div><div style="font-size:13px;font-weight:500;">Imprimir</div><div style="font-size:11px;color:var(--muted);">O «Guardar como PDF» en el diálogo</div></div></button>
+      <button class="ebtn" onclick="exportJSON()"><span class="ebtn-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span><div><div style="font-size:13px;font-weight:500;">Guardar datos (JSON)</div><div style="font-size:11px;color:var(--muted);">Copia de seguridad de todos los datos</div></div></button>
+      <button class="ebtn" onclick="document.getElementById('imp-file').click()"><span class="ebtn-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></span><div><div style="font-size:13px;font-weight:500;">Importar JSON</div><div style="font-size:11px;color:var(--muted);">Cargar datos guardados</div></div></button>
+      <input type="file" id="imp-file" accept=".json" style="display:none;" onchange="importJSON(event)">
+    </div>
+    `;
+  }
+}
+
+function lthumb(l, label) {
+  const t = THEMES[S.theme];
+  const thumbInner = {
+    classic: `<div style="height:14px;background:${t.accent};"></div><div style="display:flex;flex:1;"><div style="width:36%;background:${t.light};"></div><div style="flex:1;background:white;"></div></div>`,
+    minimal: `<div style="height:12px;border-bottom:2px solid ${t.accent};"></div><div style="display:flex;flex:1;"><div style="width:34%;border-right:1px solid #eee;"></div><div style="flex:1;"></div></div>`,
+    bold: `<div style="height:24px;background:${t.accent};"></div><div style="flex:1;background:white;"></div>`,
+    right: `<div style="height:14px;background:${t.accent};"></div><div style="display:flex;flex:1;"><div style="flex:1;background:white;"></div><div style="width:34%;background:${t.light};"></div></div>`,
+  };
+  return `<div class="lthumb${S.layout===l?' on':''}" onclick="setLayout('${l}')" title="${label}">${thumbInner[l]}</div>`;
+}
+
+// ================================================================
+// ORDER DRAG (section reorder)
+// ================================================================
+function renderOrderList(col) {
+  const order = col === 'right' ? S.data.rightOrder : S.data.leftOrder;
+  const secNames = {experience:'Experiencia laboral',education:'Educación',skills:'Habilidades',languages:'Idiomas',certifications:'Certificados',achievements:'Logros',projects:'Proyectos',links:'Enlaces',about:'Sobre mí',custom:'Texto libre',divider:'Divisor'};
+  return order.filter(k => S.data.sections[k]).map(k=>`
+    <div class="pcard" draggable="true" data-key="${k}" data-col="${col}" style="cursor:grab;display:flex;align-items:center;gap:6px;padding:6px 9px;margin-bottom:3px;">
+      <span style="color:var(--muted);font-size:12px;">⠿</span>
+      <span style="font-size:11.5px;">${secNames[k]||k}</span>
+    </div>`).join('');
+}
+
+function initOrderDrag() {
+  ['right','left'].forEach(col => {
+    const container = document.getElementById('order-'+col);
+    if (!container) return;
+    let dragKey = null;
+    container.querySelectorAll('[data-key]').forEach(el => {
+      el.addEventListener('dragstart', e => { dragKey = el.dataset.key; el.style.opacity='0.4'; });
+      el.addEventListener('dragend', e => { el.style.opacity='1'; dragKey=null; });
+      el.addEventListener('dragover', e => { e.preventDefault(); });
+      el.addEventListener('drop', e => {
+        e.preventDefault();
+        const targetKey = el.dataset.key;
+        if (!dragKey || dragKey === targetKey) return;
+        const order = col==='right' ? S.data.rightOrder : S.data.leftOrder;
+        const from = order.indexOf(dragKey);
+        const to = order.indexOf(targetKey);
+        if (from > -1 && to > -1) {
+          order.splice(from, 1);
+          order.splice(to, 0, dragKey);
+          renderCV();
+          renderProps();
+        }
+      });
+    });
+  });
+}
+
+// ================================================================
+// HELPERS
+// ================================================================
+function esc(s) { return (s||'').toString().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function uid() { return Date.now() + Math.floor(Math.random()*1000); }
+function upd(key, val) { S.data[key] = val; renderCV(); saveToCache(); }
+function setFont(f) { S.font = f; renderCV(); if(S.activeTab==='design') renderProps(); }
+function toggleSec(k) { saveH(); S.data.sections[k].enabled = !S.data.sections[k].enabled; renderCV(); renderProps(); saveToCache(); }
+function delItem(arr, id) { saveH(); S.data[arr] = S.data[arr].filter(x=>x.id!==id); renderCV(); renderProps(); saveToCache(); }
+
+// ================================================================
+// MODALS
+// ================================================================
+function openModal(html) {
+  document.getElementById('modal-inner').innerHTML = html;
+  document.getElementById('modal').style.display = 'flex';
+}
+function closeModal(e) {
+  if (!e || e.target === document.getElementById('modal')) {
+    document.getElementById('modal').style.display = 'none';
+  }
+}
+function closeModalBtn() { document.getElementById('modal').style.display = 'none'; }
+
+// ================================================================
+// SIGNATURE MODAL
+// ================================================================
+function openSignatureModal() {
+  openModal(`<div class="modal-title">Firma manuscrita</div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:8px;">Dibuja tu firma con el ratón (o el dedo en una tableta)</div>
+    <div class="sig-canvas-wrap">
+      <canvas id="sig-canvas" class="sig-canvas" width="380" height="120" style="width:380px;height:120px;"></canvas>
+      <div class="sig-btns">
+        <button class="sig-btn" onclick="clearSignature()">Borrar</button>
+        <button class="sig-btn primary" onclick="saveSignature()">Guardar firma</button>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:12px;font-size:11px;color:var(--muted);">O sube una imagen de firma lista</div>
+    <input type="file" id="sig-file" accept="image/*" style="display:none;" onchange="uploadSignature(event)">
+    <button class="add-btn" style="margin-top:8px;" onclick="document.getElementById('sig-file').click()">📤 Subir imagen</button>
+    <div class="modal-actions" style="margin-top:12px;">
+      <button class="mbtn" onclick="closeModalBtn()">Cerrar</button>
+    </div>`);
+  setTimeout(() => initSignatureCanvas(), 100);
+}
+
+function initSignatureCanvas() {
+  const canvas = document.getElementById('sig-canvas');
+  if (!canvas) return;
+
+  // HiDPI rendering for crisp, smooth lines
+  const dpr = window.devicePixelRatio || 1;
+  const displayW = 380;
+  const displayH = 120;
+  canvas.width = displayW * dpr;
+  canvas.height = displayH * dpr;
+  canvas.style.width = displayW + 'px';
+  canvas.style.height = displayH + 'px';
+
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.lineWidth = 1.8;
+  ctx.strokeStyle = '#1a1a1a';
+
+  let isDrawing = false;
+  let pts = [];
+
+  function getPos(e, rect) { return { x: e.clientX - rect.left, y: e.clientY - rect.top }; }
+  function getTouchPos(e, rect) { return { x: e.touches[0].clientX - rect.left, y: e.touches[0].clientY - rect.top }; }
+
+  function startDraw(pos) {
+    isDrawing = true; pts = [pos];
+    ctx.beginPath(); ctx.moveTo(pos.x, pos.y);
+  }
+  function drawMove(pos) {
+    if (!isDrawing) return;
+    pts.push(pos);
+    if (pts.length < 3) { ctx.lineTo(pos.x, pos.y); ctx.stroke(); return; }
+    const p0 = pts[pts.length - 3], p1 = pts[pts.length - 2], p2 = pts[pts.length - 1];
+    const mid1 = { x: (p0.x + p1.x) / 2, y: (p0.y + p1.y) / 2 };
+    const mid2 = { x: (p1.x + p2.x) / 2, y: (p1.y + p2.y) / 2 };
+    ctx.beginPath(); ctx.moveTo(mid1.x, mid1.y);
+    ctx.quadraticCurveTo(p1.x, p1.y, mid2.x, mid2.y);
+    ctx.stroke();
+  }
+
+  canvas.addEventListener('mousedown', e => startDraw(getPos(e, canvas.getBoundingClientRect())));
+  canvas.addEventListener('mousemove', e => { if (isDrawing) drawMove(getPos(e, canvas.getBoundingClientRect())); });
+  canvas.addEventListener('mouseup', () => { isDrawing = false; pts = []; });
+  canvas.addEventListener('mouseleave', () => { isDrawing = false; pts = []; });
+  canvas.addEventListener('touchstart', e => { e.preventDefault(); startDraw(getTouchPos(e, canvas.getBoundingClientRect())); }, {passive:false});
+  canvas.addEventListener('touchmove', e => { e.preventDefault(); drawMove(getTouchPos(e, canvas.getBoundingClientRect())); }, {passive:false});
+  canvas.addEventListener('touchend', () => { isDrawing = false; pts = []; });
+}
+
+function clearSignature() {
+  const canvas = document.getElementById('sig-canvas');
+  if (canvas) canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+}
+
+function saveSignature() {
+  const canvas = document.getElementById('sig-canvas');
+  saveH();
+  S.data.signature.image = canvas.toDataURL('image/png');
+  closeModalBtn();
+  renderCV();
+  renderProps();
+  toast('Firma guardada');
+}
+
+function uploadSignature(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const r = new FileReader();
+  r.onload = ev => {
+    saveH();
+    S.data.signature.image = ev.target.result;
+    closeModalBtn();
+    renderCV();
+    renderProps();
+    toast('Firma cargada');
+  };
+  r.readAsDataURL(file);
+}
+
+// EXPERIENCE
+function editExp(id) {
+  const e = S.data.experience.find(x=>x.id===id);
+  openModal(`<div class="modal-title">✏ Experiencia laboral</div>
+    <div class="modal-row"><label class="modal-label">Cargo</label><input class="modal-input" id="m-role" value="${esc(e.role)}"></div>
+    <div class="modal-row"><label class="modal-label">Empresa</label><input class="modal-input" id="m-co" value="${esc(e.company)}"></div>
+    <div class="modal-grid2">
+      <div class="modal-row"><label class="modal-label">Inicio</label><input class="modal-input" id="m-from" value="${esc(e.from)}" placeholder="2020"></div>
+      <div class="modal-row"><label class="modal-label">Fin</label><input class="modal-input" id="m-to" value="${esc(e.to)}" placeholder="2023 o actualidad"></div>
+    </div>
+    <div class="modal-row"><label class="modal-label">Descripción</label><textarea class="modal-textarea" id="m-desc">${esc(e.desc)}</textarea></div>
+    <div class="modal-row"><label class="modal-label">Etiquetas (separadas por coma)</label><input class="modal-input" id="m-tags" value="${esc(e.tags)}"></div>
+    <div class="modal-actions">
+      <button class="mbtn" onclick="closeModalBtn()">Cancelar</button>
+      <button class="mbtn primary" onclick="saveExp(${id})">Guardar</button>
+    </div>`);
+}
+function saveExp(id) {
+  saveH();
+  const e = S.data.experience.find(x=>x.id===id);
+  e.role = document.getElementById('m-role').value;
+  e.company = document.getElementById('m-co').value;
+  e.from = document.getElementById('m-from').value;
+  e.to = document.getElementById('m-to').value;
+  e.desc = document.getElementById('m-desc').value;
+  e.tags = document.getElementById('m-tags').value;
+  closeModalBtn(); renderCV(); renderProps(); saveToCache();
+}
+function addExp() {
+  const id = uid();
+  S.data.experience.push({id, role:'Cargo', company:'Empresa', from:'2022', to:'actualidad', desc:'Descripción de responsabilidades y logros', tags:''});
+  S.data.sections.experience.enabled = true;
+  renderCV(); renderProps();
+  editExp(id);
+}
+
+// EDUCATION
+function editEdu(id) {
+  const e = S.data.education.find(x=>x.id===id);
+  openModal(`<div class="modal-title">✦ Educación</div>
+    <div class="modal-row"><label class="modal-label">Título / especialidad</label><input class="modal-input" id="m-deg" value="${esc(e.degree)}"></div>
+    <div class="modal-row"><label class="modal-label">Institución educativa</label><input class="modal-input" id="m-sch" value="${esc(e.school)}"></div>
+    <div class="modal-row"><label class="modal-label">Período</label><input class="modal-input" id="m-yr" value="${esc(e.year)}" placeholder="2018 – 2022"></div>
+    <div class="modal-row"><label class="modal-label">Información adicional (opcional)</label><textarea class="modal-textarea" id="m-edesc">${esc(e.desc||'')}</textarea></div>
+    <div class="modal-actions">
+      <button class="mbtn" onclick="closeModalBtn()">Cancelar</button>
+      <button class="mbtn primary" onclick="saveEdu(${id})">Guardar</button>
+    </div>`);
+}
+function saveEdu(id) {
+  saveH();
+  const e = S.data.education.find(x=>x.id===id);
+  e.degree = document.getElementById('m-deg').value;
+  e.school = document.getElementById('m-sch').value;
+  e.year = document.getElementById('m-yr').value;
+  e.desc = document.getElementById('m-edesc').value;
+  closeModalBtn(); renderCV(); renderProps(); saveToCache();
+}
+function addEdu() {
+  const id = uid();
+  S.data.education.push({id, degree:'Especialidad', school:'Institución educativa', year:'2018 – 2022', desc:''});
+  S.data.sections.education.enabled = true;
+  renderCV(); renderProps();
+  editEdu(id);
+}
+
+// SKILLS
+function editSkill(id) {
+  const s = S.data.skills.find(x=>x.id===id);
+  openModal(`<div class="modal-title">▣ Habilidad</div>
+    <div class="modal-row"><label class="modal-label">Nombre</label><input class="modal-input" id="m-sname" value="${esc(s.name)}"></div>
+    <div class="modal-row"><label class="modal-label">Nivel: <span id="m-slvl-val">${s.level}%</span></label>
+      <input type="range" min="10" max="100" value="${s.level}" id="m-slvl" oninput="document.getElementById('m-slvl-val').textContent=this.value+'%'" style="width:100%;margin-top:6px;">
+    </div>
+    <div class="modal-actions">
+      <button class="mbtn" onclick="closeModalBtn()">Cancelar</button>
+      <button class="mbtn primary" onclick="saveSkill(${id})">Guardar</button>
+    </div>`);
+}
+function saveSkill(id) {
+  saveH();
+  const s = S.data.skills.find(x=>x.id===id);
+  s.name = document.getElementById('m-sname').value;
+  s.level = +document.getElementById('m-slvl').value;
+  closeModalBtn(); renderCV(); renderProps(); saveToCache();
+}
+function addSkill() {
+  const id = uid();
+  S.data.skills.push({id, name:'Nueva habilidad', level:70});
+  S.data.sections.skills.enabled = true;
+  renderCV(); renderProps();
+  editSkill(id);
+}
+
+// LANGUAGES
+function editLang(id) {
+  const l = S.data.languages.find(x=>x.id===id);
+  const levels = [
+    {val:1, code:'A1', label:'Principiante', desc:'Entiendo frases básicas, puedo presentarme y responder preguntas sencillas'},
+    {val:2, code:'A2', label:'Elemental', desc:'Leo y entiendo textos simples, comunicación básica sobre temas familiares'},
+    {val:3, code:'B1', label:'Conversacional', desc:'Me comunico libremente en situaciones cotidianas y laborales, entiendo la mayor parte de los textos'},
+    {val:4, code:'B2', label:'Intermedio alto', desc:'Me comunico con confianza con hablantes nativos, negocio y me correspondo sobre temas profesionales'},
+    {val:5, code:'C1', label:'Avanzado', desc:'Expreso mis pensamientos libre y competentemente en forma oral y escrita en cualquier situación'},
+    {val:6, code:'C2', label:'Competente', desc:'Dominio completo del idioma al nivel de hablante nativo, incluida terminología profesional'},
+    {val:7, code:'Nativo', label:'Lengua materna', desc:'Lengua materna o segunda lengua materna'},
+  ];
+  openModal(`<div class="modal-title">Idioma</div>
+    <div class="modal-row"><label class="modal-label">Idioma</label><input class="modal-input" id="m-lang" value="${esc(l.lang)}"></div>
+    <div class="modal-row"><label class="modal-label">Nivel de dominio</label>
+      <div style="display:flex;flex-direction:column;gap:5px;margin-top:8px;">
+        ${levels.map(lv=>`
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:7px 10px;border-radius:7px;border:1.5px solid ${l.level===lv.val?'var(--accent)':'var(--border)'};background:${l.level===lv.val?'var(--light)':'transparent'};transition:all .12s;" onclick="this.parentNode.querySelectorAll('label').forEach(x=>{x.style.borderColor='var(--border)';x.style.background='transparent'});this.style.borderColor='var(--accent)';this.style.background='var(--light)';">
+            <input type="radio" name="llvl" value="${lv.val}" ${l.level===lv.val?'checked':''} style="display:none;">
+            <div style="min-width:44px;padding:3px 7px;border-radius:5px;background:var(--accent);color:#fff;font-size:10px;font-weight:700;text-align:center;letter-spacing:0.03em;">${lv.code}</div>
+            <div>
+              <div style="font-size:12px;font-weight:500;color:var(--text);">${lv.label}</div>
+              <div style="font-size:10px;color:var(--muted);margin-top:1px;">${lv.desc}</div>
+            </div>
+          </label>`).join('')}
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="mbtn" onclick="closeModalBtn()">Cancelar</button>
+      <button class="mbtn primary" onclick="saveLang(${id})">Guardar</button>
+    </div>`);
+}
+function saveLang(id) {
+  saveH();
+  const l = S.data.languages.find(x=>x.id===id);
+  l.lang = document.getElementById('m-lang').value;
+  const r = document.querySelector('input[name="llvl"]:checked');
+  if (r) l.level = +r.value;
+  closeModalBtn(); renderCV(); renderProps(); saveToCache();
+}
+function addLang() {
+  const id = uid();
+  S.data.languages.push({id, lang:'Nuevo idioma', level:3});
+  S.data.sections.languages.enabled = true;
+  renderCV(); renderProps();
+  editLang(id);
+}
+
+// CERTIFICATIONS
+function editCert(id) {
+  const c = S.data.certifications.find(x=>x.id===id);
+  openModal(`<div class="modal-title">Certificado</div>
+    <div class="modal-row"><label class="modal-label">Nombre</label><input class="modal-input" id="m-cn" value="${esc(c.name)}"></div>
+    <div class="modal-row"><label class="modal-label">Emitido por (organización)</label><input class="modal-input" id="m-ci" value="${esc(c.issuer)}"></div>
+    <div class="modal-row"><label class="modal-label">Año</label><input class="modal-input" id="m-cy" value="${esc(c.year)}" placeholder="2023"></div>
+    <div class="modal-row"><label class="modal-label">Descripción breve (opcional)</label><textarea class="modal-textarea" id="m-cdesc" placeholder="Qué enseña, qué habilidades certifica...">${esc(c.desc||'')}</textarea></div>
+    <div class="modal-actions">
+      <button class="mbtn" onclick="closeModalBtn()">Cancelar</button>
+      <button class="mbtn primary" onclick="saveCert(${id})">Guardar</button>
+    </div>`);
+}
+function saveCert(id) {
+  saveH();
+  const c = S.data.certifications.find(x=>x.id===id);
+  c.name = document.getElementById('m-cn').value;
+  c.issuer = document.getElementById('m-ci').value;
+  c.year = document.getElementById('m-cy').value;
+  c.desc = document.getElementById('m-cdesc').value;
+  closeModalBtn(); renderCV(); renderProps(); saveToCache();
+}
+function addCert() {
+  const id = uid();
+  S.data.certifications.push({id, name:'Certificado', issuer:'Organización', year:'2024', desc:''});
+  S.data.sections.certifications.enabled = true;
+  renderCV(); renderProps();
+  editCert(id);
+}
+
+// ACHIEVEMENTS
+function editAch(id) {
+  const a = S.data.achievements.find(x=>x.id===id);
+  openModal(`<div class="modal-title">▸ Logro</div>
+    <div class="modal-row"><label class="modal-label">Descripción</label><textarea class="modal-textarea" id="m-at" style="min-height:80px;">${esc(a.text)}</textarea></div>
+    <div class="modal-actions">
+      <button class="mbtn" onclick="closeModalBtn()">Cancelar</button>
+      <button class="mbtn primary" onclick="saveAch(${id})">Guardar</button>
+    </div>`);
+}
+function saveAch(id) {
+  saveH();
+  S.data.achievements.find(x=>x.id===id).text = document.getElementById('m-at').value;
+  closeModalBtn(); renderCV(); renderProps(); saveToCache();
+}
+function addAch() {
+  const id = uid();
+  S.data.achievements.push({id, text:'Describe tu logro con un resultado concreto'});
+  S.data.sections.achievements.enabled = true;
+  renderCV(); renderProps();
+  editAch(id);
+}
+
+// PROJECTS
+function editProject(id) {
+  const pr = S.data.projects.find(x=>x.id===id);
+  openModal(`<div class="modal-title">⬡ Proyecto</div>
+    <div class="modal-row"><label class="modal-label">Nombre</label><input class="modal-input" id="m-pn" value="${esc(pr.name)}"></div>
+    <div class="modal-row"><label class="modal-label">Descripción</label><textarea class="modal-textarea" id="m-pd">${esc(pr.desc)}</textarea></div>
+    <div class="modal-row"><label class="modal-label">Enlace (URL)</label><input class="modal-input" id="m-pl" value="${esc(pr.link)}" placeholder="https://github.com/..."></div>
+    <div class="modal-row"><label class="modal-label">Etiquetas (separadas por coma)</label><input class="modal-input" id="m-pt" value="${esc(pr.tags)}"></div>
+    <div class="modal-actions">
+      <button class="mbtn" onclick="closeModalBtn()">Cancelar</button>
+      <button class="mbtn primary" onclick="saveProject(${id})">Guardar</button>
+    </div>`);
+}
+function saveProject(id) {
+  saveH();
+  const pr = S.data.projects.find(x=>x.id===id);
+  pr.name = document.getElementById('m-pn').value;
+  pr.desc = document.getElementById('m-pd').value;
+  pr.link = document.getElementById('m-pl').value;
+  pr.tags = document.getElementById('m-pt').value;
+  closeModalBtn(); renderCV(); renderProps(); saveToCache();
+}
+function addProject() {
+  const id = uid();
+  S.data.projects.push({id, name:'Mi proyecto', desc:'Breve descripción del proyecto', link:'', tags:''});
+  S.data.sections.projects.enabled = true;
+  renderCV(); renderProps();
+  editProject(id);
+}
+
+// LINKS
+function editLink(id) {
+  const l = S.data.links.find(x=>x.id===id);
+  const iconOpts = ['🔗','⌨','💼','📸','✉','🌐','📱','💬','🎨','📊'];
+  openModal(`<div class="modal-title">🔗 Enlace / Red social</div>
+    <div class="modal-row"><label class="modal-label">Icono</label>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;">
+        ${iconOpts.map(ic=>`<div onclick="this.parentNode.querySelectorAll('div').forEach(x=>x.style.background='');this.style.background='var(--light)';document.getElementById('m-lic').value='${ic}';" style="width:32px;height:32px;border-radius:6px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;background:${l.icon===ic?'var(--light)':''};">${ic}</div>`).join('')}
+      </div>
+      <input type="hidden" id="m-lic" value="${l.icon}">
+    </div>
+    <div class="modal-row"><label class="modal-label">Nombre</label><input class="modal-input" id="m-ll" value="${esc(l.label)}"></div>
+    <div class="modal-row"><label class="modal-label">URL</label><input class="modal-input" id="m-lu" value="${esc(l.url)}" placeholder="https://..."></div>
+    <div class="modal-actions">
+      <button class="mbtn" onclick="closeModalBtn()">Cancelar</button>
+      <button class="mbtn primary" onclick="saveLink(${id})">Guardar</button>
+    </div>`);
+}
+function saveLink(id) {
+  saveH();
+  const l = S.data.links.find(x=>x.id===id);
+  l.icon = document.getElementById('m-lic').value;
+  l.label = document.getElementById('m-ll').value;
+  l.url = document.getElementById('m-lu').value;
+  closeModalBtn(); renderCV(); renderProps(); saveToCache();
+}
+function addLink() {
+  const id = uid();
+  S.data.links.push({id, icon:'🔗', label:'Новая ссылка', url:'https://'});
+  S.data.sections.links.enabled = true;
+  renderCV(); renderProps();
+  editLink(id);
+}
+
+// ================================================================
+// DRAG FROM SIDEBAR TO CANVAS
+// ================================================================
+document.querySelectorAll('.bitem').forEach(item => {
+  item.addEventListener('dragstart', e => e.dataTransfer.setData('block', item.dataset.block));
+});
+const cvp = document.getElementById('cvp');
+cvp.addEventListener('dragover', e => e.preventDefault());
+cvp.addEventListener('drop', e => {
+  e.preventDefault();
+  const block = e.dataTransfer.getData('block');
+  if (!block || !S.data.sections[block]) return;
+  saveH();
+  S.data.sections[block].enabled = true;
+  renderCV(); renderProps();
+  saveToCache();
+  if (block === 'signature') {
+    switchTab('sections');
+    setTimeout(() => openSignatureModal(), 150);
+  } else {
+    toast('Bloque añadido — ve a «Secciones» para editar');
+  }
+});
+
+// ================================================================
+// PHOTO UPLOAD
+// ================================================================
+function uploadPhoto(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const r = new FileReader();
+  r.onload = ev => { saveH(); S.data.photo = ev.target.result; renderCV(); renderProps(); saveToCache(); };
+  r.readAsDataURL(file);
+}
+
+// ================================================================
+// EXPORT
+// ================================================================
+function exportPDF() {
+  const p = document.getElementById('cvp');
+  const origTransform = p.style.transform;
+  p.style.transform = 'scale(1)';
+  p.style.marginBottom = '0';
+  html2pdf().set({
+    margin:0, filename:(S.data.name||'cv').replace(/\s/g,'_')+'_CV.pdf',
+    image:{type:'jpeg',quality:0.98},
+    html2canvas:{scale:2,useCORS:true,letterRendering:true},
+    jsPDF:{unit:'mm',format:'a4',orientation:'portrait'}
+  }).from(p).save().then(()=>{
+    setZoom(S.zoom);
+  });
+}
+function exportJSON() {
+  const b = new Blob([JSON.stringify(S.data,null,2)],{type:'application/json'});
+  const a = document.createElement('a'); a.href=URL.createObjectURL(b); a.download='cv-data.json'; a.click();
+}
+function importJSON(e) {
+  const file = e.target.files[0]; if(!file) return;
+  const r = new FileReader();
+  r.onload = ev => { try { S.data=JSON.parse(ev.target.result); renderCV(); renderProps(); saveToCache(); toast('Datos importados'); } catch { toast('Formato JSON inválido'); } };
+  r.readAsText(file);
+}
+
+// ================================================================
+// EXPORT DOCX (Word / Google Docs compatible)
+// ================================================================
+async function exportDOCX() {
+  toast('Generando DOCX...');
+  try {
+    const { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell,
+            AlignmentType, BorderStyle, WidthType, ShadingType, VerticalAlign,
+            HeadingLevel } = docx;
+
+    const d = S.data;
+    const theme = THEMES[S.theme];
+    const accentHex = theme.accent.replace('#','');
+    const lightHex  = theme.light.replace('#','');
+
+    const noBorder = { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' };
+    const noBorders = { top: noBorder, bottom: noBorder, left: noBorder, right: noBorder };
+
+    function accentRun(text, opts={}) {
+      return new TextRun({ text, color: accentHex, bold: true, size: opts.size||20, font: 'Arial' });
+    }
+    function normalRun(text, opts={}) {
+      return new TextRun({ text, size: opts.size||20, font: 'Arial', bold: opts.bold||false, italics: opts.italics||false, color: opts.color||'333333' });
+    }
+    function para(children, opts={}) {
+      return new Paragraph({
+        children: Array.isArray(children) ? children : [children],
+        spacing: { before: opts.before||0, after: opts.after||60 },
+        alignment: opts.align || AlignmentType.LEFT,
+      });
+    }
+    function sectionHeader(title) {
+      return new Paragraph({
+        children: [new TextRun({ text: title.toUpperCase(), bold: true, size: 18, color: accentHex, font: 'Arial', allCaps: true })],
+        spacing: { before: 180, after: 60 },
+        border: { bottom: { style: BorderStyle.SINGLE, size: 4, color: accentHex, space: 2 } },
+      });
+    }
+
+    const children = [];
+
+    // ---- HEADER ----
+    children.push(new Paragraph({
+      children: [new TextRun({ text: d.name || '', bold: true, size: 52, font: 'Arial', color: accentHex })],
+      spacing: { after: 60 },
+    }));
+    if (d.title) {
+      children.push(para([normalRun(d.title, { size: 24, color: '555555' })], { after: 80 }));
+    }
+
+    const contacts = [d.email, d.phone, d.location].filter(Boolean).join('   |   ');
+    if (contacts) {
+      children.push(para([normalRun(contacts, { size: 18, color: '777777' })], { after: 160 }));
+    }
+
+    // ---- ABOUT ----
+    if (d.sections.about && d.sections.about.enabled && d.about) {
+      children.push(sectionHeader('Sobre mí'));
+      children.push(para([normalRun(d.about, { size: 20, color: '444444' })], { after: 160 }));
+    }
+
+    // ---- EXPERIENCE ----
+    if (d.sections.experience && d.sections.experience.enabled && d.experience.length) {
+      children.push(sectionHeader('Experiencia laboral'));
+      for (const e of d.experience) {
+        children.push(new Paragraph({
+          children: [
+            new TextRun({ text: e.role, bold: true, size: 22, font: 'Arial', color: '111111' }),
+            new TextRun({ text: `   ${e.from} – ${e.to}`, size: 18, color: '888888', font: 'Arial' }),
+          ],
+          spacing: { before: 80, after: 30 },
+        }));
+        if (e.company) {
+          children.push(para([new TextRun({ text: e.company, size: 19, italics: true, color: accentHex, font: 'Arial' })], { after: 40 }));
+        }
+        if (e.desc) {
+          children.push(para([normalRun(e.desc, { size: 19, color: '444444' })], { after: 80 }));
+        }
+      }
+    }
+
+    // ---- EDUCATION ----
+    if (d.sections.education && d.sections.education.enabled && d.education.length) {
+      children.push(sectionHeader('Educación'));
+      for (const e of d.education) {
+        children.push(new Paragraph({
+          children: [new TextRun({ text: e.degree, bold: true, size: 21, font: 'Arial' })],
+          spacing: { before: 80, after: 30 },
+        }));
+        children.push(para([
+          new TextRun({ text: e.school, italics: true, size: 19, color: accentHex, font: 'Arial' }),
+          e.year ? new TextRun({ text: `   ${e.year}`, size: 18, color: '888888', font: 'Arial' }) : new TextRun(''),
+        ], { after: 80 }));
+      }
+    }
+
+    // ---- SKILLS ----
+    if (d.sections.skills && d.sections.skills.enabled && d.skills.length) {
+      children.push(sectionHeader('Habilidades'));
+      const skillText = d.skills.map(s => `${s.name} (${s.level}%)`).join('   ·   ');
+      children.push(para([normalRun(skillText, { size: 19, color: '333333' })], { after: 140 }));
+    }
+
+    // ---- LANGUAGES ----
+    if (d.sections.languages && d.sections.languages.enabled && d.languages.length) {
+      children.push(sectionHeader(t('langTitle')));
+      const levelMap = (LANGS[S.lang]||LANGS.en).cefrDocx || {
+        1: 'Principiante (A1)',
+        2: 'Elemental (A2)',
+        3: 'Intermedio (B1)',
+        4: 'Intermedio alto (B2)',
+        5: 'Avanzado (C1)',
+        6: 'Competente (C2)',
+        7: 'Lengua materna',
+      };
+      for (const l of d.languages) {
+        children.push(new Paragraph({
+          children: [
+            new TextRun({ text: l.lang, bold: true, size: 20, font: 'Arial', color: '111111' }),
+            new TextRun({ text: `  —  ${levelMap[l.level] || 'A1'}`, size: 20, font: 'Arial', color: '555555' }),
+          ],
+          spacing: { before: 40, after: 50 },
+        }));
+      }
+      children.push(para([new TextRun('')], { after: 100 }));
+    }
+
+    // ---- CERTIFICATIONS ----
+    if (d.sections.certifications && d.sections.certifications.enabled && d.certifications.length) {
+      children.push(sectionHeader('Certificados'));
+      for (const c of d.certifications) {
+        children.push(new Paragraph({
+          children: [
+            new TextRun({ text: c.name, bold: true, size: 20, font: 'Arial' }),
+            c.issuer ? new TextRun({ text: `  ·  ${c.issuer}`, size: 19, italics: true, color: '666666', font: 'Arial' }) : new TextRun(''),
+            c.year ? new TextRun({ text: `  ·  ${c.year}`, size: 18, color: '888888', font: 'Arial' }) : new TextRun(''),
+          ],
+          spacing: { before: 60, after: 60 },
+        }));
+      }
+    }
+
+    // ---- ACHIEVEMENTS ----
+    if (d.sections.achievements && d.sections.achievements.enabled && d.achievements.length) {
+      children.push(sectionHeader('Logros'));
+      for (const a of d.achievements) {
+        children.push(new Paragraph({
+          children: [
+            new TextRun({ text: '▸  ', color: accentHex, font: 'Arial', size: 20 }),
+            normalRun(a.text, { size: 19 }),
+          ],
+          spacing: { before: 40, after: 40 },
+        }));
+      }
+    }
+
+    // ---- PROJECTS ----
+    if (d.sections.projects && d.sections.projects.enabled && d.projects.length) {
+      children.push(sectionHeader('Proyectos'));
+      for (const pr of d.projects) {
+        children.push(new Paragraph({
+          children: [new TextRun({ text: pr.name, bold: true, size: 21, font: 'Arial' })],
+          spacing: { before: 80, after: 30 },
+        }));
+        if (pr.desc) children.push(para([normalRun(pr.desc, { size: 19, color: '444444' })], { after: 40 }));
+        if (pr.link) children.push(para([new TextRun({ text: pr.link, size: 18, color: '0563C1', font: 'Arial' })], { after: 80 }));
+      }
+    }
+
+    // ---- CUSTOM / TEXTBLOCK ----
+    if (d.sections.custom && d.sections.custom.enabled && d.custom.text) {
+      children.push(sectionHeader(d.custom.title || 'Adicional'));
+      children.push(para([normalRun(d.custom.text, { size: 19, color: '444444' })], { after: 100 }));
+    }
+    if (d.sections.textblock && d.sections.textblock.enabled && d.textblock.content) {
+      children.push(sectionHeader(d.textblock.title || 'Bloque de texto'));
+      children.push(para([normalRun(d.textblock.content, { size: 19, color: '444444' })], { after: 100 }));
+    }
+
+    const doc = new Document({
+      creator: 'CV Studio',
+      description: 'CV',
+      sections: [{
+        properties: {
+          page: {
+            size: { width: 11906, height: 16838 }, // A4
+            margin: { top: 1134, right: 1134, bottom: 1134, left: 1134 }, // ~2cm
+          }
+        },
+        children,
+      }],
+    });
+
+    const buffer = await Packer.toBlob(doc);
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(buffer);
+    a.download = (d.name || 'cv').replace(/\s/g,'_') + '_CV.docx';
+    a.click();
+    toast('¡DOCX descargado!');
+  } catch(err) {
+    console.error(err);
+    toast('Error al generar DOCX: ' + err.message);
+  }
+}
+
+// ================================================================
+// MOBILE UI
+// ================================================================
+let mobActiveDrawer = null;
+
+function mobIsMobile() {
+  return window.innerWidth <= 768;
+}
+
+function mobCloseAll() {
+  if (mobActiveDrawer) {
+    document.getElementById('mob-drawer-' + mobActiveDrawer)?.classList.remove('open');
+    document.getElementById('mobnav-' + mobActiveDrawer)?.classList.remove('active');
+    mobActiveDrawer = null;
+  }
+  document.getElementById('mob-overlay')?.classList.remove('visible');
+}
+
+function mobToggleDrawer(name) {
+  if (!mobIsMobile()) return;
+  if (mobActiveDrawer === name) {
+    mobCloseAll();
+    return;
+  }
+  mobCloseAll();
+  mobActiveDrawer = name;
+  document.getElementById('mob-drawer-' + name)?.classList.add('open');
+  document.getElementById('mobnav-' + name)?.classList.add('active');
+  document.getElementById('mob-overlay')?.classList.add('visible');
+
+  // Populate drawers on open
+  if (name === 'blocks') mobRenderBlocks();
+  if (name === 'props') mobRenderProps();
+}
+
+function mobRenderBlocks() {
+  // Clone sidebar content into mobile drawer
+  const src = document.querySelector('.sb-scroll');
+  const dest = document.getElementById('mob-blocks-body');
+  if (!src || !dest) return;
+  dest.innerHTML = '';
+  // Rebuild items with tap buttons instead of drag
+  const items = src.querySelectorAll('.sb-cat, .bitem');
+  items.forEach(el => {
+    if (el.classList.contains('sb-cat')) {
+      const cat = document.createElement('div');
+      cat.className = 'sb-cat';
+      cat.textContent = el.textContent;
+      dest.appendChild(cat);
+    } else {
+      const row = el.cloneNode(true);
+      row.draggable = false;
+      row.style.cursor = 'pointer';
+      // Add a "+" tap button
+      const btn = document.createElement('button');
+      btn.className = 'bitem-add-btn';
+      btn.innerHTML = '+';
+      btn.title = 'Dodaj do CV';
+      const blockType = el.dataset.block;
+      btn.onclick = (e) => {
+        e.stopPropagation();
+        mobAddBlock(blockType);
+      };
+      row.onclick = () => mobAddBlock(blockType);
+      row.appendChild(btn);
+      dest.appendChild(row);
+    }
+  });
+}
+
+function mobAddBlock(blockType) {
+  // Add block to right column (or appropriate default) and re-render
+  const col = ['skills','languages','certifications','links'].includes(blockType) ? 'left' : 'right';
+  const orderKey = col === 'left' ? 'leftOrder' : 'rightOrder';
+  if (!S.data.sections[blockType]) {
+    S.data.sections[blockType] = { enabled: true, col };
+  } else {
+    S.data.sections[blockType].enabled = true;
+    S.data.sections[blockType].col = col;
+  }
+  if (!S.data[orderKey].includes(blockType)) {
+    S.data[orderKey].unshift(blockType);
+  }
+  saveToCache();
+  renderCV();
+  mobCloseAll();
+  toast('✓ Блок добавлен');
+}
+
+function mobSwitchTab(tab) {
+  S.activeTab = tab;
+  // Update tab highlights in mobile drawer
+  document.querySelectorAll('#mob-ptabs .ptab').forEach(t => {
+    t.classList.toggle('on', t.getAttribute('onclick').includes("'" + tab + "'"));
+  });
+  mobRenderProps();
+}
+
+function mobRenderProps() {
+  document.querySelectorAll('#mob-ptabs .ptab').forEach(t => {
+    const clickAttr = t.getAttribute('onclick') || '';
+    t.classList.toggle('on', clickAttr.includes(`'${S.activeTab}'`));
+  });
+  // Re-use existing renderProps logic but output into mobile pbody
+  const dest = document.getElementById('mob-pbody');
+  const src = document.getElementById('pbody');
+  if (!dest || !src) return;
+  // Trigger existing renderProps to fill #pbody, then copy
+  renderProps();
+  dest.innerHTML = src.innerHTML;
+  // Re-bind events by syncing: any input change in mob-pbody should mirror to pbody
+  dest.querySelectorAll('input,select,textarea').forEach((el, i) => {
+    const srcEl = src.querySelectorAll('input,select,textarea')[i];
+    el.addEventListener('input', () => { if(srcEl) { srcEl.value = el.value; srcEl.dispatchEvent(new Event('input',{bubbles:true})); } });
+    el.addEventListener('change', () => { if(srcEl) { srcEl.value = el.value; srcEl.dispatchEvent(new Event('change',{bubbles:true})); } });
+  });
+  // Buttons: re-bind onclick by copying from original
+  dest.querySelectorAll('[onclick]').forEach(el => {
+    const attr = el.getAttribute('onclick');
+    el.removeAttribute('onclick');
+    el.addEventListener('click', () => { try { eval(attr); mobRenderProps(); } catch(e){} });
+  });
+}
+
+// Keeps the CV horizontally centered and its top near the top of the
+// canvas viewport inside the large pannable .cv-stage, no matter the
+// current zoom level. Called after zoom changes, layout changes, and
+// on load/resize. The user can then freely pan away from this point.
+function centerCanvasMobile() {
+  if (!mobIsMobile()) return;
+  const scroller = document.querySelector('.cscroll');
+  const paper = document.getElementById('cvp');
+  if (!scroller || !paper) return;
+  requestAnimationFrame(() => {
+    const sRect = scroller.getBoundingClientRect();
+    const pRect = paper.getBoundingClientRect();
+    const dx = (pRect.left + pRect.width / 2) - (sRect.left + sRect.width / 2);
+    const dy = (pRect.top - sRect.top) - 14;
+    scroller.scrollLeft += dx;
+    scroller.scrollTop += dy;
+  });
+}
+
+// Auto-set zoom for mobile on load and resize
+function mobAutoZoom() {
+  if (!mobIsMobile()) return;
+  const vw = window.innerWidth;
+  // CV paper is 794px wide, we want it to fit with some padding
+  const targetW = vw - 24;
+  const z = Math.round((targetW / 794) * 100);
+  const clamped = Math.max(40, Math.min(z, 75));
+  setZoom(clamped);
+}
+
+window.addEventListener('resize', () => {
+  if (mobIsMobile()) mobAutoZoom();
+});
+
+// ================================================================
+// TOAST
+// ================================================================
+function toast(msg) {
+  let t = document.getElementById('__toast');
+  if (!t) { t=document.createElement('div'); t.id='__toast'; t.style.cssText='position:fixed;bottom:34px;left:50%;transform:translateX(-50%);background:#1a3c6e;color:white;padding:8px 18px;border-radius:8px;font-size:12px;z-index:999;pointer-events:none;opacity:0;transition:opacity .3s;white-space:nowrap;'; document.body.appendChild(t); }
+  t.textContent = msg; t.style.opacity='1';
+  clearTimeout(t._t); t._t = setTimeout(()=>t.style.opacity='0', 2500);
+}
+
+// ================================================================
+// INIT
+// ================================================================
+const cacheRestored = loadFromCache();
+// Update drag hint to match current CV language
+(function(){ const hint = document.getElementById('drag-hint'); if(hint){ const L = LANGS[S.lang]||LANGS.en; if(L.dragHint) hint.textContent = L.dragHint; } })();
+// Highlight active language button
+(function(){ document.querySelectorAll('#lang-switch button').forEach(b => { b.classList.toggle('on', b.textContent.trim().toLowerCase() === S.lang.toLowerCase()); }); })();
+buildSwatches();
+try{
+  applyTheme();
+}catch(err){
+  console.error(err);
+}
+try {
+  renderCV();
+} catch(err){
+  console.error(err);
+}
+renderProps();
+if (mobIsMobile()) { mobAutoZoom(); } else { setZoom(100); }
+if (cacheRestored) {
+  setTimeout(() => toast('✓ Datos restaurados desde la caché del navegador '), 500);
+}
+
+</script>
+</body>
+</html>

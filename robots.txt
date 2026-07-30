@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+
+Allow: /sitemap.xml
+
+Sitemap: https://latwecv.eu/sitemap.xml
