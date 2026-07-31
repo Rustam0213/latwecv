@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LatweCV — Free Online CV Builder | Create a Professional CV in 5 Minutes</title>
+<meta name="description" content="LatweCV is a free browser-based CV builder — no registration, no account. 13 block types, 8 color themes, 4 layouts, export to PDF and Word, a hand-drawn signature, and an interface in 6 languages.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://latwecv.eu/en">
+<meta property="og:type" content="website">
+<meta property="og:title" content="LatweCV — Free Online CV Builder">
+<meta property="og:description" content="Create a professional CV in your browser: drag-and-drop blocks, 8 themes, export to PDF/Word, interface in 6 languages. No account, no limits.">
+<meta property="og:locale" content="en_US">
+<link rel="shortcut icon" href="/media/icon.png" type="image/x-icon">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3864230017581338" crossorigin="anonymous"></script>
+<meta name="google-adsense-account" content="ca-pub-3864230017581338">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "LatweCV",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Any",
+  "offers": {"@type":"Offer","price":"0","priceCurrency":"PLN"},
+  "description": "Free CV builder"
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/blog_styles.css">
+
+</head>
+<body>
+
+<!-- ================= COOKIE BANNER ================= -->
+<div class="cookie-banner" id="cookieBanner" role="dialog" aria-label="Cookie information" aria-live="polite">
+  <div class="cookie-text">
+    <strong>A quick word about cookies.</strong> We only use the essential ones — to remember your settings and session. Zero tracking, zero ads. Your data stays on your device either way.
+  </div>
+  <div class="cookie-actions">
+    <button class="cookie-btn reject" id="cookieReject">Essential only</button>
+    <button class="cookie-btn accept" id="cookieAccept">Got it, OK</button>
+  </div>
+</div>
+
+<!-- ================= HEADER ================= -->
+<!-- <div class="nav-backdrop" id="navBackdrop"></div> -->
+<header class="site">
+  <nav class="nav">
+    <a href="#top" class="nav-logo">Latwe<span class="dot">CV</span></a>
+    <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" id="navToggle">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+    <div class="nav-links" id="navLinks">
+      <button class="nav-close" id="navClose" aria-label="Close menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+      <a href="#bloki" onclick="closeNav()">Blocks</a>
+      <a href="#jezyki" onclick="closeNav()">Languages</a>
+      <a href="#motywy" onclick="closeNav()">Themes</a>
+      <a href="#eksport" onclick="closeNav()">Export</a>
+      <a href="#faq" onclick="closeNav()">FAQ</a>
+      <a href="https://latwecv.eu/en/creator" class="nav-cta">Open the builder</a>
+    </div>
+  </nav>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="hero-eyebrow">CV Builder · 100% in your browser</div>
+      <h1>Your CV,<br>ready in <em>a few minutes</em>.</h1>
+      <p class="lead">No registration, no installation, no surprises. You build your CV like building blocks — drag sections, pick a style, and export the finished document to PDF or Word. Everything happens right in your browser.</p>
+      <div class="hero-actions">
+        <a href="#start" class="btn btn-primary">Create your CV — free</a>
+        <a href="#bloki" class="btn btn-ghost">How does it work?</a>
+      </div>
+      <div class="hero-meta">
+        <span>
+          <svg class="ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+          No registration
+        </span>
+        <span>
+          <svg class="ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Your data stays with you
+        </span>
+        <span>
+          <svg class="ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          <strong>6</strong>&nbsp;interface languages
+        </span>
+      </div>
+    </div>
+
+    <div class="mockup-stage">
+      <div class="mockup-card" id="mockupCard" style="--mc:#1a3c6e;--mc2:#c8a96e;--mcl:#eef2f8;">
+        <div class="mockup-head">
+          <div class="mockup-photo"></div>
+          <div>
+            <div class="mockup-name" id="mockName">Anna Kowalski</div>
+            <div class="mockup-title" id="mockTitle">UX/UI Designer</div>
+          </div>
+        </div>
+        <div class="mockup-sec-title" id="mockSec1">Experience</div>
+        <div class="mockup-exp">
+          <div class="mockup-exp-role" id="mockRole">Senior Product Designer</div>
+          <div class="mockup-exp-co" id="mockCo">Creative Studio · 2021–present</div>
+          <div class="mockup-line w90"></div>
+          <div class="mockup-line w70"></div>
+          <div class="mockup-tags">
+            <span class="mockup-tag" id="mockTag1">Figma</span>
+            <span class="mockup-tag" id="mockTag2">UX Research</span>
+            <span class="mockup-tag" id="mockTag3">Prototyping</span>
+          </div>
+        </div>
+        <div class="mockup-sec-title" id="mockSec2" style="margin-top:14px;">Skills</div>
+        <div class="mockup-line w90"></div>
+        <div class="mockup-line w50"></div>
+
+        <div class="mockup-controls">
+          <div>
+            <div class="pill-label" style="margin-bottom:8px;text-align:center;">CV Language</div>
+            <div class="pill-row" id="langPills">
+              <button class="lang-pill" data-lang="pl">PL</button>
+              <button class="lang-pill active" data-lang="en">EN</button>
+              <button class="lang-pill" data-lang="de">DE</button>
+              <button class="lang-pill" data-lang="es">ES</button>
+              <button class="lang-pill" data-lang="ua">UA</button>
+              <button class="lang-pill" data-lang="ru">RU</button>
+            </div>
+          </div>
+          <div>
+            <div class="pill-label" style="margin-bottom:8px;text-align:center;">Color theme</div>
+            <div class="theme-row" id="themeDots"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= STATS ================= -->
+<section class="stats" style="padding:0;">
+  <div class="wrap">
+    <div class="stat">
+      <div class="num">13</div>
+      <div class="lab">content block types</div>
+    </div>
+    <div class="stat">
+      <div class="num">8</div>
+      <div class="lab">color themes</div>
+    </div>
+    <div class="stat">
+      <div class="num">6</div>
+      <div class="lab">interface and CV languages</div>
+    </div>
+    <div class="stat">
+      <div class="num">$0</div>
+      <div class="lab">cost, always</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= BLOKI ================= -->
+<section id="bloki">
+  <div class="wrap">
+    <div class="sec-eyebrow reveal">Editing</div>
+    <h2 class="sec-title reveal">Build your CV from blocks, not a template</h2>
+    <p class="sec-intro reveal">Drag a section onto the workspace, fill it with your data, and rearrange it however you like. Every block has its own editor — no more fighting with formatting in Word.</p>
+
+    <div class="blocks-grid reveal">
+
+      <div class="block-card">
+        <div class="glyph">
+          <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2"/><line x1="12" y1="12" x2="12" y2="16"/></svg>
+        </div>
+        <h4>Experience</h4>
+        <p>Position, company, employment period, description and skill tags.</p>
+      </div>
+
+      <div class="block-card">
+        <div class="glyph">
+          <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+        </div>
+        <h4>Education</h4>
+        <p>Degree, field of study, institution, study period and extra details.</p>
+      </div>
+
+      <div class="block-card">
+        <div class="glyph">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0 1 12 0v2"/></svg>
+        </div>
+        <h4>About me</h4>
+        <p>A short professional summary at the top of the document.</p>
+      </div>
+
+      <div class="block-card">
+        <div class="glyph">
+          <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="3" cy="6" r="1" fill="currentColor" stroke="none"/><circle cx="3" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="3" cy="18" r="1" fill="currentColor" stroke="none"/></svg>
+        </div>
+        <h4>Skills</h4>
+        <p>A list of competencies with proficiency shown as a bar.</p>
+      </div>
+
+      <div class="block-card">
+        <div class="glyph">
+          <svg viewBox="0 0 24 24"><path d="M5 8l4 4-4 4"/><line x1="12" y1="16" x2="19" y2="16"/></svg>
+        </div>
+        <h4>Languages</h4>
+        <p>Language proficiency with CEFR levels from A1 to C2, plus native.</p>
+      </div>
+
+      <div class="block-card">
+        <div class="glyph">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <h4>Certificates</h4>
+        <p>Name, issuing organization, year and a short description.</p>
+      </div>
+
+      <div class="block-card">
+        <div class="glyph">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <h4>Achievements</h4>
+        <p>Concrete results and successes as concise bullet points.</p>
+      </div>
+
+      <div class="block-card">
+        <div class="glyph">
+          <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <h4>Projects</h4>
+        <p>Name, description, a link to the repository or portfolio, and tags.</p>
+      </div>
+
+      <div class="block-card">
+        <div class="glyph">
+          <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        </div>
+        <h4>Links / Social</h4>
+        <p>LinkedIn, GitHub, portfolio — with its own icon for every link.</p>
+      </div>
+
+      <div class="block-card">
+        <div class="glyph">
+          <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        </div>
+        <h4>Custom text</h4>
+        <p>Your own section with a title and free-form text.</p>
+      </div>
+
+      <div class="block-card">
+        <div class="glyph">
+          <svg viewBox="0 0 24 24"><path d="M3 17c3-3 5-5 9-5s6 2 9 5"/><path d="M3 10c3-5 5-7 9-7s6 2 9 7"/></svg>
+        </div>
+        <h4>Signature</h4>
+        <p>A hand-drawn signature made with your mouse or uploaded as an image.</p>
+      </div>
+
+      <div class="block-card">
+        <div class="glyph">
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </div>
+        <h4>Separator</h4>
+        <p>A visual gap between sections, if you want a bit more order.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= SCREENSHOT: EDITOR ================= -->
+<section style="padding-top:0;">
+  <div class="wrap">
+    <figure class="screenshot reveal">
+      <video controls style="width: 100%;">
+        <source src="media/film.mp4" type="video/mp4"> 
+      </video>
+      <figcaption>Editor: blocks panel → workspace → properties panel</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ================= JĘZYKI ================= -->
+<section id="jezyki">
+  <div class="wrap">
+    <div class="feature-row">
+      <div class="feature-text reveal">
+        <div class="sec-eyebrow">Multilingual</div>
+        <h3>One CV, six language versions</h3>
+        <p>Applying for a job abroad? Switch your CV to another language with a single click — section headers and labels translate automatically, while your data stays untouched.</p>
+        <ul class="feature-list">
+          <li>Interface: Polish, English, German, Spanish, Ukrainian, Russian</li>
+          <li>The CV content language is independent of the interface language</li>
+          <li>Language proficiency levels on the CEFR scale (A1–C2 + native)</li>
+          <li>Section labels are translated automatically</li>
+        </ul>
+      </div>
+      <div class="feature-media reveal">
+        <figure class="screenshot">
+          <img src="media/przelacznik.png" alt="Language switcher">
+          <figcaption>Language switcher: PL · EN · DE · ES · UA · RU</figcaption>
+        </figure>
+      </div>
+    
+    </div>
+  </div>
+</section>
+
+<!-- ================= MOTYWY / UKŁADY ================= -->
+<section id="motywy" style="background:var(--paper-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);">
+  <div class="wrap">
+    <div class="sec-eyebrow reveal">Appearance</div>
+    <h2 class="sec-title reveal">8 themes, 4 layouts — change everything in one click</h2>
+    <p class="sec-intro reveal">Color, page layout, heading typeface — every element adapts instantly. The preview updates live, so you see the result before you export.</p>
+
+    <div class="swatch-grid reveal">
+      <div class="swatch" style="background:#1a3c6e;">Navy</div>
+      <div class="swatch" style="background:#334155;">Gray</div>
+      <div class="swatch" style="background:#065f46;">Emerald</div>
+      <div class="swatch" style="background:#7f1d1d;">Wine</div>
+      <div class="swatch" style="background:#4c1d95;">Plum</div>
+      <div class="swatch" style="background:#0f4c6e;">Teal</div>
+      <div class="swatch" style="background:#7c2d12;">Rust</div>
+      <div class="swatch" style="background:#14532d;">Forest</div>
+    </div>
+
+    <div class="layout-grid reveal">
+      <div class="layout-card">
+        <div class="layout-thumb classic"><div class="col sidebar"></div><div class="col main"></div></div>
+        <h4>Classic</h4><p>Sidebar + main content</p>
+      </div>
+      <div class="layout-card">
+        <div class="layout-thumb minimal"><div class="col main"></div></div>
+        <h4>Minimal</h4><p>Single column, full width</p>
+      </div>
+      <div class="layout-card">
+        <div class="layout-thumb bold"><div class="col sidebar"></div><div class="col main"></div></div>
+        <h4>Bold</h4><p>Full-width header bar</p>
+      </div>
+      <div class="layout-card">
+        <div class="layout-thumb right"><div class="col sidebar"></div><div class="col main"></div></div>
+        <h4>Right side</h4><p>Sidebar on the right side</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PODPIS / ZDJĘCIE ================= -->
+<section>
+  <div class="wrap">
+    <div class="feature-row reverse">
+      <div class="feature-text reveal">
+        <div class="sec-eyebrow">Personalization</div>
+        <h3>Photo, signature, and your style</h3>
+        <p>Add a profile photo, draw your signature with the mouse or your finger on a touchscreen — or upload a scan of it. Everything shows up in the live preview.</p>
+        <ul class="feature-list">
+          <li>Profile photo with a live preview</li>
+          <li>A signature drawn by hand right in the browser</li>
+          <li>Option to upload a scanned signature as an image</li>
+          <li>Everything is saved automatically as you work</li>
+        </ul>
+      </div>
+      <div class="feature-media reveal">
+        <figure class="screenshot">
+          <img src="media/podpis.png" alt="Signature module">
+          <figcaption>Signature module: draw, save, use in your CV</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= EKSPORT ================= -->
+<section id="eksport">
+  <div class="wrap">
+    <div class="sec-eyebrow reveal">Export</div>
+    <h2 class="sec-title reveal">A finished document in a second</h2>
+    <p class="sec-intro reveal">Download your CV in whichever format suits you. Your chosen theme, layout and fonts are preserved in every file.</p>
+
+    <div class="blocks-grid reveal" style="grid-template-columns:repeat(4,1fr);">
+      <div class="block-card">
+        <div class="glyph">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+        </div>
+        <h4>PDF export</h4>
+        <p>A4 format, high quality, ready to send.</p>
+      </div>
+      <div class="block-card">
+        <div class="glyph">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 15l2 2 4-4"/></svg>
+        </div>
+        <h4>Word export</h4>
+        <p>A .docx file that opens in Word and Google Docs.</p>
+      </div>
+      <div class="block-card">
+        <div class="glyph">
+          <svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        </div>
+        <h4>Printing</h4>
+        <p>Print directly or save as PDF straight from the print dialog.</p>
+      </div>
+      <div class="block-card">
+        <div class="glyph json-glyph">{ }</div>
+        <h4>JSON copy</h4>
+        <p>Export and import all your data as a backup file.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= JAK TO DZIAŁA ================= -->
+<section style="background:var(--paper-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);">
+  <div class="wrap">
+    <div class="sec-eyebrow reveal">Process</div>
+    <h2 class="sec-title reveal">From a blank page to a finished CV</h2>
+
+    <div class="steps reveal">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h4>Add blocks</h4>
+        <p>Drag the sections you need onto the workspace — from experience to projects.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h4>Fill in and adjust the look</h4>
+        <p>Enter your details, then pick a color theme, page layout and heading font.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h4>Download your CV</h4>
+        <p>Export to PDF or Word — or save a JSON copy of your data for later.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PRIVACY / TRUST ================= -->
+<section>
+  <div class="wrap">
+    <div class="trust reveal">
+      <div>
+        <h3>Your data never leaves your browser</h3>
+        <p>LatweCV runs entirely locally. No account, no server, no data uploads — everything you type stays saved on your device. The PDF file is also generated on your end, not in the cloud.</p>
+      </div>
+      <div class="stamp-seal">
+        100% local<br>no account<br>no server
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section id="faq">
+  <div class="wrap">
+    <div class="sec-eyebrow reveal">Questions</div>
+    <h2 class="sec-title reveal">Frequently asked questions</h2>
+
+    <div class="faq-list reveal">
+      <div class="faq-item">
+        <button class="faq-q">Is LatweCV really free?<span class="plus">+</span></button>
+        <div class="faq-a"><p>Yes, entirely. Editing, preview, PDF and Word export, all themes and layouts — available with no charge and no account. There are no hidden limits.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Do I need to register to save my CV?<span class="plus">+</span></button>
+        <div class="faq-a"><p>No. Your data is saved automatically in the browser on your device. You can also export it as a JSON file and load it again on another computer.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">How does switching the CV language work?<span class="plus">+</span></button>
+        <div class="faq-a"><p>You can switch the CV content (section headers, labels, language levels) between six languages independently of the editor's interface language — your data stays untouched.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Can I change the CV's appearance after filling it in?<span class="plus">+</span></button>
+        <div class="faq-a"><p>Yes — the color theme, page layout, font and section order can be changed at any time. The preview updates instantly.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Which formats can I download my CV in?<span class="plus">+</span></button>
+        <div class="faq-a"><p>As a PDF (A4, ready to send), Word (.docx, editable in Word and Google Docs), or via direct printing from the browser.</p></div>
+      </div>
+    </div>
+    <br>
+    <h3>Didn't find your answer? <a href="https://latwecv.eu/faq">Click here</a></h3>
+  </div>
+</section>
+
+<!-- ================= FINAL CTA ================= -->
+<section class="final-cta" id="start">
+  <div class="wrap">
+    <h2>Your CV is waiting for its first word.</h2>
+    <p>Open the editor, add the first block, and in a few minutes you'll have a finished document. No registration, no time limit.</p>
+    <a href="https://latwecv.eu/en/creator" class="btn btn-primary">Open LatweCV</a>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="wrap">
+    <div>© 2026 LatweCV — browser-based CV builder.</div>
+    <div style="display:flex;gap:20px;flex-wrap:wrap;">
+      <a href="#bloki">Blocks</a>
+      <a href="#motywy">Themes</a>
+      <a href="#eksport">Export</a>
+      <a href="https://latwecv.eu/faq">FAQ</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ===== Mobile nav toggle ===== */
+const navToggle  = document.getElementById('navToggle');
+const navLinks   = document.getElementById('navLinks');
+const navClose   = document.getElementById('navClose');
+
+function openNav(){
+  navLinks.classList.add('open');
+  if (navBackdrop) navBackdrop.classList.add('visible');
+  navToggle.setAttribute('aria-expanded','true');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeNav(){
+  navLinks.classList.remove('open');
+  if (navBackdrop) navBackdrop.classList.remove('visible');
+  navToggle.setAttribute('aria-expanded','false');
+  document.body.style.overflow = '';
+}
+
+
+navToggle.addEventListener('click', openNav);
+navClose.addEventListener('click', closeNav);
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeNav(); });
+
+/* ===== FAQ accordion ===== */
+document.querySelectorAll('.faq-item').forEach(item => {
+  item.querySelector('.faq-q').addEventListener('click', () => {
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+    if(!wasOpen) item.classList.add('open');
+  });
+});
+
+/* ===== Scroll reveal ===== */
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.08 });
+revealEls.forEach(el => io.observe(el));
+
+/* ===== Hero mockup: language switcher ===== */
+const MOCK_TEXT = {
+  pl:{ name:'Anna Kowalska', title:'Projektantka UX/UI', sec1:'Doświadczenie', sec2:'Umiejętności',
+       role:'Starsza projektantka produktu', co:'Studio Kreatywne · 2021–dziś',
+       tags:['Figma','Badania UX','Prototypy'] },
+  en:{ name:'Anna Kowalski', title:'UX/UI Designer', sec1:'Experience', sec2:'Skills',
+       role:'Senior Product Designer', co:'Creative Studio · 2021–present',
+       tags:['Figma','UX Research','Prototyping'] },
+  de:{ name:'Anna Kowalski', title:'UX/UI-Designerin', sec1:'Berufserfahrung', sec2:'Fähigkeiten',
+       role:'Senior Product Designerin', co:'Creative Studio · 2021–heute',
+       tags:['Figma','UX-Forschung','Prototyping'] },
+  es:{ name:'Anna Kowalski', title:'Diseñadora UX/UI', sec1:'Experiencia', sec2:'Habilidades',
+       role:'Diseñadora de producto senior', co:'Creative Studio · 2021–actual',
+       tags:['Figma','Investigación UX','Prototipos'] },
+  ua:{ name:'Анна Ковальська', title:'Дизайнерка UX/UI', sec1:'Досвід роботи', sec2:'Навички',
+       role:'Старша продуктова дизайнерка', co:'Creative Studio · 2021–тепер',
+       tags:['Figma','UX-дослідження','Прототипи'] },
+  ru:{ name:'Анна Ковальская', title:'Дизайнер UX/UI', sec1:'Опыт работы', sec2:'Навыки',
+       role:'Старший продуктовый дизайнер', co:'Creative Studio · 2021–наст. время',
+       tags:['Figma','UX-исследования','Прототипы'] },
+};
+
+const mockEls = {
+  name:  document.getElementById('mockName'),
+  title: document.getElementById('mockTitle'),
+  sec1:  document.getElementById('mockSec1'),
+  sec2:  document.getElementById('mockSec2'),
+  role:  document.getElementById('mockRole'),
+  co:    document.getElementById('mockCo'),
+  tag1:  document.getElementById('mockTag1'),
+  tag2:  document.getElementById('mockTag2'),
+  tag3:  document.getElementById('mockTag3'),
+};
+
+function setMockLang(lang) {
+  const t = MOCK_TEXT[lang];
+  const fields = Object.values(mockEls);
+  fields.forEach(f => f.style.opacity = 0);
+  setTimeout(() => {
+    mockEls.name.textContent  = t.name;
+    mockEls.title.textContent = t.title;
+    mockEls.sec1.textContent  = t.sec1;
+    mockEls.sec2.textContent  = t.sec2;
+    mockEls.role.textContent  = t.role;
+    mockEls.co.textContent    = t.co;
+    mockEls.tag1.textContent  = t.tags[0];
+    mockEls.tag2.textContent  = t.tags[1];
+    mockEls.tag3.textContent  = t.tags[2];
+    fields.forEach(f => f.style.opacity = 1);
+  }, 180);
+}
+
+document.querySelectorAll('.lang-pill').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.lang-pill').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    setMockLang(btn.dataset.lang);
+  });
+});
+
+/* ===== Hero mockup: theme switcher ===== */
+const THEMES = {
+  navy:    {accent:'#1a3c6e', light:'#eef2f8', accent2:'#c8a96e'},
+  slate:   {accent:'#334155', light:'#f1f5f9', accent2:'#94a3b8'},
+  emerald: {accent:'#065f46', light:'#ecfdf5', accent2:'#6ee7b7'},
+  wine:    {accent:'#7f1d1d', light:'#fff1f2', accent2:'#fca5a5'},
+  plum:    {accent:'#4c1d95', light:'#f5f3ff', accent2:'#a78bfa'},
+  teal:    {accent:'#0f4c6e', light:'#e0f2fe', accent2:'#7dd3fc'},
+  rust:    {accent:'#7c2d12', light:'#fff7ed', accent2:'#fb923c'},
+  forest:  {accent:'#14532d', light:'#f0fdf4', accent2:'#86efac'},
+};
+
+const themeDots = document.getElementById('themeDots');
+const mockupCard = document.getElementById('mockupCard');
+Object.entries(THEMES).forEach(([key, val]) => {
+  const dot = document.createElement('div');
+  dot.className = 'theme-dot' + (key === 'navy' ? ' active' : '');
+  dot.style.background = val.accent;
+  dot.title = key;
+  dot.addEventListener('click', () => {
+    document.querySelectorAll('.theme-dot').forEach(d => d.classList.remove('active'));
+    dot.classList.add('active');
+    mockupCard.style.setProperty('--mc',  val.accent);
+    mockupCard.style.setProperty('--mc2', val.accent2);
+    mockupCard.style.setProperty('--mcl', val.light);
+  });
+  themeDots.appendChild(dot);
+});
+
+/* ===== Cookie banner ===== */
+const cookieBanner = document.getElementById('cookieBanner');
+const cookieKey = 'latwecv_cookie_consent';
+
+function hideCookie(){
+  cookieBanner.classList.remove('visible');
+  setTimeout(() => cookieBanner.style.display='none', 400);
+}
+
+if(!localStorage.getItem(cookieKey)){
+  setTimeout(() => cookieBanner.classList.add('visible'), 1200);
+}
+
+document.getElementById('cookieAccept').addEventListener('click', () => {
+  localStorage.setItem(cookieKey, 'accepted');
+  hideCookie();
+});
+document.getElementById('cookieReject').addEventListener('click', () => {
+  localStorage.setItem(cookieKey, 'rejected');
+  hideCookie();
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LatweCV — Kostenloser Online-Lebenslauf-Generator | Professionellen Lebenslauf in 5 Minuten erstellen</title>
+<meta name="description" content="LatweCV ist ein kostenloser Lebenslauf-Generator im Browser — ohne Registrierung, ohne Konto. 13 Blocktypen, 8 Farbthemen, 4 Layouts, Export nach PDF und Word, handgeschriebene Unterschrift und eine Oberfläche in 6 Sprachen.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://latwecv.eu/de">
+<meta property="og:type" content="website">
+<meta property="og:title" content="LatweCV — Kostenloser Online-Lebenslauf-Generator">
+<meta property="og:description" content="Erstelle einen professionellen Lebenslauf im Browser: Drag-and-Drop-Blöcke, 8 Themes, Export nach PDF/Word, Oberfläche in 6 Sprachen. Ohne Konto, ohne Limits.">
+<meta property="og:locale" content="de_DE">
+<link rel="shortcut icon" href="/media/icon.png" type="image/x-icon">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3864230017581338" crossorigin="anonymous"></script>
+<meta name="google-adsense-account" content="ca-pub-3864230017581338">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "LatweCV",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Any",
+  "offers": {"@type":"Offer","price":"0","priceCurrency":"PLN"},
+  "description": "Kostenloser Lebenslauf-Generator"
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/blog_styles.css">
+
+</head>
+<body>
+
+<!-- ================= COOKIE BANNER ================= -->
+<div class="cookie-banner" id="cookieBanner" role="dialog" aria-label="Cookie-Hinweis" aria-live="polite">
+  <div class="cookie-text">
+    <strong>Ein paar Worte zu Cookies.</strong> Wir verwenden nur die notwendigen — um deine Einstellungen und deine Sitzung zu merken. Kein Tracking, keine Werbung. Deine Daten bleiben ohnehin ausschließlich auf deinem Gerät.
+  </div>
+  <div class="cookie-actions">
+    <button class="cookie-btn reject" id="cookieReject">Nur notwendige</button>
+    <button class="cookie-btn accept" id="cookieAccept">Verstanden, OK</button>
+  </div>
+</div>
+
+<!-- ================= HEADER ================= -->
+<!-- <div class="nav-backdrop" id="navBackdrop"></div> -->
+<header class="site">
+  <nav class="nav">
+    <a href="#top" class="nav-logo">Latwe<span class="dot">CV</span></a>
+    <button class="nav-toggle" aria-label="Menü öffnen" aria-expanded="false" id="navToggle">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+    <div class="nav-links" id="navLinks">
+      <button class="nav-close" id="navClose" aria-label="Menü schließen">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+      <a href="#bloki" onclick="closeNav()">Blöcke</a>
+      <a href="#jezyki" onclick="closeNav()">Sprachen</a>
+      <a href="#motywy" onclick="closeNav()">Themes</a>
+      <a href="#eksport" onclick="closeNav()">Export</a>
+      <a href="#faq" onclick="closeNav()">FAQ</a>
+      <a href="https://latwecv.eu/de/creator" class="nav-cta">Generator öffnen</a>
+    </div>
+  </nav>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="hero-eyebrow">Lebenslauf-Generator · 100% im Browser</div>
+      <h1>Dein Lebenslauf,<br>fertig in <em>wenigen Minuten</em>.</h1>
+      <p class="lead">Ohne Registrierung, ohne Installation, ohne Überraschungen. Du baust deinen Lebenslauf wie aus Bausteinen — ziehst Abschnitte, wählst einen Stil und exportierst das fertige Dokument als PDF oder Word. Alles läuft direkt im Browser.</p>
+      <div class="hero-actions">
+        <a href="#start" class="btn btn-primary">Lebenslauf erstellen — kostenlos</a>
+        <a href="#bloki" class="btn btn-ghost">Wie funktioniert das?</a>
+      </div>
+      <div class="hero-meta">
+        <span>
+          <svg class="ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Ohne Registrierung
+        </span>
+        <span>
+          <svg class="ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Deine Daten bleiben bei dir
+        </span>
+        <span>
+          <svg class="ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          <strong>6</strong>&nbsp;Oberflächensprachen
+        </span>
+      </div>
+    </div>
+
+    <div class="mockup-stage">
+      <div class="mockup-card" id="mockupCard" style="--mc:#1a3c6e;--mc2:#c8a96e;--mcl:#eef2f8;">
+        <div class="mockup-head">
+          <div class="mockup-photo"></div>
+          <div>
+            <div class="mockup-name" id="mockName">Anna Kowalski</div>
+            <div class="mockup-title" id="mockTitle">UX/UI-Designerin</div>
+          </div>
+        </div>
+        <div class="mockup-sec-title" id="mockSec1">Berufserfahrung</div>
+        <div class="mockup-exp">
+          <div class="mockup-exp-role" id="mockRole">Senior Product Designerin</div>
+          <div class="mockup-exp-co" id="mockCo">Creative Studio · 2021–heute</div>
+          <div class="mockup-line w90"></div>
+          <div class="mockup-line w70"></div>
+          <div class="mockup-tags">
+            <span class="mockup-tag" id="mockTag1">Figma</span>
+            <span class="mockup-tag" id="mockTag2">UX-Forschung</span>
+            <span class="mockup-tag" id="mockTag3">Prototyping</span>
+          </div>
+        </div>
+        <div class="mockup-sec-title" id="mockSec2" style="margin-top:14px;">Fähigkeiten</div>
+        <div class="mockup-line w90"></div>
+        <div class="mockup-line w50"></div>
+
+        <div class="mockup-controls">
+          <div>
+            <div class="pill-label" style="margin-bottom:8px;text-align:center;">Lebenslauf-Sprache</div>
+            <div class="pill-row" id="langPills">
+              <button class="lang-pill" data-lang="pl">PL</button>
+              <button class="lang-pill" data-lang="en">EN</button>
+              <button class="lang-pill active" data-lang="de">DE</button>
+              <button class="lang-pill" data-lang="es">ES</button>
+              <button class="lang-pill" data-lang="ua">UA</button>
+              <button class="lang-pill" data-lang="ru">RU</button>
+            </div>
+          </div>
+          <div>
+            <div class="pill-label" style="margin-bottom:8px;text-align:center;">Farbthema</div>
+            <div class="theme-row" id="themeDots"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= STATS ================= -->
+<section class="stats" style="padding:0;">
+  <div class="wrap">
+    <div class="stat">
+      <div class="num">13</div>
+      <div class="lab">Inhaltsblock-Typen</div>
+    </div>
+    <div class="stat">
+      <div class="num">8</div>
+      <div class="lab">Farbthemen</div>
+    </div>
+    <div class="stat">
+      <div class="num">6</div>
+      <div class="lab">Oberflächen- und Lebenslauf-Sprachen</div>
+    </div>
+    <div class="stat">
+      <div class="num">0 €</div>
+      <div class="lab">Kosten, immer</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= BLOKI ================= -->
+<section id="bloki">
+  <div class="wrap">
+    <div class="sec-eyebrow reveal">Bearbeitung</div>
+    <h2 class="sec-title reveal">Baue deinen Lebenslauf aus Bausteinen, nicht aus einer Vorlage</h2>
+    <p class="sec-intro reveal">Ziehe einen Abschnitt in den Arbeitsbereich, fülle ihn mit deinen Daten und ordne ihn nach Belieben an. Jeder Baustein hat seinen eigenen Editor — Schluss mit dem Kampf gegen die Formatierung in Word.</p>
+
+    <div class="blocks-grid reveal">
+
+      <div class="block-card">
+        <div class="glyph">
+          <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2"/><line x1="12" y1="12" x2="12" y2="16"/></svg>
+        </div>
+        <h4>Berufserfahrung</h4>
+        <p>Position, Unternehmen, Beschäftigungszeitraum, Beschreibung und Skill-Tags.</p>
+      </div>
+
+      <div class="block-card">
+        <div class="glyph">
+          <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+        </div>
+        <h4>Ausbildung</h4>
+        <p>Abschluss, Studienfach, Hochschule, Studienzeitraum und zusätzliche Angaben.</p>
+      </div>
+
+      <div class="block-card">
+        <div class="glyph">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0 1 12 0v2"/></svg>
+        </div>
+        <h4>Über mich</h4>
+        <p>Eine kurze berufliche Zusammenfassung am Anfang des Dokuments.</p>
+      </div>
+
+      <div class="block-card">
+        <div class="glyph">
+          <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="3" cy="6" r="1" fill="currentColor" stroke="none"/><circle cx="3" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="3" cy="18" r="1" fill="currentColor" stroke="none"/></svg>
+        </div>
+        <h4>Fähigkeiten</h4>
+        <p>Eine Liste von Kompetenzen mit dem Niveau als Balkenanzeige.</p>
+      </div>
+
+      <div class="block-card">
+        <div class="glyph">
+          <svg viewBox="0 0 24 24"><path d="M5 8l4 4-4 4"/><line x1="12" y1="16" x2="19" y2="16"/></svg>
+        </div>
+        <h4>Sprachen</h4>
+        <p>Sprachkenntnisse mit GER-Niveaus von A1 bis C2 sowie Muttersprache.</p>
+      </div>
+
+      <div class="block-card">
+        <div class="glyph">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <h4>Zertifikate</h4>
+        <p>Name, ausstellende Organisation, Jahr und kurze Beschreibung.</p>
+      </div>
+
+      <div class="block-card">
+        <div class="glyph">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <h4>Erfolge</h4>
+        <p>Konkrete Ergebnisse und Erfolge als knappe Aufzählungspunkte.</p>
+      </div>
+
+      <div class="block-card">
+        <div class="glyph">
+          <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <h4>Projekte</h4>
+        <p>Name, Beschreibung, Link zum Repository oder Portfolio und Tags.</p>
+      </div>
+
+      <div class="block-card">
+        <div class="glyph">
+          <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        </div>
+        <h4>Links / Social</h4>
+        <p>LinkedIn, GitHub, Portfolio — mit eigenem Icon für jeden Link.</p>
+      </div>
+
+      <div class="block-card">
+        <div class="glyph">
+          <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        </div>
+        <h4>Freier Text</h4>
+        <p>Ein eigener Abschnitt mit Titel und frei formuliertem Text.</p>
+      </div>
+
+      <div class="block-card">
+        <div class="glyph">
+          <svg viewBox="0 0 24 24"><path d="M3 17c3-3 5-5 9-5s6 2 9 5"/><path d="M3 10c3-5 5-7 9-7s6 2 9 7"/></svg>
+        </div>
+        <h4>Unterschrift</h4>
+        <p>Eine handgeschriebene Unterschrift, mit der Maus gezeichnet oder als Bild hochgeladen.</p>
+      </div>
+
+      <div class="block-card">
+        <div class="glyph">
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </div>
+        <h4>Trenner</h4>
+        <p>Ein optischer Abstand zwischen Abschnitten, falls du mehr Ordnung brauchst.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= SCREENSHOT: EDITOR ================= -->
+<section style="padding-top:0;">
+  <div class="wrap">
+    <figure class="screenshot reveal">
+      <video controls style="width: 100%;">
+        <source src="media/film.mp4" type="video/mp4"> 
+      </video>
+      <figcaption>Editor: Blockpanel → Arbeitsbereich → Eigenschaftenpanel</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ================= JĘZYKI ================= -->
+<section id="jezyki">
+  <div class="wrap">
+    <div class="feature-row">
+      <div class="feature-text reveal">
+        <div class="sec-eyebrow">Mehrsprachigkeit</div>
+        <h3>Ein Lebenslauf, sechs Sprachversionen</h3>
+        <p>Bewirbst du dich im Ausland? Wechsle deinen Lebenslauf mit einem Klick in eine andere Sprache — Abschnittsüberschriften und Bezeichnungen werden automatisch übersetzt, während deine Daten unverändert bleiben.</p>
+        <ul class="feature-list">
+          <li>Oberfläche: Polnisch, Englisch, Deutsch, Spanisch, Ukrainisch, Russisch</li>
+          <li>Die Sprache des Lebenslaufinhalts ist unabhängig von der Oberflächensprache</li>
+          <li>Sprachniveaus nach dem GER (A1–C2 + Muttersprache)</li>
+          <li>Abschnittsbezeichnungen werden automatisch übersetzt</li>
+        </ul>
+      </div>
+      <div class="feature-media reveal">
+        <figure class="screenshot">
+          <img src="media/przelacznik.png" alt="Sprachumschalter">
+          <figcaption>Sprachumschalter: PL · EN · DE · ES · UA · RU</figcaption>
+        </figure>
+      </div>
+    
+    </div>
+  </div>
+</section>
+
+<!-- ================= MOTYWY / UKŁADY ================= -->
+<section id="motywy" style="background:var(--paper-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);">
+  <div class="wrap">
+    <div class="sec-eyebrow reveal">Aussehen</div>
+    <h2 class="sec-title reveal">8 Themes, 4 Layouts — alles mit einem Klick ändern</h2>
+    <p class="sec-intro reveal">Farbe, Seitenlayout, Überschriftenschrift — jedes Element passt sich sofort an. Die Vorschau aktualisiert sich live, sodass du das Ergebnis vor dem Export siehst.</p>
+
+    <div class="swatch-grid reveal">
+      <div class="swatch" style="background:#1a3c6e;">Marineblau</div>
+      <div class="swatch" style="background:#334155;">Grau</div>
+      <div class="swatch" style="background:#065f46;">Smaragd</div>
+      <div class="swatch" style="background:#7f1d1d;">Weinrot</div>
+      <div class="swatch" style="background:#4c1d95;">Pflaume</div>
+      <div class="swatch" style="background:#0f4c6e;">Meerblau</div>
+      <div class="swatch" style="background:#7c2d12;">Rost</div>
+      <div class="swatch" style="background:#14532d;">Waldgrün</div>
+    </div>
+
+    <div class="layout-grid reveal">
+      <div class="layout-card">
+        <div class="layout-thumb classic"><div class="col sidebar"></div><div class="col main"></div></div>
+        <h4>Klassisch</h4><p>Seitenleiste + Hauptinhalt</p>
+      </div>
+      <div class="layout-card">
+        <div class="layout-thumb minimal"><div class="col main"></div></div>
+        <h4>Minimal</h4><p>Eine Spalte, volle Breite</p>
+      </div>
+      <div class="layout-card">
+        <div class="layout-thumb bold"><div class="col sidebar"></div><div class="col main"></div></div>
+        <h4>Mutig</h4><p>Kopfleiste über die volle Breite</p>
+      </div>
+      <div class="layout-card">
+        <div class="layout-thumb right"><div class="col sidebar"></div><div class="col main"></div></div>
+        <h4>Rechte Seite</h4><p>Seitenleiste auf der rechten Seite</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PODPIS / ZDJĘCIE ================= -->
+<section>
+  <div class="wrap">
+    <div class="feature-row reverse">
+      <div class="feature-text reveal">
+        <div class="sec-eyebrow">Personalisierung</div>
+        <h3>Foto, Unterschrift und dein Stil</h3>
+        <p>Füge ein Profilfoto hinzu, zeichne deine Unterschrift mit der Maus oder dem Finger auf einem Touchscreen — oder lade einen Scan davon hoch. Alles ist in der Live-Vorschau sichtbar.</p>
+        <ul class="feature-list">
+          <li>Profilfoto mit Live-Vorschau</li>
+          <li>Eine handgezeichnete Unterschrift direkt im Browser</li>
+          <li>Möglichkeit, eine gescannte Unterschrift als Bild hochzuladen</li>
+          <li>Alles wird während der Arbeit automatisch gespeichert</li>
+        </ul>
+      </div>
+      <div class="feature-media reveal">
+        <figure class="screenshot">
+          <img src="media/podpis.png" alt="Unterschriftenmodul">
+          <figcaption>Unterschriftenmodul: zeichnen, speichern, im Lebenslauf verwenden</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= EKSPORT ================= -->
+<section id="eksport">
+  <div class="wrap">
+    <div class="sec-eyebrow reveal">Export</div>
+    <h2 class="sec-title reveal">Ein fertiges Dokument in einer Sekunde</h2>
+    <p class="sec-intro reveal">Lade deinen Lebenslauf in dem Format herunter, das zu dir passt. Das gewählte Theme, Layout und die Schriftarten bleiben in jeder Datei erhalten.</p>
+
+    <div class="blocks-grid reveal" style="grid-template-columns:repeat(4,1fr);">
+      <div class="block-card">
+        <div class="glyph">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+        </div>
+        <h4>PDF-Export</h4>
+        <p>A4-Format, hohe Qualität, versandfertig.</p>
+      </div>
+      <div class="block-card">
+        <div class="glyph">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 15l2 2 4-4"/></svg>
+        </div>
+        <h4>Word-Export</h4>
+        <p>Eine .docx-Datei, die sich in Word und Google Docs öffnen lässt.</p>
+      </div>
+      <div class="block-card">
+        <div class="glyph">
+          <svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        </div>
+        <h4>Drucken</h4>
+        <p>Direkt drucken oder aus dem Druckdialog als PDF speichern.</p>
+      </div>
+      <div class="block-card">
+        <div class="glyph json-glyph">{ }</div>
+        <h4>JSON-Kopie</h4>
+        <p>Export und Import aller Daten als Sicherungsdatei.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= JAK TO DZIAŁA ================= -->
+<section style="background:var(--paper-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);">
+  <div class="wrap">
+    <div class="sec-eyebrow reveal">Ablauf</div>
+    <h2 class="sec-title reveal">Von der leeren Seite zum fertigen Lebenslauf</h2>
+
+    <div class="steps reveal">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h4>Bausteine hinzufügen</h4>
+        <p>Ziehe die Abschnitte, die du brauchst, in den Arbeitsbereich — von Berufserfahrung bis Projekte.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h4>Ausfüllen und Aussehen anpassen</h4>
+        <p>Gib deine Daten ein und wähle Farbthema, Seitenlayout und Überschriftenschrift.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h4>Lebenslauf herunterladen</h4>
+        <p>Exportiere als PDF oder Word — oder speichere eine JSON-Kopie deiner Daten für später.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PRIVACY / TRUST ================= -->
+<section>
+  <div class="wrap">
+    <div class="trust reveal">
+      <div>
+        <h3>Deine Daten verlassen nie deinen Browser</h3>
+        <p>LatweCV läuft vollständig lokal. Ohne Konto, ohne Server, ohne Datenübertragung — alles, was du eingibst, bleibt auf deinem Gerät gespeichert. Auch die PDF-Datei wird bei dir erzeugt, nicht in der Cloud.</p>
+      </div>
+      <div class="stamp-seal">
+        100% lokal<br>ohne Konto<br>ohne Server
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section id="faq">
+  <div class="wrap">
+    <div class="sec-eyebrow reveal">Fragen</div>
+    <h2 class="sec-title reveal">Häufig gestellte Fragen</h2>
+
+    <div class="faq-list reveal">
+      <div class="faq-item">
+        <button class="faq-q">Ist LatweCV wirklich kostenlos?<span class="plus">+</span></button>
+        <div class="faq-a"><p>Ja, vollständig. Bearbeitung, Vorschau, PDF- und Word-Export, alle Themes und Layouts — kostenlos und ohne Konto verfügbar. Es gibt keine versteckten Limits.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Muss ich mich registrieren, um meinen Lebenslauf zu speichern?<span class="plus">+</span></button>
+        <div class="faq-a"><p>Nein. Deine Daten werden automatisch im Browser auf deinem Gerät gespeichert. Du kannst sie auch als JSON-Datei exportieren und auf einem anderen Computer wieder laden.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Wie funktioniert der Sprachwechsel im Lebenslauf?<span class="plus">+</span></button>
+        <div class="faq-a"><p>Du kannst den Lebenslaufinhalt (Abschnittsüberschriften, Bezeichnungen, Sprachniveaus) unabhängig von der Oberflächensprache des Editors zwischen sechs Sprachen wechseln — deine Daten bleiben unverändert.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Kann ich das Aussehen des Lebenslaufs nach dem Ausfüllen ändern?<span class="plus">+</span></button>
+        <div class="faq-a"><p>Ja — Farbthema, Seitenlayout, Schriftart und Reihenfolge der Abschnitte kannst du jederzeit ändern. Die Vorschau aktualisiert sich sofort.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">In welchen Formaten kann ich den Lebenslauf herunterladen?<span class="plus">+</span></button>
+        <div class="faq-a"><p>Als PDF (A4, versandfertig), Word (.docx, bearbeitbar in Word und Google Docs) sowie per Direktdruck aus dem Browser.</p></div>
+      </div>
+    </div>
+    <br>
+    <h3>Keine Antwort gefunden? <a href="https://latwecv.eu/faq">Hier klicken</a></h3>
+  </div>
+</section>
+
+<!-- ================= FINAL CTA ================= -->
+<section class="final-cta" id="start">
+  <div class="wrap">
+    <h2>Dein Lebenslauf wartet auf das erste Wort.</h2>
+    <p>Öffne den Editor, füge den ersten Baustein hinzu, und in wenigen Minuten hast du ein fertiges Dokument. Ohne Registrierung, ohne Zeitlimit.</p>
+    <a href="https://latwecv.eu/de/creator" class="btn btn-primary">LatweCV öffnen</a>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="wrap">
+    <div>© 2026 LatweCV — Lebenslauf-Generator im Browser.</div>
+    <div style="display:flex;gap:20px;flex-wrap:wrap;">
+      <a href="#bloki">Blöcke</a>
+      <a href="#motywy">Themes</a>
+      <a href="#eksport">Export</a>
+      <a href="https://latwecv.eu/faq">FAQ</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ===== Mobile nav toggle ===== */
+const navToggle  = document.getElementById('navToggle');
+const navLinks   = document.getElementById('navLinks');
+const navClose   = document.getElementById('navClose');
+
+function openNav(){
+  navLinks.classList.add('open');
+  if (navBackdrop) navBackdrop.classList.add('visible');
+  navToggle.setAttribute('aria-expanded','true');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeNav(){
+  navLinks.classList.remove('open');
+  if (navBackdrop) navBackdrop.classList.remove('visible');
+  navToggle.setAttribute('aria-expanded','false');
+  document.body.style.overflow = '';
+}
+
+
+navToggle.addEventListener('click', openNav);
+navClose.addEventListener('click', closeNav);
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeNav(); });
+
+/* ===== FAQ accordion ===== */
+document.querySelectorAll('.faq-item').forEach(item => {
+  item.querySelector('.faq-q').addEventListener('click', () => {
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+    if(!wasOpen) item.classList.add('open');
+  });
+});
+
+/* ===== Scroll reveal ===== */
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.08 });
+revealEls.forEach(el => io.observe(el));
+
+/* ===== Hero mockup: language switcher ===== */
+const MOCK_TEXT = {
+  pl:{ name:'Anna Kowalska', title:'Projektantka UX/UI', sec1:'Doświadczenie', sec2:'Umiejętności',
+       role:'Starsza projektantka produktu', co:'Studio Kreatywne · 2021–dziś',
+       tags:['Figma','Badania UX','Prototypy'] },
+  en:{ name:'Anna Kowalski', title:'UX/UI Designer', sec1:'Experience', sec2:'Skills',
+       role:'Senior Product Designer', co:'Creative Studio · 2021–present',
+       tags:['Figma','UX Research','Prototyping'] },
+  de:{ name:'Anna Kowalski', title:'UX/UI-Designerin', sec1:'Berufserfahrung', sec2:'Fähigkeiten',
+       role:'Senior Product Designerin', co:'Creative Studio · 2021–heute',
+       tags:['Figma','UX-Forschung','Prototyping'] },
+  es:{ name:'Anna Kowalski', title:'Diseñadora UX/UI', sec1:'Experiencia', sec2:'Habilidades',
+       role:'Diseñadora de producto senior', co:'Creative Studio · 2021–actual',
+       tags:['Figma','Investigación UX','Prototipos'] },
+  ua:{ name:'Анна Ковальська', title:'Дизайнерка UX/UI', sec1:'Досвід роботи', sec2:'Навички',
+       role:'Старша продуктова дизайнерка', co:'Creative Studio · 2021–тепер',
+       tags:['Figma','UX-дослідження','Прототипи'] },
+  ru:{ name:'Анна Ковальская', title:'Дизайнер UX/UI', sec1:'Опыт работы', sec2:'Навыки',
+       role:'Старший продуктовый дизайнер', co:'Creative Studio · 2021–наст. время',
+       tags:['Figma','UX-исследования','Прототипы'] },
+};
+
+const mockEls = {
+  name:  document.getElementById('mockName'),
+  title: document.getElementById('mockTitle'),
+  sec1:  document.getElementById('mockSec1'),
+  sec2:  document.getElementById('mockSec2'),
+  role:  document.getElementById('mockRole'),
+  co:    document.getElementById('mockCo'),
+  tag1:  document.getElementById('mockTag1'),
+  tag2:  document.getElementById('mockTag2'),
+  tag3:  document.getElementById('mockTag3'),
+};
+
+function setMockLang(lang) {
+  const t = MOCK_TEXT[lang];
+  const fields = Object.values(mockEls);
+  fields.forEach(f => f.style.opacity = 0);
+  setTimeout(() => {
+    mockEls.name.textContent  = t.name;
+    mockEls.title.textContent = t.title;
+    mockEls.sec1.textContent  = t.sec1;
+    mockEls.sec2.textContent  = t.sec2;
+    mockEls.role.textContent  = t.role;
+    mockEls.co.textContent    = t.co;
+    mockEls.tag1.textContent  = t.tags[0];
+    mockEls.tag2.textContent  = t.tags[1];
+    mockEls.tag3.textContent  = t.tags[2];
+    fields.forEach(f => f.style.opacity = 1);
+  }, 180);
+}
+
+document.querySelectorAll('.lang-pill').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.lang-pill').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    setMockLang(btn.dataset.lang);
+  });
+});
+
+/* ===== Hero mockup: theme switcher ===== */
+const THEMES = {
+  navy:    {accent:'#1a3c6e', light:'#eef2f8', accent2:'#c8a96e'},
+  slate:   {accent:'#334155', light:'#f1f5f9', accent2:'#94a3b8'},
+  emerald: {accent:'#065f46', light:'#ecfdf5', accent2:'#6ee7b7'},
+  wine:    {accent:'#7f1d1d', light:'#fff1f2', accent2:'#fca5a5'},
+  plum:    {accent:'#4c1d95', light:'#f5f3ff', accent2:'#a78bfa'},
+  teal:    {accent:'#0f4c6e', light:'#e0f2fe', accent2:'#7dd3fc'},
+  rust:    {accent:'#7c2d12', light:'#fff7ed', accent2:'#fb923c'},
+  forest:  {accent:'#14532d', light:'#f0fdf4', accent2:'#86efac'},
+};
+
+const themeDots = document.getElementById('themeDots');
+const mockupCard = document.getElementById('mockupCard');
+Object.entries(THEMES).forEach(([key, val]) => {
+  const dot = document.createElement('div');
+  dot.className = 'theme-dot' + (key === 'navy' ? ' active' : '');
+  dot.style.background = val.accent;
+  dot.title = key;
+  dot.addEventListener('click', () => {
+    document.querySelectorAll('.theme-dot').forEach(d => d.classList.remove('active'));
+    dot.classList.add('active');
+    mockupCard.style.setProperty('--mc',  val.accent);
+    mockupCard.style.setProperty('--mc2', val.accent2);
+    mockupCard.style.setProperty('--mcl', val.light);
+  });
+  themeDots.appendChild(dot);
+});
+
+/* ===== Cookie banner ===== */
+const cookieBanner = document.getElementById('cookieBanner');
+const cookieKey = 'latwecv_cookie_consent';
+
+function hideCookie(){
+  cookieBanner.classList.remove('visible');
+  setTimeout(() => cookieBanner.style.display='none', 400);
+}
+
+if(!localStorage.getItem(cookieKey)){
+  setTimeout(() => cookieBanner.classList.add('visible'), 1200);
+}
+
+document.getElementById('cookieAccept').addEventListener('click', () => {
+  localStorage.setItem(cookieKey, 'accepted');
+  hideCookie();
+});
+document.getElementById('cookieReject').addEventListener('click', () => {
+  localStorage.setItem(cookieKey, 'rejected');
+  hideCookie();
+});
+</script>
+
+</body>
+</html>
